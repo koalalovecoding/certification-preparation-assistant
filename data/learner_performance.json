@@ -1,0 +1,221 @@
+[
+  {
+    "learner_id": "L-1001",
+    "team_id": "TEAM-A",
+    "role": "Cloud Engineer",
+    "certification": "AZ-204",
+    "certifications_held": [],
+    "practice_score_avg": 20.0,
+    "hours_studied": 6.0,
+    "exam_outcome": "Fail",
+    "days_until_exam": null,
+    "skill_module_scores": {
+      "Unknown Module": 66.7,
+      "Develop Azure compute solutions": 20.0
+    }
+  },
+  {
+    "learner_id": "L-1002",
+    "team_id": "TEAM-A",
+    "role": "Cloud Engineer",
+    "certification": "AZ-305",
+    "certifications_held": [
+      "AZ-104"
+    ],
+    "practice_score_avg": null,
+    "hours_studied": 0,
+    "exam_outcome": null,
+    "days_until_exam": null,
+    "skill_module_scores": null
+  },
+  {
+    "learner_id": "L-1003",
+    "team_id": "TEAM-B",
+    "role": "DevOps Engineer",
+    "certification": "AZ-104",
+    "certifications_held": [],
+    "practice_score_avg": null,
+    "hours_studied": 0,
+    "exam_outcome": null,
+    "days_until_exam": null,
+    "skill_module_scores": null
+  },
+  {
+    "learner_id": "L-1004",
+    "team_id": "TEAM-B",
+    "role": "DevOps Engineer",
+    "certification": "AZ-400",
+    "certifications_held": [
+      "AZ-104"
+    ],
+    "practice_score_avg": null,
+    "hours_studied": 0,
+    "exam_outcome": null,
+    "days_until_exam": null,
+    "skill_module_scores": null
+  },
+  {
+    "learner_id": "L-1005",
+    "team_id": "TEAM-C",
+    "role": "Security Engineer",
+    "certification": "AZ-500",
+    "certifications_held": [
+      "SC-900"
+    ],
+    "practice_score_avg": 80.0,
+    "hours_studied": 4.0,
+    "exam_outcome": "Pass",
+    "days_until_exam": null,
+    "skill_module_scores": {
+      "Implement and manage virtual networking": 80.0
+    }
+  },
+  {
+    "learner_id": "L-1006",
+    "team_id": "TEAM-C",
+    "role": "Security Engineer",
+    "certification": "AZ-104",
+    "certifications_held": [
+      "SC-900"
+    ],
+    "practice_score_avg": null,
+    "hours_studied": 0,
+    "exam_outcome": null,
+    "days_until_exam": null,
+    "skill_module_scores": null
+  },
+  {
+    "learner_id": "L-1007",
+    "team_id": null,
+    "role": "Data Scientist",
+    "certification": "DP-300",
+    "certifications_held": [
+      "AZ-900"
+    ],
+    "practice_score_avg": 40.0,
+    "hours_studied": 7.0,
+    "exam_outcome": "Fail",
+    "days_until_exam": null,
+    "skill_module_scores": {
+      "Unknown Module": 100.0,
+      "Manage Azure identities and governance": 40.0
+    }
+  },
+  {
+    "learner_id": "L-1008",
+    "team_id": "TEAM-D",
+    "role": "Data Engineer",
+    "certification": "DP-700",
+    "certifications_held": [
+      "AZ-104",
+      "DP-300"
+    ],
+    "practice_score_avg": null,
+    "hours_studied": 0,
+    "exam_outcome": null,
+    "days_until_exam": null,
+    "skill_module_scores": null
+  },
+  {
+    "learner_id": "L-TEST-001",
+    "team_id": "TEAM-A",
+    "role": "Cloud Engineer",
+    "certification": "AZ-204",
+    "certifications_held": [],
+    "practice_score_avg": 81.7,
+    "hours_studied": 62.9,
+    "exam_outcome": "Pass",
+    "days_until_exam": null,
+    "skill_module_scores": {
+      "Implement Azure security": 80.0,
+      "Develop Azure compute solutions": 100.0,
+      "Connect to and consume Azure services and third-party services": [
+        60.0,
+        60.0
+      ]
+    },
+    "adjusted_study_hours": 40,
+    "exam_date": "2026-07-31",
+    "study_plan": [
+      {
+        "week": 1,
+        "focus": "Develop Azure compute solutions",
+        "hours": 5.4
+      },
+      {
+        "week": 2,
+        "focus": "Develop Azure compute solutions",
+        "hours": 3.7
+      },
+      {
+        "week": 2,
+        "focus": "Connect to and consume Azure services and third-party services",
+        "hours": 1.7
+      },
+      {
+        "week": 3,
+        "focus": "Connect to and consume Azure services and third-party services",
+        "hours": 5.5
+      },
+      {
+        "week": 4,
+        "focus": "Develop for Azure storage",
+        "hours": 5.4
+      },
+      {
+        "week": 5,
+        "focus": "Implement Azure security",
+        "hours": 5.4
+      },
+      {
+        "week": 6,
+        "focus": "Monitor and troubleshoot Azure solutions",
+        "hours": 1.8
+      }
+    ],
+    "lpc_output": {
+      "status": "complete",
+      "recommended_certification": "AZ-204",
+      "study_hours_multiplier": 1.0833333333333333,
+      "adjusted_study_hours": 33,
+      "learning_resources": [
+        {
+          "title": "Microsoft Certified: Azure Developer Associate",
+          "description": "Official certification page for the Microsoft Azure Developer Associate, including the AZ-204 exam details and preparation guidance.",
+          "source": "[unverified: 5:0]"
+        },
+        {
+          "title": "AZ-204 Exam Study Guide",
+          "description": "Comprehensive study guide for the AZ-204 exam, covering required skills and knowledge domain areas.",
+          "source": "[unverified: 5:0]"
+        },
+        {
+          "title": "Azure Developer Learning Path",
+          "description": "Official Microsoft training path for creating Azure App Service Web Apps and other development-related skills for Azure.",
+          "source": "[unverified: 5:0]"
+        }
+      ],
+      "warnings": [
+        "AZ-204 is retiring on 2026-07-31. Consider alternative certifications before registering."
+      ],
+      "background_summary": {
+        "Requirements gathering": 1,
+        "Design": 1,
+        "Development": 2,
+        "Deployment": 3,
+        "Security": 3,
+        "Maintenance": 3,
+        "Performance tuning": 4,
+        "Monitoring": 3,
+        "Azure SDKs": 3,
+        "Data storage options": 3,
+        "Data connections": 2,
+        "APIs": 3,
+        "App authentication and authorization": 4,
+        "Compute and container deployment": 4,
+        "Debugging": 4
+      }
+    },
+    "current_module_index": 1
+  }
+]

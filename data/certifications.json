@@ -1,0 +1,1394 @@
+[
+  {
+    "certification_code": "AZ-204",
+    "certification_name": "Developing Solutions for Microsoft Azure",
+    "target_roles": [
+      "Cloud Engineer",
+      "Azure Developer"
+    ],
+    "certification_level": "Associate",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": "2026-07-31",
+      "retirement_note": "Retiring on July 31, 2026 at 11:59 PM Central Standard Time"
+    },
+    "recommended_background": {
+      "responsibilities": [
+        "Requirements gathering",
+        "Design",
+        "Development",
+        "Deployment",
+        "Security",
+        "Maintenance",
+        "Performance tuning",
+        "Monitoring"
+      ],
+      "proficient_in": [
+        "Azure SDKs",
+        "Data storage options",
+        "Data connections",
+        "APIs",
+        "App authentication and authorization",
+        "Compute and container deployment",
+        "Debugging"
+      ],
+      "works_with": [
+        "Cloud solution architects",
+        "DBAs",
+        "DevOps",
+        "Infrastructure admins",
+        "Other stakeholders"
+      ],
+      "experience_requirements": [
+        "At least two years of programming experience",
+        "Proficiency in programming with Azure SDKs",
+        "Proficiency using Azure CLI, Azure PowerShell, and other tools"
+      ]
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": "2026-07-31",
+      "note": "Renewal deadline is determined by the certification retirement date. After July 31, 2026, renewal is no longer possible."
+    },
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 30,
+    "skill_modules": [
+      {
+        "module_name": "Develop Azure compute solutions",
+        "weighting": "25-30%",
+        "knowledge_points": [
+          "Create and manage container images for solutions",
+          "Publish an image to Azure Container Registry",
+          "Run containers by using Azure Container Instances",
+          "Create solutions by using Azure Container Apps",
+          "Create an Azure App Service Web App",
+          "Configure and implement diagnostics and logging",
+          "Deploy code and containerized solutions",
+          "Configure settings including TLS, API settings, and service connections",
+          "Implement autoscaling",
+          "Configure deployment slots",
+          "Create and configure an Azure Functions app",
+          "Implement input and output bindings",
+          "Implement function triggers by using data operations, timers, and webhooks"
+        ]
+      },
+      {
+        "module_name": "Develop for Azure storage",
+        "weighting": "15-20%",
+        "knowledge_points": [
+          "Perform operations on containers and items by using the SDK",
+          "Set the appropriate consistency level for operations",
+          "Implement change feed notifications",
+          "Set and retrieve properties and metadata",
+          "Perform operations on data by using the appropriate SDK",
+          "Implement storage policies and data lifecycle management"
+        ]
+      },
+      {
+        "module_name": "Implement Azure security",
+        "weighting": "15-20%",
+        "knowledge_points": [
+          "Authenticate and authorize users by using the Microsoft Identity platform",
+          "Authenticate and authorize users and apps by using Microsoft Entra ID",
+          "Create and implement shared access signatures",
+          "Implement solutions that interact with Microsoft Graph",
+          "Secure app configuration data by using Azure App Configuration or Azure Key Vault",
+          "Develop code that uses keys, secrets, and certificates stored in Azure Key Vault",
+          "Implement Managed Identities for Azure resources"
+        ]
+      },
+      {
+        "module_name": "Monitor and troubleshoot Azure solutions",
+        "weighting": "5-10%",
+        "knowledge_points": [
+          "Monitor and analyze metrics, logs, and traces",
+          "Implement availability tests and alerts",
+          "Instrument an app or service to use Application Insights"
+        ]
+      },
+      {
+        "module_name": "Connect to and consume Azure services and third-party services",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Create an Azure API Management instance",
+          "Create and document APIs",
+          "Configure access to APIs",
+          "Implement policies for APIs",
+          "Implement solutions that use Azure Event Grid",
+          "Implement solutions that use Azure Event Hubs",
+          "Implement solutions that use Azure Service Bus",
+          "Implement solutions that use Azure Queue Storage"
+        ]
+      }
+    ],
+    "official_learning_resources": [
+      {
+        "title": "Microsoft Certified: Azure Developer Associate",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-developer/"
+      }
+    ],
+    "type": "single_exam",
+    "prerequisites": []
+  },
+  {
+    "certification_code": "AZ-104",
+    "certification_name": "Microsoft Azure Administrator",
+    "target_roles": [
+      "Azure Administrator",
+      "Cloud Engineer",
+      "Infrastructure Admin"
+    ],
+    "certification_level": "Associate",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "recommended_background": {
+      "responsibilities": [
+        "Implementing, managing, and monitoring an organization's Microsoft Azure environment",
+        "Managing virtual networks, storage, compute, identity, security, and governance",
+        "Coordinating Azure networking, security, database, application development, and DevOps solutions"
+      ],
+      "proficient_in": [
+        "Operating systems",
+        "Networking",
+        "Servers",
+        "Virtualization"
+      ],
+      "works_with": [
+        "Networking teams",
+        "Security teams",
+        "Database administrators",
+        "Application developers",
+        "DevOps engineers"
+      ],
+      "experience_requirements": [
+        "Experience with PowerShell",
+        "Experience with Azure CLI",
+        "Experience with the Azure portal",
+        "Experience with Azure Resource Manager templates or Bicep files",
+        "Familiarity with Microsoft Entra ID"
+      ]
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": null,
+      "note": "No renewal deadline \u2014 certification has no scheduled retirement date"
+    },
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 20,
+    "skill_modules": [
+      {
+        "module_name": "Manage Azure identities and governance",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Create users and groups",
+          "Manage user and group properties",
+          "Manage licenses in Microsoft Entra ID",
+          "Manage external users",
+          "Configure self-service password reset (SSPR)",
+          "Manage built-in Azure roles",
+          "Assign roles at different scopes",
+          "Interpret access assignments",
+          "Implement and manage Azure Policy",
+          "Configure resource locks",
+          "Apply and manage tags on resources",
+          "Manage resource groups",
+          "Manage subscriptions",
+          "Manage costs by using alerts, budgets, and Azure Advisor recommendations",
+          "Configure management groups"
+        ]
+      },
+      {
+        "module_name": "Implement and manage storage",
+        "weighting": "15-20%",
+        "knowledge_points": [
+          "Configure Azure Storage firewalls and virtual networks",
+          "Create and use shared access signature (SAS) tokens",
+          "Configure stored access policies",
+          "Manage access keys",
+          "Configure identity-based access for Azure Files",
+          "Create and configure storage accounts",
+          "Configure Azure Storage redundancy",
+          "Configure object replication",
+          "Configure storage account encryption",
+          "Manage data by using Azure Storage Explorer and AzCopy",
+          "Create and configure a file share in Azure Files",
+          "Create and configure a container in Azure Blob Storage",
+          "Configure storage tiers",
+          "Configure soft delete for blobs and containers",
+          "Configure snapshots and soft delete for Azure Files",
+          "Configure blob lifecycle management",
+          "Configure blob versioning"
+        ]
+      },
+      {
+        "module_name": "Deploy and manage Azure compute resources",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Interpret an Azure Resource Manager template or a Bicep file",
+          "Modify an existing Azure Resource Manager template",
+          "Modify an existing Bicep file",
+          "Deploy resources by using an Azure Resource Manager template or a Bicep file",
+          "Export a deployment as an Azure Resource Manager template or convert to Bicep",
+          "Create a virtual machine",
+          "Configure encryption at host for Azure virtual machines",
+          "Move a virtual machine to another resource group, subscription, or region",
+          "Manage virtual machine sizes",
+          "Manage virtual machine disks",
+          "Deploy virtual machines to availability zones and availability sets",
+          "Deploy and configure an Azure Virtual Machine Scale Sets",
+          "Create and manage an Azure Container Registry",
+          "Provision a container by using Azure Container Instances",
+          "Provision a container by using Azure Container Apps",
+          "Manage sizing and scaling for containers",
+          "Provision an App Service plan",
+          "Configure scaling for an App Service plan",
+          "Create an App Service",
+          "Configure certificates and TLS for an App Service",
+          "Map an existing custom DNS name to an App Service",
+          "Configure backup for an App Service",
+          "Configure networking settings for an App Service",
+          "Configure deployment slots for an App Service"
+        ]
+      },
+      {
+        "module_name": "Implement and manage virtual networking",
+        "weighting": "15-20%",
+        "knowledge_points": [
+          "Create and configure virtual networks and subnets",
+          "Create and configure virtual network peering",
+          "Configure public IP addresses",
+          "Configure user-defined routes",
+          "Troubleshoot network connectivity",
+          "Create and configure network security groups (NSGs) and application security groups",
+          "Evaluate effective security rules in NSGs",
+          "Implement Azure Bastion",
+          "Configure service endpoints for Azure PaaS",
+          "Configure private endpoints for Azure PaaS",
+          "Configure Azure DNS",
+          "Configure an internal or public load balancer",
+          "Troubleshoot load balancing"
+        ]
+      },
+      {
+        "module_name": "Monitor and maintain Azure resources",
+        "weighting": "10-15%",
+        "knowledge_points": [
+          "Interpret metrics in Azure Monitor",
+          "Configure log settings in Azure Monitor",
+          "Query and analyze logs in Azure Monitor",
+          "Set up alert rules, action groups, and alert processing rules in Azure Monitor",
+          "Configure and interpret monitoring of virtual machines, storage accounts, and networks",
+          "Use Azure Network Watcher and Connection monitor",
+          "Create a Recovery Services vault",
+          "Create an Azure Backup vault",
+          "Create and configure a backup policy",
+          "Perform backup and restore operations by using Azure Backup",
+          "Configure Azure Site Recovery for Azure resources",
+          "Perform a failover to a secondary region by using Site Recovery",
+          "Configure and interpret reports and alerts for backups"
+        ]
+      }
+    ],
+    "official_learning_resources": [
+      {
+        "title": "Microsoft Certified: Azure Administrator Associate",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/"
+      }
+    ],
+    "type": "single_exam",
+    "prerequisites": []
+  },
+  {
+    "certification_code": "AZ-305",
+    "certification_name": "Designing Microsoft Azure Infrastructure Solutions",
+    "target_roles": [
+      "Solutions Architect",
+      "Cloud Architect",
+      "Senior Cloud Engineer"
+    ],
+    "certification_level": "Expert",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "recommended_background": {
+      "responsibilities": [
+        "Advising stakeholders and translating business requirements into Azure solution designs",
+        "Aligning designs with the Azure Well-Architected Framework and Cloud Adoption Framework",
+        "Implementing solutions on Azure by partnering with developers, administrators, security engineers, and data engineers"
+      ],
+      "proficient_in": [
+        "Compute solutions",
+        "Network solutions",
+        "Storage solutions",
+        "Monitoring",
+        "Security",
+        "Networking",
+        "Virtualization",
+        "Identity",
+        "Business continuity and disaster recovery",
+        "Data platforms",
+        "Governance"
+      ],
+      "works_with": [
+        "Developers",
+        "Administrators",
+        "Security engineers",
+        "Data engineers"
+      ],
+      "experience_requirements": [
+        "Advanced experience and knowledge of IT operations",
+        "Experience with Azure administration",
+        "Experience with Azure development",
+        "Experience with DevOps processes"
+      ]
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": null,
+      "note": "No renewal deadline \u2014 certification has no scheduled retirement date"
+    },
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 50,
+    "skill_modules": [
+      {
+        "module_name": "Design identity, governance, and monitoring solutions",
+        "weighting": "25-30%",
+        "knowledge_points": [
+          "Recommend a logging solution",
+          "Recommend a solution for routing logs",
+          "Recommend a monitoring solution",
+          "Recommend an authentication solution",
+          "Recommend an identity management solution",
+          "Recommend a solution for authorizing access to Azure resources",
+          "Recommend a solution for authorizing access to on-premises resources",
+          "Recommend a solution to manage secrets, certificates, and keys",
+          "Recommend a structure for management groups, subscriptions, and resource groups, and a strategy for resource tagging",
+          "Recommend a solution for managing compliance",
+          "Recommend a solution for identity governance"
+        ]
+      },
+      {
+        "module_name": "Design data storage solutions",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Recommend a solution for storing relational data",
+          "Recommend a database service tier and compute tier",
+          "Recommend a solution for database scalability",
+          "Recommend a solution for data protection",
+          "Recommend a solution for storing semi-structured data",
+          "Recommend a solution for storing unstructured data",
+          "Recommend a data storage solution to balance features, performance, and costs",
+          "Recommend a data solution for protection and durability",
+          "Recommend a solution for data integration",
+          "Recommend a solution for data analysis"
+        ]
+      },
+      {
+        "module_name": "Design business continuity solutions",
+        "weighting": "15-20%",
+        "knowledge_points": [
+          "Recommend a recovery solution for Azure and hybrid workloads that meets recovery objectives",
+          "Recommend a backup and recovery solution for compute",
+          "Recommend a backup and recovery solution for databases",
+          "Recommend a backup and recovery solution for unstructured data",
+          "Recommend a high availability solution for compute",
+          "Recommend a high availability solution for relational data",
+          "Recommend a high availability solution for semi-structured and unstructured data"
+        ]
+      },
+      {
+        "module_name": "Design infrastructure solutions",
+        "weighting": "30-35%",
+        "knowledge_points": [
+          "Specify components of a compute solution based on workload requirements",
+          "Recommend a virtual machine-based solution",
+          "Recommend a container-based solution",
+          "Recommend a serverless-based solution",
+          "Recommend a compute solution for batch processing",
+          "Recommend a messaging architecture",
+          "Recommend an event-driven architecture",
+          "Recommend a solution for API integration",
+          "Recommend a caching solution for applications",
+          "Recommend an application configuration management solution",
+          "Recommend an automated deployment solution for applications",
+          "Evaluate a migration solution that leverages the Microsoft Cloud Adoption Framework for Azure",
+          "Evaluate on-premises servers, data, and applications for migration",
+          "Recommend a solution for migrating workloads to IaaS and PaaS",
+          "Recommend a solution for migrating databases",
+          "Recommend a solution for migrating unstructured data",
+          "Recommend a connectivity solution that connects Azure resources to the internet",
+          "Recommend a connectivity solution that connects Azure resources to on-premises networks",
+          "Recommend a solution to optimize network performance",
+          "Recommend a solution to optimize network security",
+          "Recommend a load-balancing and routing solution"
+        ]
+      }
+    ],
+    "official_learning_resources": [
+      {
+        "title": "Microsoft Certified: Azure Solutions Architect Expert",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-solutions-architect/"
+      }
+    ],
+    "type": "single_exam",
+    "prerequisites": []
+  },
+  {
+    "certification_code": "AZURE-SOLUTIONS-ARCHITECT-EXPERT",
+    "certification_name": "Microsoft Certified: Azure Solutions Architect Expert",
+    "type": "multi_requirement",
+    "target_roles": [
+      "Solutions Architect",
+      "Cloud Architect"
+    ],
+    "certification_level": "Expert",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": null,
+      "note": "No renewal deadline \u2014 certification has no scheduled retirement date"
+    },
+    "prerequisites": [
+      "AZ-104",
+      "AZ-305"
+    ],
+    "is_prerequisite_for": [],
+    "pass_score": null,
+    "recommended_study_hours": null,
+    "skill_modules": [],
+    "official_learning_resources": [
+      {
+        "title": "Microsoft Certified: Azure Solutions Architect Expert",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-solutions-architect/"
+      }
+    ]
+  },
+  {
+    "certification_code": "AZ-400",
+    "certification_name": "Designing and Implementing Microsoft DevOps Solutions",
+    "type": "single_exam",
+    "target_roles": [
+      "DevOps Engineer",
+      "Site Reliability Engineer",
+      "Platform Engineer"
+    ],
+    "certification_level": "Expert",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "recommended_background": {
+      "responsibilities": [
+        "Delivering Microsoft DevOps solutions that provide continuous security, integration, testing, delivery, deployment, monitoring, and feedback",
+        "Designing and implementing flow of work, collaboration, communication, source control, and automation"
+      ],
+      "proficient_in": [
+        "Azure administration",
+        "Azure development",
+        "GitHub and Azure DevOps solutions",
+        "CI/CD pipelines",
+        "Infrastructure as code",
+        "Security and compliance in DevOps"
+      ],
+      "works_with": [
+        "Developers",
+        "Site reliability engineers",
+        "Azure administrators",
+        "Security engineers"
+      ],
+      "experience_requirements": [
+        "Experience both administering and developing in Azure",
+        "Strong skills in at least one of: Azure administration or Azure development",
+        "Experience implementing both GitHub and Azure DevOps solutions"
+      ]
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": null,
+      "note": "No renewal deadline \u2014 certification has no scheduled retirement date"
+    },
+    "prerequisites": [],
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 60,
+    "skill_modules": [
+      {
+        "module_name": "Design and implement processes and communications",
+        "weighting": "10-15%",
+        "knowledge_points": [
+          "Design and implement a structure for the flow of work, including GitHub Flow",
+          "Design and implement a strategy for feedback cycles, including notifications and GitHub issues",
+          "Design and implement integration for tracking work, including GitHub projects, Azure Boards, and repositories",
+          "Design and implement source, bug, and quality traceability",
+          "Design and implement a dashboard including flow of work, cycle times, time to recovery, and lead time",
+          "Design and implement appropriate metrics and queries for project planning, development, testing, security, delivery, and operations",
+          "Document a project by configuring wikis and process diagrams including Markdown and Mermaid syntax",
+          "Configure release documentation including release notes and API documentation",
+          "Automate creation of documentation from Git history",
+          "Configure integration by using webhooks",
+          "Configure integration between Azure Boards and GitHub repositories",
+          "Configure integration between GitHub or Azure DevOps and Microsoft Teams"
+        ]
+      },
+      {
+        "module_name": "Design and implement a source control strategy",
+        "weighting": "10-15%",
+        "knowledge_points": [
+          "Design a branch strategy including trunk-based, feature branch, and release branch",
+          "Design and implement a pull request workflow by using branch policies and branch protection rules",
+          "Implement branch merging restrictions by using branch policies and branch protection rules",
+          "Design and implement a strategy for managing large files including Git LFS and git-fat",
+          "Design a strategy for scaling and optimizing a Git repository including Scalar and cross-repository sharing",
+          "Configure permissions in the source control repository",
+          "Configure tags to organize the source control repository",
+          "Recover specific data by using Git commands",
+          "Remove specific data from source control"
+        ]
+      },
+      {
+        "module_name": "Design and implement build and release pipelines",
+        "weighting": "50-55%",
+        "knowledge_points": [
+          "Recommend package management tools including GitHub Packages and Azure Artifacts",
+          "Design and implement package feeds and views for local and upstream packages",
+          "Design and implement a dependency versioning strategy including SemVer and CalVer",
+          "Design and implement a versioning strategy for pipeline artifacts",
+          "Design and implement quality and release gates including security and governance",
+          "Design a comprehensive testing strategy including local, unit, integration, and load tests",
+          "Implement tests in a pipeline including configuring test tasks and integration of test results",
+          "Implement code coverage analysis",
+          "Select a deployment automation solution including GitHub Actions and Azure Pipelines",
+          "Design and implement a GitHub runner or Azure DevOps agent infrastructure",
+          "Design and implement integration between GitHub repositories and Azure Pipelines",
+          "Develop and implement pipeline trigger rules",
+          "Develop pipelines by using YAML",
+          "Design and implement a strategy for job execution order including parallelism and multi-stage pipelines",
+          "Develop and implement complex pipeline scenarios such as hybrid pipelines and self-hosted runners",
+          "Create reusable pipeline elements including YAML templates, task groups, variables, and variable groups",
+          "Design and implement checks and approvals by using YAML-based environments",
+          "Design a deployment strategy including blue-green, canary, ring, progressive exposure, feature flags, and A/B testing",
+          "Plan for minimizing downtime during deployments using load balancing, rolling deployments, and deployment slots",
+          "Implement feature flags by using Azure App Configuration Feature Manager",
+          "Implement application deployment by using containers, binaries, and scripts",
+          "Implement a deployment that includes database tasks",
+          "Recommend a configuration management technology for application infrastructure",
+          "Define an IaC strategy including source control and automation of testing and deployment",
+          "Design and implement desired state configuration for environments",
+          "Design and implement Azure Deployment Environments for on-demand self-deployment",
+          "Monitor pipeline health including failure rate, duration, and flaky tests",
+          "Optimize a pipeline for cost, time, performance, and reliability",
+          "Design and implement a retention strategy for pipeline artifacts and dependencies",
+          "Migrate a pipeline from classic to YAML in Azure Pipelines"
+        ]
+      },
+      {
+        "module_name": "Develop a security and compliance plan",
+        "weighting": "10-15%",
+        "knowledge_points": [
+          "Choose between Microsoft Entra service principals and managed identities for Azure resources",
+          "Implement and manage GitHub authentication including GitHub Apps, GITHUB_TOKEN, and personal access tokens",
+          "Implement and manage Azure DevOps service connections and personal access tokens",
+          "Design and implement permissions and roles in GitHub",
+          "Design and implement permissions and security groups in Azure DevOps",
+          "Implement and manage secrets, keys, and certificates by using Azure Key Vault",
+          "Implement and manage secrets and secretless authentication in GitHub Actions and Azure Pipelines",
+          "Design pipelines to prevent leakage of sensitive information",
+          "Configure Microsoft Defender for Cloud DevOps Security",
+          "Configure GitHub Advanced Security for both GitHub and Azure DevOps",
+          "Automate container scanning including scanning container images",
+          "Automate analysis of licensing, vulnerabilities, and versioning using Dependabot alerts"
+        ]
+      },
+      {
+        "module_name": "Implement an instrumentation strategy",
+        "weighting": "5-10%",
+        "knowledge_points": [
+          "Configure Azure Monitor and Azure Monitor Logs to integrate with DevOps tools",
+          "Configure collection of telemetry by using Application Insights, VM Insights, Container Insights",
+          "Configure monitoring in GitHub including enabling insights and creating charts",
+          "Configure alerts for events in GitHub Actions and Azure Pipelines",
+          "Inspect infrastructure performance indicators including CPU, memory, disk, and network",
+          "Analyze metrics by using collected telemetry including usage and application performance",
+          "Inspect distributed tracing by using Application Insights",
+          "Interrogate logs using basic Kusto Query Language (KQL) queries"
+        ]
+      }
+    ],
+    "official_learning_resources": [
+      {
+        "title": "Microsoft Certified: DevOps Engineer Expert",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/devops-engineer/"
+      }
+    ]
+  },
+  {
+    "certification_code": "DEVOPS-ENGINEER-EXPERT",
+    "certification_name": "Microsoft Certified: DevOps Engineer Expert",
+    "type": "multi_requirement",
+    "target_roles": [
+      "DevOps Engineer",
+      "Site Reliability Engineer",
+      "Platform Engineer"
+    ],
+    "certification_level": "Expert",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": null,
+      "note": "No renewal deadline \u2014 certification has no scheduled retirement date"
+    },
+    "prerequisites": [
+      "AZ-400",
+      "AZ-104 or AZ-204"
+    ],
+    "is_prerequisite_for": [],
+    "pass_score": null,
+    "recommended_study_hours": null,
+    "skill_modules": [],
+    "official_learning_resources": [
+      {
+        "title": "Microsoft Certified: DevOps Engineer Expert",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/devops-engineer/"
+      }
+    ]
+  },
+  {
+    "certification_code": "AZ-900",
+    "certification_name": "Microsoft Azure Fundamentals",
+    "type": "single_exam",
+    "target_roles": [
+      "Any IT professional",
+      "Business stakeholder",
+      "Student"
+    ],
+    "certification_level": "Fundamentals",
+    "validity_period": "Does not expire",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "recommended_background": {
+      "responsibilities": [
+        "Working with an area of IT such as infrastructure management, database management, or software development"
+      ],
+      "proficient_in": [
+        "Basic cloud concepts",
+        "Azure architectural components",
+        "Azure compute, networking, and storage services"
+      ],
+      "works_with": [],
+      "experience_requirements": [
+        "No prior Azure experience required",
+        "General IT familiarity recommended"
+      ]
+    },
+    "renewal": {
+      "required": false,
+      "renewal_method": null,
+      "renewal_deadline": null,
+      "note": "Fundamentals certifications do not expire and do not require renewal"
+    },
+    "prerequisites": [],
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 10,
+    "skill_modules": [
+      {
+        "module_name": "Describe cloud concepts",
+        "weighting": "25-30%",
+        "knowledge_points": [
+          "Define cloud computing",
+          "Describe the shared responsibility model",
+          "Define cloud models including public, private, and hybrid",
+          "Identify appropriate use cases for each cloud model",
+          "Describe the consumption-based model",
+          "Compare cloud pricing models",
+          "Describe serverless",
+          "Describe the benefits of high availability and scalability in the cloud",
+          "Describe the benefits of reliability and predictability in the cloud",
+          "Describe the benefits of security and governance in the cloud",
+          "Describe the benefits of manageability in the cloud",
+          "Describe infrastructure as a service (IaaS)",
+          "Describe platform as a service (PaaS)",
+          "Describe software as a service (SaaS)",
+          "Identify appropriate use cases for each cloud service type"
+        ]
+      },
+      {
+        "module_name": "Describe Azure architecture and services",
+        "weighting": "35-40%",
+        "knowledge_points": [
+          "Describe Azure regions, region pairs, and sovereign regions",
+          "Describe availability zones",
+          "Describe Azure datacenters",
+          "Describe Azure resources and resource groups",
+          "Describe subscriptions",
+          "Describe management groups",
+          "Describe the hierarchy of resource groups, subscriptions, and management groups",
+          "Compare compute types including containers, virtual machines, and functions",
+          "Describe virtual machine options including Azure VMs, VM Scale Sets, availability sets, and Azure Virtual Desktop",
+          "Describe application hosting options including web apps, containers, and virtual machines",
+          "Describe virtual networking including Azure virtual networks, subnets, peering, DNS, VPN Gateway, and ExpressRoute",
+          "Define public and private endpoints",
+          "Compare Azure Storage services",
+          "Describe storage tiers and redundancy options",
+          "Describe storage account options and storage types",
+          "Identify options for moving files including AzCopy, Azure Storage Explorer, and Azure File Sync",
+          "Describe migration options including Azure Migrate and Azure Data Box",
+          "Describe directory services in Azure including Microsoft Entra ID and Microsoft Entra Domain Services",
+          "Describe authentication methods including SSO, MFA, and passwordless",
+          "Describe Microsoft Entra Conditional Access",
+          "Describe Azure role-based access control (RBAC)",
+          "Describe the concept of Zero Trust",
+          "Describe the purpose of the defense-in-depth model",
+          "Describe the purpose of Microsoft Defender for Cloud"
+        ]
+      },
+      {
+        "module_name": "Describe Azure management and governance",
+        "weighting": "30-35%",
+        "knowledge_points": [
+          "Describe factors that can affect costs in Azure",
+          "Explore the pricing calculator",
+          "Describe cost management capabilities in Azure",
+          "Describe the purpose of tags",
+          "Describe the purpose of Microsoft Purview in Azure",
+          "Describe the purpose of Azure Policy",
+          "Describe the purpose of resource locks",
+          "Describe the Azure portal",
+          "Describe Azure Cloud Shell including Azure CLI and Azure PowerShell",
+          "Describe the purpose of Azure Arc",
+          "Describe infrastructure as code (IaC)",
+          "Describe Azure Resource Manager (ARM) and ARM templates",
+          "Describe the purpose of Azure Advisor",
+          "Describe Azure Service Health",
+          "Describe Azure Monitor including Log Analytics, Azure Monitor alerts, and Application Insights"
+        ]
+      }
+    ],
+    "official_learning_resources": [
+      {
+        "title": "Microsoft Certified: Azure Fundamentals",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/"
+      }
+    ]
+  },
+  {
+    "certification_code": "DP-300",
+    "certification_name": "Administering Microsoft Azure SQL Solutions",
+    "type": "single_exam",
+    "target_roles": [
+      "Azure Database Administrator",
+      "Data Engineer",
+      "Data Scientist"
+    ],
+    "certification_level": "Associate",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "recommended_background": {
+      "responsibilities": [
+        "Managing cloud and on-premises databases built with Azure SQL services and SQL Server",
+        "Implementing and managing operational aspects of cloud-native and hybrid data platform solutions",
+        "Performing and automating day-to-day operations using T-SQL and other tools",
+        "Managing database availability, security, performance monitoring and optimization",
+        "Evaluating and implementing migration strategies for moving databases between Azure and on-premises"
+      ],
+      "proficient_in": [
+        "Azure SQL Database",
+        "Azure SQL Managed Instance",
+        "SQL Server on Azure Virtual Machines",
+        "SQL Server on-premises",
+        "Transact-SQL (T-SQL)"
+      ],
+      "works_with": [
+        "Azure data engineers",
+        "Azure solution architects",
+        "Azure developers",
+        "Data scientists"
+      ],
+      "experience_requirements": [
+        "Subject matter expertise in building database solutions with Azure SQL services",
+        "Experience with SQL Server on-premises",
+        "Knowledge of T-SQL for administrative management"
+      ]
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": null,
+      "note": "No renewal deadline \u2014 certification has no scheduled retirement date"
+    },
+    "prerequisites": [],
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 25,
+    "skill_modules": [
+      {
+        "module_name": "Plan and implement data platform resources",
+        "weighting": "15-20%",
+        "knowledge_points": [
+          "Recommend a database offering based on specific requirements",
+          "Choose an automated deployment method",
+          "Identify use cases for Azure Arc-enabled SQL services",
+          "Identify use cases for Azure SQL Database in Microsoft Fabric",
+          "Plan for table partitioning",
+          "Recommend a database sharding solution",
+          "Deploy database offerings on selected platforms",
+          "Deploy hybrid SQL Server solutions",
+          "Apply patches and updates for hybrid and IaaS deployment",
+          "Configure Azure SQL Database for scale and performance",
+          "Configure Azure SQL Managed Instance for scale and performance",
+          "Configure SQL Server on Azure Virtual Machines for scale and performance",
+          "Configure table partitioning and data compression",
+          "Evaluate requirements for a migration",
+          "Evaluate offline or online migration strategies",
+          "Implement an online and offline migration strategy",
+          "Implement a migration to Azure and between Azure SQL services",
+          "Troubleshoot a migration"
+        ]
+      },
+      {
+        "module_name": "Implement a secure environment",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Configure Microsoft Entra ID authentication for Azure SQL Database and SQL Managed Instance",
+          "Configure authentication for SQL on Azure VMs and Azure SQL Managed Instance",
+          "Configure security principals and create users from Microsoft Entra identities",
+          "Configure database and object-level permissions using graphical tools",
+          "Apply the principle of least privilege for all securables",
+          "Troubleshoot authentication and authorization issues",
+          "Implement transparent data encryption (TDE)",
+          "Implement object-level encryption",
+          "Configure server- and database-level firewall rules",
+          "Implement Always Encrypted and Always Encrypted with VBS enclaves",
+          "Configure private links and service endpoints",
+          "Apply a data classification strategy",
+          "Configure server and database audits",
+          "Implement change data tracking",
+          "Implement dynamic data masking",
+          "Implement ledger in Azure SQL",
+          "Implement row-level security"
+        ]
+      },
+      {
+        "module_name": "Monitor, configure, and optimize database resources",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Prepare an operational performance baseline",
+          "Determine sources for performance metrics",
+          "Interpret performance metrics",
+          "Configure and monitor activity and performance",
+          "Monitor by using database watcher and Extended Events",
+          "Configure Query Store and monitor by using Query Store",
+          "Identify and resolve session blocking",
+          "Identify performance issues using dynamic management views (DMVs)",
+          "Identify and implement index changes for queries",
+          "Recommend query construct modifications based on resource usage",
+          "Review execution plans",
+          "Monitor by using Intelligent Insights",
+          "Implement index and statistics maintenance tasks",
+          "Implement database integrity checks",
+          "Configure database automatic tuning",
+          "Configure server settings and Resource Governor for performance",
+          "Configure compute and storage resources for scaling",
+          "Identify use cases for intelligent query processing (IQP) features"
+        ]
+      },
+      {
+        "module_name": "Configure and manage automation of tasks",
+        "weighting": "15-20%",
+        "knowledge_points": [
+          "Manage schedules for regular maintenance jobs",
+          "Configure job alerts and notifications",
+          "Troubleshoot SQL Server Agent jobs",
+          "Automate deployment by using ARM and Bicep templates",
+          "Automate deployment by using Azure PowerShell and Azure CLI",
+          "Monitor and troubleshoot deployments",
+          "Create and configure elastic jobs",
+          "Create and configure database tasks by using automation",
+          "Configure alerts and notifications on database tasks",
+          "Troubleshoot automated database tasks"
+        ]
+      },
+      {
+        "module_name": "Plan and configure a high availability and disaster recovery (HA/DR) environment",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Recommend HA/DR strategy based on RPO/RTO requirements",
+          "Evaluate HA/DR for hybrid deployments",
+          "Evaluate Azure-specific HA/DR solutions",
+          "Plan a testing procedure for an HA/DR solution",
+          "Recommend a database backup and restore strategy",
+          "Perform a database backup and restore by using native tools",
+          "Perform a database restore to a point in time",
+          "Configure long-term backup retention",
+          "Backup and restore a database by using T-SQL",
+          "Configure active geo-replication",
+          "Configure Always On availability groups on SQL Managed Instance and Azure VMs",
+          "Configure failover groups",
+          "Configure Always On Failover Cluster Instances on Azure VMs",
+          "Configure log shipping",
+          "Monitor and troubleshoot an HA/DR solution"
+        ]
+      }
+    ],
+    "official_learning_resources": [
+      {
+        "title": "Microsoft Certified: Azure Database Administrator Associate",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-database-administrator-associate/"
+      }
+    ]
+  },
+  {
+    "certification_code": "DP-700",
+    "certification_name": "Implementing Data Engineering Solutions Using Microsoft Fabric",
+    "type": "single_exam",
+    "target_roles": [
+      "Data Engineer",
+      "Analytics Engineer"
+    ],
+    "certification_level": "Associate",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "recommended_background": {
+      "responsibilities": [
+        "Ingesting and transforming data",
+        "Securing and managing an analytics solution",
+        "Monitoring and optimizing an analytics solution",
+        "Designing and deploying data engineering solutions for analytics"
+      ],
+      "proficient_in": [
+        "Data loading patterns",
+        "Data architectures",
+        "Orchestration processes",
+        "Structured Query Language (SQL)",
+        "PySpark",
+        "Kusto Query Language (KQL)"
+      ],
+      "works_with": [
+        "Analytics engineers",
+        "Architects",
+        "Analysts",
+        "Administrators"
+      ],
+      "experience_requirements": [
+        "Subject matter expertise with data loading patterns, data architectures, and orchestration processes",
+        "Skilled at manipulating and transforming data by using SQL, PySpark, and KQL"
+      ]
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": null,
+      "note": "No renewal deadline \u2014 certification has no scheduled retirement date"
+    },
+    "prerequisites": [],
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 40,
+    "skill_modules": [
+      {
+        "module_name": "Implement and manage an analytics solution",
+        "weighting": "30-35%",
+        "knowledge_points": [
+          "Configure Spark workspace settings",
+          "Configure domain workspace settings",
+          "Configure OneLake workspace settings",
+          "Configure Dataflows Gen2 workspace settings",
+          "Configure version control",
+          "Implement database projects",
+          "Create and configure deployment pipelines",
+          "Implement workspace-level access controls",
+          "Implement item-level access controls",
+          "Implement row-level, column-level, object-level, and folder/file-level access controls",
+          "Implement dynamic data masking",
+          "Apply sensitivity labels to items",
+          "Endorse items",
+          "Implement and use Microsoft Fabric audit logs",
+          "Configure and implement OneLake security",
+          "Choose between Dataflow Gen2, a pipeline and a notebook",
+          "Design and implement schedules and event-based triggers",
+          "Implement orchestration patterns with notebooks and pipelines including parameters and dynamic expressions"
+        ]
+      },
+      {
+        "module_name": "Ingest and transform data",
+        "weighting": "30-35%",
+        "knowledge_points": [
+          "Design and implement full and incremental data loads",
+          "Prepare data for loading into a dimensional model",
+          "Design and implement a loading pattern for streaming data",
+          "Choose an appropriate data store",
+          "Choose between Dataflows Gen2, notebooks, KQL, and T-SQL for data transformation",
+          "Create and manage OneLake shortcuts",
+          "Implement mirroring",
+          "Ingest data by using pipelines",
+          "Transform data by using PySpark, SQL, and KQL",
+          "Denormalize data",
+          "Group and aggregate data",
+          "Handle duplicate, missing, and late-arriving data",
+          "Choose an appropriate streaming engine",
+          "Choose between native tables and OneLake shortcuts in Real-Time Intelligence",
+          "Choose between Query acceleration for OneLake shortcuts and standard OneLake shortcuts in Real-Time Intelligence",
+          "Process data by using Eventstreams",
+          "Process data by using Spark structured streaming",
+          "Process data by using KQL",
+          "Create windowing functions"
+        ]
+      },
+      {
+        "module_name": "Monitor and optimize an analytics solution",
+        "weighting": "30-35%",
+        "knowledge_points": [
+          "Monitor data ingestion",
+          "Monitor data transformation",
+          "Monitor semantic model refresh",
+          "Configure alerts",
+          "Identify and resolve pipeline errors",
+          "Identify and resolve Dataflow Gen2 errors",
+          "Identify and resolve notebook errors",
+          "Identify and resolve Eventhouse errors",
+          "Identify and resolve Eventstream errors",
+          "Identify and resolve T-SQL errors",
+          "Identify and resolve OneLake shortcut errors",
+          "Optimize a Lakehouse table",
+          "Optimize a pipeline",
+          "Optimize a data warehouse",
+          "Optimize Eventstreams and Eventhouses",
+          "Optimize Spark performance",
+          "Optimize query performance"
+        ]
+      }
+    ],
+    "official_learning_resources": []
+  },
+  {
+    "certification_code": "AZ-500",
+    "certification_name": "Microsoft Azure Security Technologies",
+    "type": "single_exam",
+    "target_roles": [
+      "Security Engineer",
+      "Cloud Security Engineer"
+    ],
+    "certification_level": "Associate",
+    "validity_period": "1 year (renewable via free online assessment)",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": "2026-08-31",
+      "retirement_note": "Retiring on August 31, 2026 at 11:59 PM Central Standard Time"
+    },
+    "recommended_background": {
+      "responsibilities": [
+        "Managing the security posture",
+        "Implementing threat protection",
+        "Identifying and remediating vulnerabilities",
+        "Implementing regulatory compliance controls for Azure infrastructure including identity and access, network, compute, storage, data, applications, asset management, backup and recovery, and devops security",
+        "Collaborating with security operations in responding to security incidents in Azure"
+      ],
+      "proficient_in": [
+        "Microsoft Entra ID",
+        "Compute in Azure",
+        "Network in Azure",
+        "Storage in Azure"
+      ],
+      "works_with": [
+        "Architects",
+        "Administrators",
+        "Developers",
+        "Security operations"
+      ],
+      "experience_requirements": [
+        "Practical experience in administration of Microsoft Azure and hybrid environments",
+        "Strong familiarity with Microsoft Entra ID, as well as compute, network, and storage in Azure"
+      ]
+    },
+    "renewal": {
+      "required": true,
+      "renewal_period": "Annual",
+      "renewal_method": "Free online assessment on Microsoft Learn",
+      "renewal_deadline": "2026-08-31",
+      "note": "Renewal deadline is determined by the certification retirement date. After August 31, 2026, renewal is no longer possible."
+    },
+    "prerequisites": [],
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 30,
+    "skill_modules": [
+      {
+        "module_name": "Secure identity and access",
+        "weighting": "15-20%",
+        "knowledge_points": [
+          "Manage Azure built-in role assignments",
+          "Manage custom roles including Azure roles and Microsoft Entra roles",
+          "Plan and manage Azure resources in Microsoft Entra Privileged Identity Management including settings and assignments",
+          "Implement multi-factor authentication (MFA) for access to Azure resources",
+          "Implement Conditional Access policies for cloud resources in Azure",
+          "Manage access to enterprise applications in Microsoft Entra ID including OAuth permission grants",
+          "Manage Microsoft Entra app registrations",
+          "Configure app registration permission scopes",
+          "Manage app registration permission consent",
+          "Manage and use service principals",
+          "Manage managed identities"
+        ]
+      },
+      {
+        "module_name": "Secure networking",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Plan and implement Network Security Groups (NSGs) and Application Security Groups (ASGs)",
+          "Manage virtual networks by using Azure Virtual Network Manager",
+          "Plan and implement user-defined routes (UDRs)",
+          "Plan and implement Virtual Network peering or VPN gateway",
+          "Plan and implement Virtual WAN including secured virtual hub",
+          "Secure VPN connectivity including point-to-site and site-to-site",
+          "Implement encryption over ExpressRoute",
+          "Configure firewall settings on Azure resources",
+          "Monitor network security by using Network Watcher",
+          "Plan and implement virtual network Service Endpoints",
+          "Plan and implement Private Endpoints",
+          "Plan and implement Private Link services",
+          "Plan and implement network integration for Azure App Service and Azure Functions",
+          "Plan and implement network security configurations for an App Service Environment (ASE)",
+          "Plan and implement network security configurations for an Azure SQL Managed Instance",
+          "Plan and implement Transport Layer Security (TLS) to applications including Azure App Service and API Management",
+          "Plan, implement, and manage an Azure Firewall including Azure Firewall Manager and firewall policies",
+          "Plan and implement an Azure Application Gateway",
+          "Plan and implement an Azure Front Door including Content Delivery Network (CDN)",
+          "Plan and implement a Web Application Firewall (WAF)",
+          "Recommend when to use Azure DDoS Protection Standard"
+        ]
+      },
+      {
+        "module_name": "Secure compute, storage, and databases",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Plan and implement remote access to virtual machines including Azure Bastion and just-in-time (JIT) VM access",
+          "Configure network isolation for Azure Kubernetes Service (AKS)",
+          "Secure and monitor AKS",
+          "Configure authentication for AKS",
+          "Configure security monitoring for Azure Container Instances (ACIs)",
+          "Configure security monitoring for Azure Container Apps (ACAs)",
+          "Manage access to Azure Container Registry (ACR)",
+          "Configure disk encryption including Azure Disk Encryption (ADE), encryption at host, and confidential disk encryption",
+          "Recommend security configurations for Azure API Management",
+          "Configure access control for storage accounts",
+          "Manage storage account access keys",
+          "Select and configure an appropriate method for access to Azure Files",
+          "Select and configure an appropriate method for access to Azure Blob Storage",
+          "Select and configure appropriate methods for protecting against data security threats including soft delete, backups, versioning, and immutable storage",
+          "Configure Bring your own key (BYOK)",
+          "Enable double encryption at the Azure Storage infrastructure level",
+          "Enable Microsoft Entra database authentication",
+          "Enable database auditing",
+          "Plan and implement dynamic masking",
+          "Implement Transparent Data Encryption (TDE)",
+          "Recommend when to use Azure SQL Database Always Encrypted"
+        ]
+      },
+      {
+        "module_name": "Secure Azure using Microsoft Defender for Cloud and Microsoft Sentinel",
+        "weighting": "30-35%",
+        "knowledge_points": [
+          "Create, assign, and interpret policies and initiatives in Azure Policy",
+          "Configure Azure Key Vault network settings",
+          "Configure access to Key Vault including vault access policies and Azure Role Based Access Control",
+          "Manage certificates, secrets, and keys",
+          "Configure key rotation",
+          "Perform backup and recovery of certificates, secrets, and keys",
+          "Implement security controls to protect backups",
+          "Implement security controls for asset management",
+          "Identify and remediate security risks by using the Microsoft Defender for Cloud Secure Score and Inventory",
+          "Assess compliance against security frameworks by using Microsoft Defender for Cloud",
+          "Manage compliance standards in Microsoft Defender for Cloud",
+          "Add custom standards to Microsoft Defender for Cloud",
+          "Connect hybrid cloud and multi-cloud environments to Microsoft Defender for Cloud including AWS and GCP",
+          "Implement and use Microsoft Defender External Attack Surface Management (EASM)",
+          "Enable cloud workload protection plans in Microsoft Defender for Cloud",
+          "Configure Microsoft Defender for Servers, Microsoft Defender for Databases, and Microsoft Defender for Storage",
+          "Implement and manage agentless scanning for virtual machines in Microsoft Defender for Servers",
+          "Implement and manage Microsoft Defender Vulnerability Management for Azure virtual machines",
+          "Connect to and configure settings in Microsoft Defender for Cloud DevOps Security including GitHub, Azure DevOps, and GitLab",
+          "Manage and respond to security alerts in Microsoft Defender for Cloud",
+          "Configure workflow automation by using Microsoft Defender for Cloud",
+          "Monitor network security events and performance data by configuring data collection rules (DCRs) in Azure Monitor",
+          "Configure data connectors in Microsoft Sentinel",
+          "Enable analytics rules in Microsoft Sentinel",
+          "Configure automation in Microsoft Sentinel"
+        ]
+      }
+    ],
+    "official_learning_resources": []
+  },
+  {
+    "certification_code": "SC-900",
+    "certification_name": "Microsoft Security, Compliance, and Identity Fundamentals",
+    "type": "single_exam",
+    "target_roles": [
+      "Business Stakeholder",
+      "IT Professional",
+      "Security Engineer",
+      "Student"
+    ],
+    "certification_level": "Fundamentals",
+    "validity_period": "Does not expire",
+    "retirement_status": {
+      "is_retired": false,
+      "retirement_date": null,
+      "retirement_note": "No scheduled retirement date"
+    },
+    "recommended_background": {
+      "responsibilities": [],
+      "proficient_in": [
+        "Microsoft Azure",
+        "Microsoft 365"
+      ],
+      "works_with": [],
+      "experience_requirements": [
+        "Familiarity with Microsoft Azure and Microsoft 365",
+        "Interest in Microsoft security, compliance, and identity solutions"
+      ]
+    },
+    "renewal": {
+      "required": false,
+      "renewal_method": null,
+      "renewal_deadline": null,
+      "note": "Fundamentals certifications do not expire and do not require renewal"
+    },
+    "prerequisites": [],
+    "is_prerequisite_for": [],
+    "pass_score": 700,
+    "recommended_study_hours": 15,
+    "skill_modules": [
+      {
+        "module_name": "Describe the concepts of security, compliance, and identity",
+        "weighting": "10-15%",
+        "knowledge_points": [
+          "Describe the shared responsibility model",
+          "Describe defense-in-depth",
+          "Describe the Zero Trust model",
+          "Describe encryption and hashing",
+          "Describe Governance, Risk, and Compliance (GRC) concepts",
+          "Define identity as the primary security perimeter",
+          "Define authentication",
+          "Define authorization",
+          "Describe identity providers",
+          "Describe the concept of directory services and Active Directory",
+          "Describe the concept of federation"
+        ]
+      },
+      {
+        "module_name": "Describe the capabilities of Microsoft Entra",
+        "weighting": "25-30%",
+        "knowledge_points": [
+          "Describe Microsoft Entra ID",
+          "Describe types of identities",
+          "Describe hybrid identity",
+          "Describe the authentication methods",
+          "Describe multifactor authentication (MFA)",
+          "Describe password protection and management capabilities",
+          "Describe Conditional Access",
+          "Describe Microsoft Entra roles and role-based access control (RBAC)",
+          "Describe Microsoft Entra ID Governance",
+          "Describe access reviews",
+          "Describe the capabilities of Microsoft Entra Privileged Identity Management",
+          "Describe Microsoft Entra ID Protection"
+        ]
+      },
+      {
+        "module_name": "Describe the capabilities of Microsoft security solutions",
+        "weighting": "35-40%",
+        "knowledge_points": [
+          "Describe Azure distributed denial-of-service (DDoS) Protection",
+          "Describe Azure Firewall",
+          "Describe Web Application Firewall (WAF)",
+          "Describe network segmentation with Azure virtual networks",
+          "Describe network security groups (NSGs)",
+          "Describe Azure Bastion",
+          "Describe Azure Key Vault",
+          "Describe Microsoft Defender for Cloud",
+          "Describe Cloud Security Posture Management (CSPM)",
+          "Describe how security policies, standards, and recommendations improve the cloud security posture",
+          "Describe enhanced security features provided by cloud workload protection",
+          "Define the concepts of SIEM and SOAR",
+          "Describe threat detection and mitigation capabilities in Microsoft Sentinel",
+          "Describe Microsoft Defender XDR services",
+          "Describe Microsoft Defender for Office 365",
+          "Describe Microsoft Defender for Endpoint",
+          "Describe Microsoft Defender for Cloud Apps",
+          "Describe Microsoft Defender for Identity",
+          "Describe Microsoft Defender Vulnerability Management",
+          "Describe Microsoft Defender Threat Intelligence (Defender TI)",
+          "Describe the Microsoft Defender portal"
+        ]
+      },
+      {
+        "module_name": "Describe the capabilities of Microsoft compliance solutions",
+        "weighting": "20-25%",
+        "knowledge_points": [
+          "Describe the Service Trust Portal offerings",
+          "Describe the privacy principles of Microsoft",
+          "Describe Microsoft Priva",
+          "Describe the Microsoft Purview portal",
+          "Describe Compliance Manager",
+          "Describe the uses and benefits of compliance score",
+          "Describe the data classification capabilities",
+          "Describe the benefits of Content explorer and Activity explorer",
+          "Describe sensitivity labels and sensitivity label policies",
+          "Describe data loss prevention (DLP)",
+          "Describe records management",
+          "Describe retention policies, retention labels, and retention label policies",
+          "Describe insider risk management",
+          "Describe eDiscovery solutions in Microsoft Purview",
+          "Describe audit solutions in Microsoft Purview"
+        ]
+      }
+    ],
+    "official_learning_resources": []
+  }
+]

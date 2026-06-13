@@ -1,0 +1,82 @@
+{
+  "L-TEST-001": [
+    {
+      "question": "What is required to create a new instance of Azure API Management?",
+      "options": {
+        "A": "Assigning an API Gateway resource",
+        "B": "A subscription in Azure with sufficient permissions",
+        "C": "Enabling Virtual Network integration",
+        "D": "Establishing a connection to Azure Event Grid"
+      },
+      "difficulty": "medium",
+      "module": "Connect to and consume Azure services and third-party services",
+      "correct_answer": "B",
+      "explanation": "To create Azure API Management instance, you need an Azure subscription with the proper permissions and configuration.",
+      "knowledge_point": "Creating an Azure API Management instance requires appropriate access to an Azure subscription.",
+      "saved_at": "2026-06-13T00:46:29"
+    },
+    {
+      "question": "What is the primary purpose of Azure API Management?",
+      "options": {
+        "A": "To store large amounts of structured data.",
+        "B": "To manage, secure, and publish APIs to developers, partners, and employees.",
+        "C": "To enable the deployment of machine learning models.",
+        "D": "To handle real-time messaging across distributed systems."
+      },
+      "difficulty": "medium",
+      "module": "Connect to and consume Azure services and third-party services",
+      "correct_answer": "B",
+      "explanation": "Azure API Management is a service designed to manage, secure, and publish APIs to developers and other stakeholders.",
+      "knowledge_point": "Azure API Management is used for managing, securing, and monitoring APIs within an organization or externally.",
+      "saved_at": "2026-06-13T00:59:48"
+    },
+    {
+      "question": {
+        "question_number": 4,
+        "max_questions": 5,
+        "question": "Which Azure service is most suitable for real-time analytics by processing data streams at high throughput?",
+        "options": {
+          "A": "Azure Event Grid",
+          "B": "Azure Event Hubs",
+          "C": "Azure API Management",
+          "D": "Azure Queue Storage"
+        },
+        "source": "az-204.md",
+        "difficulty": "easy"
+      },
+      "evaluation": {
+        "raw": "{\n  \"status\": \"evaluated\",\n  \"question_number\": 4,\n  \"correct\": true,\n  \"correct_answer\": \"B\",\n  \"encouragement\": \"Excellent! You nailed it!\",\n  \"explanation\": \"Azure Event Hubs is ideal for real-time analytics, designed to ingest and process large volumes of data streams with low latency and high throughput.\",\n  \"knowledge_point\": \"Azure Event Hubs supports real-time analytics by efficiently processing data streams at high throughput.\",\n  \"study_recommendation\": null,\n  \"source\": \"az-204.md\",\n  \"next_question\": {\n    \"question_number\": 5,\n    \"max_questions\": 5,\n    \"question\": \"How does Azure Service Bus ensure message delivery even in case of temporary connection failure?\",\n    \"options\": {\n      \"A\": \"It uses Azure Traffic Manager for routing.\",\n      \"B\": \"It dynamically retries delivery with built-in retry policies.\",\n      \"C\": \"It escalates failed messages to Event Grid for processing.\",\n      \"D\": \"It caches messages locally until the connection is restored.\"\n    },\n    \"source\": \"az-204.md\",\n    \"difficulty\": \"medium\"\n  }\n}",
+        "parsed": {
+          "status": "evaluated",
+          "question_number": 4,
+          "correct": true,
+          "correct_answer": "B",
+          "encouragement": "Excellent! You nailed it!",
+          "explanation": "Azure Event Hubs is ideal for real-time analytics, designed to ingest and process large volumes of data streams with low latency and high throughput.",
+          "knowledge_point": "Azure Event Hubs supports real-time analytics by efficiently processing data streams at high throughput.",
+          "study_recommendation": null,
+          "source": "az-204.md",
+          "next_question": {
+            "question_number": 5,
+            "max_questions": 5,
+            "question": "How does Azure Service Bus ensure message delivery even in case of temporary connection failure?",
+            "options": {
+              "A": "It uses Azure Traffic Manager for routing.",
+              "B": "It dynamically retries delivery with built-in retry policies.",
+              "C": "It escalates failed messages to Event Grid for processing.",
+              "D": "It caches messages locally until the connection is restored."
+            },
+            "source": "az-204.md",
+            "difficulty": "medium"
+          }
+        },
+        "status": "evaluated",
+        "thread_id": "thread_5O0jLhp6Yll9gIBEAy3GC80T",
+        "agent_id": "asst_u8N0gnFp67VYoRZ6O7SfCFWx",
+        "_selected": "B"
+      },
+      "module": "Connect to and consume Azure services and third-party services",
+      "saved_at": "2026-06-13T16:26:30.824760"
+    }
+  ]
+}

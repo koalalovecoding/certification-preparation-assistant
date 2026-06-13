@@ -1,0 +1,22 @@
+[
+  {
+    "role": "Cloud Engineer",
+    "recommended_certifications": ["AZ-104", "AZ-204", "AZ-305"]
+  },
+  {
+    "role": "DevOps Engineer",
+    "recommended_certifications": ["AZ-104", "AZ-400", "AZ-900"]
+  },
+  {
+    "role": "Data Engineer",
+    "recommended_certifications": ["AZ-104", "DP-300", "DP-700"]
+  },
+  {
+    "role": "Data Scientist",
+    "recommended_certifications": ["AZ-104", "DP-300", "AZ-900"]
+  },
+  {
+    "role": "Security Engineer",
+    "recommended_certifications": ["AZ-104", "AZ-500", "SC-900"]
+  }
+]
