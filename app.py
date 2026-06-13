@@ -337,7 +337,31 @@ def show_plan_dialog():
 
     if weekly:
         st.divider()
+
+        # Build set of passed modules (latest assessment score ≥ 80)
+        _scores = ss.skill_scores or {}
+        passed_mods = {m for m in _scores if _latest_score(_scores, m) >= 80}
+
+        # Use sidebar module order (unique_mods) so plan matches Module Progress.
+        # Filter out passed modules — no need to study them again.
+        _ordered_mods = [m for m in (ss.unique_mods or unique_modules(weekly))
+                         if m not in passed_mods]
+
+        # Group weekly plan entries by their string focus module.
+        # List-focus entries (LLM returns multiple sub-modules in one week) are
+        # kept separately and rendered after the ordered modules.
+        from collections import defaultdict
+        _by_mod = defaultdict(list)
+        _list_focus_weeks = []
         for w in weekly:
+            f = w.get("focus") or w.get("module", "")
+            if isinstance(f, list):
+                _list_focus_weeks.append(w)
+            else:
+                _by_mod[f].append(w)
+
+        def _render_week(w):
+            """Render a single week expander — extracted to avoid duplication."""
             focus = w.get("focus") or w.get("module", "")
             if isinstance(focus, list):
                 sub_modules = focus
@@ -361,6 +385,15 @@ def show_plan_dialog():
                                 st.write(m["description"])
                 elif w.get("description"):
                     st.write(w["description"])
+
+        # Render in sidebar order, skipping passed modules
+        for mod in _ordered_mods:
+            for w in _by_mod.get(mod, []):
+                _render_week(w)
+
+        # Render any list-focus weeks (edge case from LLM grouping multiple modules)
+        for w in _list_focus_weeks:
+            _render_week(w)
 
 # [CHANGE 6] Saved Questions dialog ────────────────────────────────────────
 @st.dialog("🔖 Saved Questions", width="medium")
@@ -769,16 +802,16 @@ def render_sidebar():
                 latest = attempts[-1] if attempts else None
 
                 if latest is not None and latest >= 80:
-                    # Passed — show checkmark, no progress bar needed
-                    st.markdown(f"✅ {mod}")
-                elif attempts:
-                    # Attempted but not yet passed — show last ≤3 scores as "60% → 72% → 85%"
-                    recent = attempts[-3:]
-                    history_str = " → ".join(f"{s:.0f}%" for s in recent)
-                    st.progress(min(latest / 100, 1.0), text=f"{mod} — {history_str}")
+                    # Passed — checked box
+                    st.markdown(f"☑ {mod}")
                 else:
-                    # Never attempted
-                    st.progress(0.0, text=f"{mod} — not started")
+                    # Not passed or never attempted — empty box
+                    st.markdown(f"☐ {mod}")
+                    if attempts:
+                        # Show last ≤3 scores as "Assessment history: 72%, 65%, 80%"
+                        recent = attempts[-3:]
+                        history_str = ", ".join(f"{s:.0f}%" for s in recent)
+                        st.caption(f"Assessment history: {history_str}")
 
         # ── Calendar ──────────────────────────────────────────────────────
         if has_plan:
