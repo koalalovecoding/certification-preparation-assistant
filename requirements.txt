@@ -6,6 +6,5 @@ python-dotenv
 
 fastapi
 
-uvicornfastapi
-
 uvicorn
+
