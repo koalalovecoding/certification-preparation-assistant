@@ -274,12 +274,19 @@ def show_plan_dialog():
         projected = pd_data.get("projected_completion_date", "—")
 
     if weekly and isinstance(total_weeks_display, int) and total_weeks_display > 0:
-        total_plan_hours = sum(
-            sum(m.get("hours", 0) for m in w.get("focus", []) if isinstance(m, dict))
-            if isinstance(w.get("focus"), list) else (w.get("hours") or 0)
-            for w in weekly
-        )
-        weekly_study_hours_display = round(total_plan_hours / total_weeks_display, 1)
+        # Sum hours per week number, then take the max.
+        # The last week is usually partial (leftover hours), so averaging gives a
+        # lower-than-actual rate. The max week = a fully-packed week = the true rate.
+        from collections import defaultdict as _dd
+        _hours_by_week = _dd(float)
+        for w in weekly:
+            _wn = w.get("week") or 0
+            _h = (
+                sum(m.get("hours", 0) for m in w.get("focus", []) if isinstance(m, dict))
+                if isinstance(w.get("focus"), list) else (w.get("hours") or 0)
+            )
+            _hours_by_week[_wn] += _h
+        weekly_study_hours_display = round(max(_hours_by_week.values()), 1) if _hours_by_week else pd_data.get("weekly_study_hours", "—")
     else:
         weekly_study_hours_display = pd_data.get("weekly_study_hours", "—")
 
@@ -300,9 +307,17 @@ def show_plan_dialog():
         except Exception:
             pass
 
+    # Compute days until exam for the metric
+    _days_until_exam = "—"
+    if exam_date_str != "—":
+        try:
+            _days_until_exam = (datetime.date.fromisoformat(exam_date_str) - datetime.date.today()).days
+        except (ValueError, TypeError):
+            pass
+
     c1, c2 = st.columns(2)
-    c1.metric("Total Weeks",        total_weeks_display)
-    c2.metric("Weekly Study Hours", f"{weekly_study_hours_display}h")
+    c1.metric("Total Weeks",     total_weeks_display)
+    c2.metric("Days Until Exam", _days_until_exam)
     c3, c4 = st.columns(2)
     c3.metric("Projected Completion", projected)
     c4.metric("Exam Date",            exam_date_str)
