@@ -3,42 +3,82 @@
     "team_id": "TEAM-A",
     "team_name": "Cloud Platform Team",
     "manager_id": "MGR-001",
-    "primary_roles": ["Cloud Engineer"],
-    "approved_certifications": ["AZ-104", "AZ-204", "AZ-305"]
+    "primary_roles": [
+      "Cloud Engineer"
+    ],
+    "approved_certifications": [
+      "AZ-104",
+      "AZ-204",
+      "AZ-305"
+    ]
   },
   {
     "team_id": "TEAM-B",
     "team_name": "DevOps & Reliability Team",
     "manager_id": "MGR-002",
-    "primary_roles": ["DevOps Engineer"],
-    "approved_certifications": ["AZ-104", "AZ-400"]
+    "primary_roles": [
+      "DevOps Engineer"
+    ],
+    "approved_certifications": [
+      "AZ-104",
+      "AZ-400"
+    ]
   },
   {
     "team_id": "TEAM-C",
     "team_name": "Security Operations Team",
     "manager_id": "MGR-003",
-    "primary_roles": ["Security Engineer"],
-    "approved_certifications": ["AZ-104", "AZ-500", "SC-900"]
+    "primary_roles": [
+      "Security Engineer"
+    ],
+    "approved_certifications": [
+      "AZ-104",
+      "AZ-500",
+      "SC-900"
+    ]
   },
   {
     "team_id": "TEAM-D",
     "team_name": "Data Engineering Team",
     "manager_id": "MGR-004",
-    "primary_roles": ["Data Engineer"],
-    "approved_certifications": ["AZ-104", "DP-300", "DP-700"]
+    "primary_roles": [
+      "Data Engineer"
+    ],
+    "approved_certifications": [
+      "AZ-104",
+      "DP-300",
+      "DP-700"
+    ]
   },
   {
     "team_id": "TEAM-E",
     "team_name": "IT Operations Team",
     "manager_id": "MGR-005",
-    "primary_roles": ["Cloud Engineer", "Security Engineer"],
-    "approved_certifications": ["AZ-900", "AZ-104", "SC-900"]
+    "primary_roles": [
+      "Cloud Engineer",
+      "Security Engineer"
+    ],
+    "approved_certifications": [
+      "AZ-900",
+      "AZ-104",
+      "SC-900"
+    ]
   },
   {
     "team_id": "TEAM-PE",
     "team_name": "Platform Engineering Team",
     "manager_id": "MGR-PE",
-    "primary_roles": ["Cloud Engineer", "DevOps Engineer", "Senior Solutions Architect"],
-    "approved_certifications": ["AZ-104", "AZ-204", "AZ-305", "AZ-400"]
+    "primary_roles": [
+      "Cloud Engineer",
+      "DevOps Engineer",
+      "Senior Solutions Architect"
+    ],
+    "approved_certifications": [
+      "AZ-104",
+      "AZ-204",
+      "AZ-305",
+      "AZ-400",
+      "AZ-500"
+    ]
   }
 ]

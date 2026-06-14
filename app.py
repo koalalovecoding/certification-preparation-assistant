@@ -155,6 +155,51 @@ def parse_json_safe(raw: str) -> dict | None:
     except Exception:
         return None
 
+def _resolve_intent(user_input: str, learner: dict) -> dict:
+    """Replaces Dispatcher: extract cert code and route from user text using rules."""
+    import re
+    with open("data/certifications.json") as _f:
+        _certs = json.load(_f)
+
+    # 1. Extract certification code
+    cert_code = None
+    code_match = re.search(r'\b(AZ|DP|SC)-\d{3,4}\b', user_input, re.IGNORECASE)
+    if code_match:
+        cert_code = code_match.group(0).upper()
+    else:
+        for _c in _certs:
+            _words = [w for w in _c["certification_name"].lower().split() if len(w) > 4]
+            if any(w in user_input.lower() for w in _words):
+                cert_code = _c["certification_code"]
+                break
+    if not cert_code:
+        cert_code = learner.get("certification")
+
+    # 2. Determine route from keywords
+    _t = user_input.lower()
+    if any(w in _t for w in ["study plan", "schedule", "plan", "weekly"]):
+        route = "study_plan_generator"
+    elif any(w in _t for w in ["practice", "quiz", "test", "question", "assess"]):
+        route = "assessment_agent"
+    elif any(w in _t for w in ["motivat", "remind", "check in", "progress", "engag"]):
+        route = "engagement_agent"
+    elif any(w in _t for w in ["team", "manager", "insight", "report"]):
+        route = "manager_insights_agent"
+    else:
+        route = "learning_path_curator"
+
+    return {
+        "route": route,
+        "reason": "Resolved from user input",
+        "payload": {
+            "role":          learner.get("role"),
+            "certification": cert_code,
+            "team_id":       learner.get("team_id"),
+            "learner_id":    learner.get("learner_id"),
+        },
+    }
+
+
 def add_msg(role: str, content: str, msg_type: str = "text", data: dict = None):
     st.session_state.messages.append({
         "role":    role,
@@ -204,15 +249,20 @@ _DEFAULTS = {
     "assessment_complete":   False,   # True = all questions done
     "assessment_summary":    None,    # dict: final summary from agent
     # Calendar
-    "no_study_dates":       [],
-    "pending_no_study":     None,
-    "pending_restore_study": None,
+    "no_study_dates":          [],
+    "study_override_dates":    [],
+    "pending_no_study":        None,
+    "pending_restore_study":   None,
+    "pending_override_study":  None,
     # Exam registration dialog
     "exam_register_open":   False,
     # Pending action
     "pending":              None,
     # Exam date
     "exam_date":            None,
+    # Managing Dashboard
+    "mgr_dashboard_open":   False,
+    "mgr_insights_cache":   None,
 }
 
 def _init_state():
@@ -499,6 +549,245 @@ def show_saved_questions_dialog():
                 if ev.get("knowledge_point"):
                     st.caption(f"📌 Key concept: {ev['knowledge_point']}")
 
+# Managing Dashboard dialog ────────────────────────────────────────────────
+@st.dialog("📊 Managing Dashboard", width="large")
+def show_managing_dashboard_dialog():
+    st.markdown(
+        "<style>"
+        "[data-testid='stHorizontalBlock'] > [data-testid='stColumn']:nth-child(2)"
+        "{ border-left: 1px solid #e0e0e0; padding-left: 1.2rem; }"
+        "</style>",
+        unsafe_allow_html=True,
+    )
+    learner = load_learner()
+    team_id = learner.get("team_id")
+    if not team_id:
+        st.error("No team found.")
+        return
+
+    # Load static data
+    with open(DATA_PATH) as _f:
+        _all_learners = json.load(_f)
+    team_members = [l for l in _all_learners if l.get("team_id") == team_id and not l.get("is_manager")]
+
+    with open("data/certifications.json") as _f:
+        _all_certs = json.load(_f)
+    _cert_map = {c["certification_code"]: c["certification_name"] for c in _all_certs}
+    _all_cert_codes = [c["certification_code"] for c in _all_certs]
+
+    with open("data/manager_team_config.json") as _f:
+        _team_configs = json.load(_f)
+    _team_config = next((t for t in _team_configs if t["team_id"] == team_id), {})
+
+    with open("data/work_activity_signals.json") as _f:
+        _work_signals_all = json.load(_f)
+
+    # Load insights (cached in session state; cleared on each button open)
+    if not ss.get("mgr_insights_cache"):
+        from agents.manager_insights_agent import get_insights
+        with st.spinner("Loading team insights..."):
+            ss.mgr_insights_cache = get_insights({"team_id": team_id})
+    _insights = ss.mgr_insights_cache
+    _parsed   = (_insights.get("parsed") or {}) if _insights else {}
+
+    _DAY_NAMES  = {"monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3,
+                   "friday": 4, "saturday": 5, "sunday": 6}
+    _DAY_LABELS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
+
+    left_col, right_col = st.columns([1, 2])
+
+    # ── LEFT: Team members ─────────────────────────────────────────────────
+    with left_col:
+        st.markdown("#### Team Members")
+        for _member in team_members:
+            _mid  = _member.get("learner_id", "")
+            _name = _member.get("name", _mid)
+            with st.expander(f"**{_name}**"):
+                # Certifications held
+                _held = _member.get("certifications_held") or []
+                if _held:
+                    st.markdown("**Held:** " + " · ".join(f"`{c}`" for c in _held))
+
+                # Current cert + exam date
+                _cert_code  = _member.get("certification")
+                _exam_str   = _member.get("exam_date")
+                if _cert_code:
+                    _cname = _cert_map.get(_cert_code, "")
+                    st.markdown(f"**Studying:** `{_cert_code}` — {_cname}")
+                    if _exam_str:
+                        _d = days_until(_exam_str)
+                        _cd = f" · **{_d} days**" if _d is not None else ""
+                        st.caption(f"Exam: {_exam_str}{_cd}")
+                    else:
+                        st.caption("No exam date set")
+                else:
+                    st.caption("No active certification")
+
+                # Module progress
+                _mods   = unique_modules(_member.get("study_plan") or [])
+                _scores = _member.get("skill_module_scores") or {}
+                if _mods:
+                    st.markdown("**Modules:**")
+                    for _mod in _mods:
+                        _v      = _scores.get(_mod)
+                        _latest = (_v[-1] if isinstance(_v, list) else _v) if _v is not None else None
+                        _passed = _latest is not None and _latest >= 80
+                        st.markdown(f"{'☑' if _passed else '☐'} {_mod}")
+
+                # Read-only weekly calendar
+                _signals = next((s for s in _work_signals_all if s.get("learner_id") == _mid), {})
+                _slot    = _signals.get("preferred_learning_slot", "")
+                if _slot:
+                    _study_wdays = {v for k, v in _DAY_NAMES.items() if k in _slot.lower()}
+                    if not _study_wdays:
+                        _study_wdays = {0, 1, 2, 3, 4}  # default: Mon–Fri
+                    _today       = datetime.date.today()
+                    _week_start  = _today - datetime.timedelta(days=_today.weekday())
+                    _week_days   = [_week_start + datetime.timedelta(days=i) for i in range(7)]
+                    st.caption(f"Study slot: {_slot}")
+                    _cells = ""
+                    for _i, _day in enumerate(_week_days):
+                        _is_weekend = _day.weekday() >= 5
+                        _is_study   = _day.weekday() in _study_wdays and not _is_weekend
+                        _is_today   = _day == _today
+                        _lbl        = str(_day.day)
+                        _bg     = "#d4edda" if _is_study else "#e0e0e0"
+                        _fg     = "#333"    if _is_study else "#888"
+                        _border = "2px solid #1e3a5f" if _is_today else "2px solid transparent"
+                        _cells += (
+                            f"<td style='width:14%;padding:2px'>"
+                            f"<div style='text-align:center;background:{_bg};color:{_fg};"
+                            f"border:{_border};border-radius:4px;padding:3px 0;font-size:0.7rem'>"
+                            f"<b>{_DAY_LABELS[_i]}</b><br>{_lbl}</div></td>"
+                        )
+                    st.markdown(
+                        f"<table style='width:100%;border-collapse:collapse'><tr>{_cells}</tr></table>",
+                        unsafe_allow_html=True,
+                    )
+
+    _label = "<p style='font-size:0.85rem;font-weight:700;color:#555;letter-spacing:0.02em;margin:12px 0 2px 0;border-bottom:1px solid #e0e0e0;padding-bottom:3px'>{}</p>"
+
+    # ── RIGHT: Scope + Team Insights ───────────────────────────────────────
+    with right_col:
+        # 1. Scope Management
+        st.markdown(_label.format("🎯 Scope Management"), unsafe_allow_html=True)
+        _cur_approved   = _team_config.get("approved_certifications", [])
+        _cert_options   = [f"{code} — {_cert_map.get(code, code)}" for code in _all_cert_codes]
+        _label_to_code  = {f"{code} — {_cert_map.get(code, code)}": code for code in _all_cert_codes}
+        _default_sel    = [f"{code} — {_cert_map.get(code, code)}" for code in _cur_approved if code in _cert_map]
+
+        _new_sel = st.multiselect(
+            "Approved certifications for this team:",
+            options=_cert_options,
+            default=_default_sel,
+            key="scope_mgmt_multiselect",
+        )
+        if st.button("Save Scope", type="primary", key="save_scope_btn"):
+            _new_codes = [_label_to_code[lbl] for lbl in _new_sel]
+            with open("data/manager_team_config.json") as _f:
+                _configs = json.load(_f)
+            for _t in _configs:
+                if _t["team_id"] == team_id:
+                    _t["approved_certifications"] = _new_codes
+                    break
+            with open("data/manager_team_config.json", "w") as _f:
+                json.dump(_configs, _f, indent=2)
+            st.success("✅ Scope updated!")
+
+        st.markdown(_label.format("📅 Exam Recommendations"), unsafe_allow_html=True)
+        _member_names   = {_m.get("name", _m["learner_id"]): _m["learner_id"] for _m in team_members}
+        _rec_member     = st.selectbox("Member", options=list(_member_names.keys()), key="rec_member_sel")
+        _rec_cert_opts  = _cur_approved if _cur_approved else _all_cert_codes
+        _rec_cert       = st.selectbox("Recommended certification", options=_rec_cert_opts, key="rec_cert_sel")
+        _rec_date       = st.date_input("Suggested deadline", value=None, min_value=datetime.date.today(), key="rec_date_input")
+        _RECS_PATH = Path("data/manager_exam_recs.json")
+
+        def _load_recs():
+            return json.loads(_RECS_PATH.read_text()) if _RECS_PATH.exists() else []
+
+        def _save_recs(recs):
+            _RECS_PATH.write_text(json.dumps(recs, indent=2))
+
+        if st.button("Add Recommendation", key="rec_add_btn"):
+            if _rec_date:
+                _recs = _load_recs()
+                _recs.append({"name": _rec_member, "cert": _rec_cert, "deadline": _rec_date.isoformat()})
+                _save_recs(_recs)
+        _recs_display = _load_recs()
+        for _ri, _rec in enumerate(_recs_display):
+            _rc1, _rc2 = st.columns([6, 1])
+            _rc1.markdown(f"**{_rec['name']}** → `{_rec['cert']}` · before {_rec['deadline']}")
+            if _rc2.button("✕", key=f"rec_del_{_ri}"):
+                _recs_display.pop(_ri)
+                _save_recs(_recs_display)
+                st.rerun()
+
+        st.markdown(_label.format("🏅 Team Certifications Held"), unsafe_allow_html=True)
+        for _m in team_members:
+            _held = _m.get("certifications_held") or []
+            _held_str = " · ".join(f"`{c}`" for c in _held) if _held else "—"
+            st.markdown(f"**{_m.get('name', _m.get('learner_id'))}** — {_held_str}")
+
+        st.markdown(_label.format("📋 Team Certification Targets"), unsafe_allow_html=True)
+        for _m in team_members:
+            _target = _m.get("certification")
+            _target_str = f"`{_target}`" if _target else "—"
+            st.markdown(f"**{_m.get('name', _m.get('learner_id'))}** — {_target_str}")
+
+        if _parsed:
+            _ret_warns = _parsed.get("retirement_warnings", [])
+            if _ret_warns:
+                st.markdown(_label.format("⚠️ Retirement Warnings"), unsafe_allow_html=True)
+                for _rw in _ret_warns:
+                    st.warning(f"⚠️ {_rw}")
+
+        if _parsed:
+            _weak = _parsed.get("common_weak_modules", [])
+            if _weak:
+                st.markdown(_label.format("📉 Common Weak Modules"), unsafe_allow_html=True)
+                for _wm in _weak:
+                    st.markdown(f"- {_wm}")
+
+        if _parsed:
+            _team_name_disp = _parsed.get("team_name", team_id)
+            _overall        = _parsed.get("overall_progress_avg", 0)
+            _risk_count     = _parsed.get("at_risk_count", 0)
+            st.markdown(_label.format(f"👥 {_team_name_disp}"), unsafe_allow_html=True)
+            _m1, _m2 = st.columns(2)
+            _m1.metric("Overall Progress", f"{_overall:.1f}%")
+            _m2.metric("At-Risk Learners", _risk_count)
+            if _parsed.get("team_summary"):
+                st.write(_parsed["team_summary"])
+
+            _at_risk = _parsed.get("at_risk_learners", [])
+            if _at_risk:
+                st.markdown(_label.format("🔴 At-Risk Learners"), unsafe_allow_html=True)
+                for _lr in _at_risk:
+                    st.error(
+                        f"**{_lr.get('learner_id')}** ({_lr.get('role', '')}) · "
+                        f"`{_lr.get('certification', '—')}` · "
+                        f"{_lr.get('progress_percentage', 0):.0f}% · "
+                        f"{_lr.get('risk_reason', '')}"
+                    )
+
+            _recs = _parsed.get("recommendations", [])
+            if _recs:
+                st.markdown(_label.format("💡 Recommendations"), unsafe_allow_html=True)
+                for _rec in _recs:
+                    st.markdown(f"- {_rec}")
+
+        else:
+            st.info("Team insights unavailable.")
+
+        st.divider()
+        _btn_r, _btn_c = st.columns(2)
+        if _btn_r.button("🔄 Refresh Insights", key="mgr_refresh_btn"):
+            ss.mgr_insights_cache = None
+        if _btn_c.button("✕ Close", key="mgr_close_btn"):
+            ss.mgr_dashboard_open = False
+            st.rerun()
+
+
 # [CHANGE 3] Question dialog — replaces inline question rendering ────────────
 @st.dialog("Assessment Question", width="large")
 def show_question_dialog():
@@ -708,6 +997,8 @@ def render_sidebar():
         # [CHANGE 2] Compact sidebar CSS — reduce margins between elements
         st.markdown(
             """<style>
+            section[data-testid="stSidebar"] { min-width: 380px !important; max-width: 380px !important; }
+            section[data-testid="stSidebar"] > div:first-child { padding-top: 0 !important; }
             [data-testid="stProgressBarTrack"] > div { background-color: #28a745 !important; }
             [data-testid^="stBaseButton-primary"] { background-color: rgb(30, 58, 95) !important; border-color: rgb(30, 58, 95) !important; }
             section[data-testid="stSidebar"] [data-testid="stBaseButton-secondary"] { font-size: 0.65rem !important; padding: 2px 2px !important; min-height: 1.8rem !important; }
@@ -725,7 +1016,45 @@ def render_sidebar():
             unsafe_allow_html=True,
         )
 
-        st.markdown("## 🎓 Certification Preparation Assistant")
+        st.markdown("""
+<div style="margin-top: -4rem">
+<svg width="100%" viewBox="170 50 340 330" role="img" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .logo-title { font-family: sans-serif; font-size: 20px; font-weight: 500; fill: #111; }
+      .logo-sub   { font-family: sans-serif; font-size: 10px; font-weight: 400; fill: #555; letter-spacing: 0.10em; }
+      .logo-tag   { font-family: sans-serif; font-size: 9px; font-weight: 400; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+  <path d="M340 60 L400 88 L400 168 Q400 220 340 248 Q280 220 280 168 L280 88 Z" fill="#2563EB"/>
+  <path d="M340 72 L390 96 L390 166 Q390 210 340 234 Q290 210 290 166 L290 96 Z" fill="#1D4ED8"/>
+  <circle cx="340" cy="115" r="7" fill="#BAE6FD"/>
+  <circle cx="320" cy="130" r="4" fill="#93C5FD"/>
+  <circle cx="360" cy="130" r="4" fill="#93C5FD"/>
+  <circle cx="315" cy="155" r="4" fill="#93C5FD"/>
+  <circle cx="365" cy="155" r="4" fill="#93C5FD"/>
+  <circle cx="340" cy="170" r="4" fill="#93C5FD"/>
+  <line x1="340" y1="115" x2="320" y2="130" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="340" y1="115" x2="360" y2="130" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="320" y1="130" x2="315" y2="155" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="360" y1="130" x2="365" y2="155" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="315" y1="155" x2="340" y2="170" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="365" y1="155" x2="340" y2="170" stroke="#60A5FA" stroke-width="1.5"/>
+  <path d="M323 190 L335 204 L358 178" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="272,72 274,78 280,78 275,82 277,88 272,84 267,88 269,82 264,78 270,78" fill="#FCD34D"/>
+  <polygon points="408,72 410,78 416,78 411,82 413,88 408,84 403,88 405,82 400,78 406,78" fill="#FCD34D"/>
+  <text x="340" y="292" text-anchor="middle" class="logo-title">Certification Preparation Assistant</text>
+  <text x="340" y="316" text-anchor="middle" class="logo-sub">YOUR AI. YOUR PACE. YOUR CERTIFICATION.</text>
+  <line x1="210" y1="330" x2="470" y2="330" stroke="#ddd" stroke-width="1"/>
+  <rect x="196" y="342" width="84" height="24" rx="12" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="238" y="358" text-anchor="middle" class="logo-tag" fill="#1D4ED8">Work IQ</text>
+  <rect x="298" y="342" width="84" height="24" rx="12" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="340" y="358" text-anchor="middle" class="logo-tag" fill="#15803D">Fabric IQ</text>
+  <rect x="400" y="342" width="84" height="24" rx="12" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="442" y="358" text-anchor="middle" class="logo-tag" fill="#B45309">Foundry IQ</text>
+</svg>
+</div>
+""", unsafe_allow_html=True)
         st.divider()
 
         # ── Account block ──────────────────────────────────────────────────
@@ -747,8 +1076,8 @@ def render_sidebar():
         # Managing Dashboard — only for managers
         if learner.get("is_manager"):
             if st.button("📊 Managing Dashboard", use_container_width=True, key="mgr_dashboard_btn"):
-                ss.pending = {"action": "manager_insights"}
-                ss.phase   = "session"
+                ss.mgr_insights_cache = None
+                ss.mgr_dashboard_open = True
                 st.rerun()
 
         # Compute cert early — needed for Register Exam button visibility
@@ -767,6 +1096,23 @@ def render_sidebar():
             st.rerun()
 
         st.divider()
+
+        # ── Manager notifications ──────────────────────────────────────────
+        if not learner.get("is_manager"):
+            _recs_file = Path("data/manager_exam_recs.json")
+            _all_recs  = json.loads(_recs_file.read_text()) if _recs_file.exists() else []
+            _my_recs   = [r for r in _all_recs if r.get("name") == ss.username]
+            st.markdown("**📬 Manager Recommendations**")
+            if _my_recs:
+                with open("data/certifications.json") as _cf:
+                    _cert_names = {c["certification_code"]: c["certification_name"] for c in json.load(_cf)}
+                for _r in _my_recs:
+                    _cname = _cert_names.get(_r["cert"], "")
+                    st.markdown(f"⚠️ `{_r['cert']}` · {_cname}")
+                    st.caption(f"before {_r['deadline']}")
+            else:
+                st.caption("No recommendations yet.")
+            st.divider()
 
         # ── Target certification ───────────────────────────────────────────
         st.markdown("**🎯 Target Certification**")
@@ -934,13 +1280,24 @@ def render_sidebar():
                 is_past     = day < today
                 is_weekend  = day.weekday() >= 5
                 # Auto rest day: weekday not in learner's study schedule
-                is_auto_rest = day.weekday() in _auto_rest_weekdays
-                label = "🚫" if (is_off or is_auto_rest) else str(day.day)
-                if is_past or is_weekend or is_auto_rest:
+                is_auto_rest  = day.weekday() in _auto_rest_weekdays
+                is_overridden = day_str in ss.study_override_dates
+                label = "🚫" if (is_off or (is_auto_rest and not is_overridden)) else str(day.day)
+                if is_past or is_weekend:
                     wcols[i].button(label, key=f"cal_past_{day_str}", disabled=True, use_container_width=True)
+                elif is_auto_rest and not is_overridden:
+                    if wcols[i].button(label, key=f"cal_ar_{day_str}", help=day.strftime("%a %b %d"), use_container_width=True):
+                        ss.pending_override_study = day_str
+                        ss.pending_no_study = None
+                        ss.pending_restore_study = None
+                        st.rerun()
                 elif wcols[i].button(label, key=f"cal_{day_str}", help=day.strftime("%a %b %d"), use_container_width=True):
                         if is_off:
                             ss.pending_restore_study = day_str
+                            ss.pending_no_study = None
+                        elif is_overridden:
+                            ss.study_override_dates.remove(day_str)
+                            ss.pending_override_study = None
                             ss.pending_no_study = None
                         else:
                             ss.no_study_dates.append(day_str)
@@ -948,48 +1305,70 @@ def render_sidebar():
                             ss.pending_restore_study = None
                         st.rerun()
 
-            if ss.pending_no_study:
-                st.warning(f"Mark **{ss.pending_no_study}** as rest day and adjust plan?")
-                ca, cb = st.columns(2)
-                if ca.button("Confirm", type="primary", key="cal_confirm"):
-                    if ss.plan_thread_id and ss.plan_payload:
-                        day_marked = ss.pending_no_study
-                        ss.plan_adj_request = (
-                            f"I won't be able to study on {day_marked}. "
-                            "Please shift that day's content to the following day."
-                        )
-                        ss.plan_adjusting   = True
-                        ss.pending_no_study = None
-                        show_plan_dialog()
-                    else:
-                        st.warning("Cannot adjust: no active plan session.")
-                        ss.pending_no_study = None
-                    st.rerun()
-                if cb.button("Cancel", key="cal_cancel"):
-                    ss.no_study_dates.remove(ss.pending_no_study)
+        # Confirmation panels rendered once, outside the week loop
+        if ss.pending_no_study:
+            st.warning(f"Mark **{ss.pending_no_study}** as rest day and adjust plan?")
+            ca, cb = st.columns(2)
+            if ca.button("Confirm", type="primary", key="cal_confirm"):
+                if ss.plan_thread_id and ss.plan_payload:
+                    day_marked = ss.pending_no_study
+                    ss.plan_adj_request = (
+                        f"I won't be able to study on {day_marked}. "
+                        "Please shift that day's content to the following day."
+                    )
+                    ss.plan_adjusting   = True
                     ss.pending_no_study = None
-                    st.rerun()
+                    show_plan_dialog()
+                else:
+                    st.warning("Cannot adjust: no active plan session.")
+                    ss.pending_no_study = None
+                st.rerun()
+            if cb.button("Cancel", key="cal_cancel"):
+                ss.no_study_dates.remove(ss.pending_no_study)
+                ss.pending_no_study = None
+                st.rerun()
 
-            if ss.get("pending_restore_study"):
-                day_r = ss.pending_restore_study
-                st.info(f"💪 Great choice! Ready to reclaim **{day_r}** as a study day? Your plan will be updated to bring that day back.")
-                ra, rb = st.columns(2)
-                if ra.button("Yes, let's go!", type="primary", key="cal_restore_confirm"):
-                    ss.no_study_dates.remove(day_r)
-                    if ss.plan_thread_id and ss.plan_payload:
-                        ss.plan_adj_request = (
-                            f"I'll be able to study on {day_r} after all. "
-                            "Please shift the content back to that day."
-                        )
-                        ss.plan_adjusting        = True
-                        ss.pending_restore_study = None
-                        show_plan_dialog()
-                    else:
-                        ss.pending_restore_study = None
-                    st.rerun()
-                if rb.button("Cancel", key="cal_restore_cancel"):
+        if ss.get("pending_restore_study"):
+            day_r = ss.pending_restore_study
+            st.info(f"💪 Great choice! Ready to reclaim **{day_r}** as a study day? Your plan will be updated to bring that day back.")
+            ra, rb = st.columns(2)
+            if ra.button("Yes, let's go!", type="primary", key="cal_restore_confirm"):
+                ss.no_study_dates.remove(day_r)
+                if ss.plan_thread_id and ss.plan_payload:
+                    ss.plan_adj_request = (
+                        f"I'll be able to study on {day_r} after all. "
+                        "Please shift the content back to that day."
+                    )
+                    ss.plan_adjusting        = True
                     ss.pending_restore_study = None
-                    st.rerun()
+                    show_plan_dialog()
+                else:
+                    ss.pending_restore_study = None
+                st.rerun()
+            if rb.button("Cancel", key="cal_restore_cancel"):
+                ss.pending_restore_study = None
+                st.rerun()
+
+        if ss.get("pending_override_study"):
+            day_o = ss.pending_override_study
+            st.info(f"📅 Add **{day_o}** as a study day and adjust your plan?")
+            oa, ob = st.columns(2)
+            if oa.button("Yes, add it", type="primary", key="cal_override_confirm"):
+                ss.study_override_dates.append(day_o)
+                if ss.plan_thread_id and ss.plan_payload:
+                    ss.plan_adj_request = (
+                        f"I can also study on {day_o}. "
+                        "Please include this day in the plan."
+                    )
+                    ss.plan_adjusting         = True
+                    ss.pending_override_study = None
+                    show_plan_dialog()
+                else:
+                    ss.pending_override_study = None
+                st.rerun()
+            if ob.button("Cancel", key="cal_override_cancel"):
+                ss.pending_override_study = None
+                st.rerun()
 
 # ── Message renderer ───────────────────────────────────────────────────────
 def render_messages():
@@ -1097,18 +1476,15 @@ def render_messages():
                                 if exam_date_input:
                                     ss.exam_date = exam_date_input.isoformat()
                                     save_learner_fields(exam_date=ss.exam_date)
-                                # Dispatch to get cert + role from user's message
-                                from agents.dispatcher import dispatch
                                 from agents.manager_insights_agent import get_scope
-                                learner = load_learner()
-                                result  = dispatch(cert_intent)
-                                parsed  = parse_json_safe(result.get("raw", "")) or {}
-                                dp      = parsed.get("payload", {})
-                                payload = {
-                                    "role":         dp.get("role") or learner.get("role"),
-                                    "certification":dp.get("certification") or learner.get("certification"),
-                                    "team_id":      dp.get("team_id") or learner.get("team_id"),
-                                    "learner_id":   ss.learner_id,
+                                learner  = load_learner()
+                                resolved = _resolve_intent(cert_intent, learner)
+                                dp       = resolved.get("payload", {})
+                                payload  = {
+                                    "role":          dp.get("role"),
+                                    "certification": dp.get("certification"),
+                                    "team_id":       dp.get("team_id"),
+                                    "learner_id":    ss.learner_id,
                                 }
                                 target_cert = payload.get("certification", "")
                                 # Build recommendation message from certifications.json
@@ -1509,12 +1885,49 @@ def render_login():
     )
     _, col, _ = st.columns([1, 1.5, 1])
     with col:
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        st.markdown("## 🎓 Certification Preparation Assistant")
-        st.caption("Enterprise Learning Management · Your Personal Certification Coach")
+        st.markdown("<style>.block-container { padding-top: 1rem !important; }</style>", unsafe_allow_html=True)
+        st.markdown("""
+<div style="text-align:center">
+<svg width="75%" viewBox="170 50 340 330" role="img" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .logo-title { font-family: sans-serif; font-size: 20px; font-weight: 500; fill: #111; }
+      .logo-sub   { font-family: sans-serif; font-size: 10px; font-weight: 400; fill: #555; letter-spacing: 0.10em; }
+      .logo-tag   { font-family: sans-serif; font-size: 9px; font-weight: 400; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+  <path d="M340 60 L400 88 L400 168 Q400 220 340 248 Q280 220 280 168 L280 88 Z" fill="#2563EB"/>
+  <path d="M340 72 L390 96 L390 166 Q390 210 340 234 Q290 210 290 166 L290 96 Z" fill="#1D4ED8"/>
+  <circle cx="340" cy="115" r="7" fill="#BAE6FD"/>
+  <circle cx="320" cy="130" r="4" fill="#93C5FD"/>
+  <circle cx="360" cy="130" r="4" fill="#93C5FD"/>
+  <circle cx="315" cy="155" r="4" fill="#93C5FD"/>
+  <circle cx="365" cy="155" r="4" fill="#93C5FD"/>
+  <circle cx="340" cy="170" r="4" fill="#93C5FD"/>
+  <line x1="340" y1="115" x2="320" y2="130" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="340" y1="115" x2="360" y2="130" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="320" y1="130" x2="315" y2="155" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="360" y1="130" x2="365" y2="155" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="315" y1="155" x2="340" y2="170" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="365" y1="155" x2="340" y2="170" stroke="#60A5FA" stroke-width="1.5"/>
+  <path d="M323 190 L335 204 L358 178" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="272,72 274,78 280,78 275,82 277,88 272,84 267,88 269,82 264,78 270,78" fill="#FCD34D"/>
+  <polygon points="408,72 410,78 416,78 411,82 413,88 408,84 403,88 405,82 400,78 406,78" fill="#FCD34D"/>
+  <text x="340" y="292" text-anchor="middle" class="logo-title">Certification Preparation Assistant</text>
+  <text x="340" y="316" text-anchor="middle" class="logo-sub">YOUR AI. YOUR PACE. YOUR CERTIFICATION.</text>
+  <line x1="210" y1="330" x2="470" y2="330" stroke="#ddd" stroke-width="1"/>
+  <rect x="196" y="342" width="84" height="24" rx="12" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="238" y="358" text-anchor="middle" class="logo-tag" fill="#1D4ED8">Work IQ</text>
+  <rect x="298" y="342" width="84" height="24" rx="12" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="340" y="358" text-anchor="middle" class="logo-tag" fill="#15803D">Fabric IQ</text>
+  <rect x="400" y="342" width="84" height="24" rx="12" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="442" y="358" text-anchor="middle" class="logo-tag" fill="#B45309">Foundry IQ</text>
+</svg>
+</div>
+""", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
 
-        learner_id_input = st.text_input("Learner ID", placeholder="e.g. L-TEST-001")
+        learner_id_input = st.text_input("Learner ID", placeholder="Enter your learner ID")
         password         = st.text_input("Password", type="password", placeholder="Enter any password")
         st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1564,20 +1977,12 @@ def handle_chat_input(user_input: str):
     txt = user_input.strip().lower()
 
     if ss.phase == "chat":
-        from agents.dispatcher import dispatch
         from agents.manager_insights_agent import get_scope
-        with st.spinner("Routing your request..."):
-            result = dispatch(user_input)
-        parsed  = parse_json_safe(result.get("raw", "")) or {}
-        route   = parsed.get("route", "learning_path_curator")
-        reason  = parsed.get("reason", "")
-        dp      = parsed.get("payload", {})
-        payload = {
-            "role":          dp.get("role") or ss.learner.get("role"),
-            "certification": dp.get("certification") or ss.learner.get("certification"),
-            "team_id":       dp.get("team_id") or ss.learner.get("team_id"),
-            "learner_id":    ss.learner_id,
-        }
+        resolved = _resolve_intent(user_input, ss.learner)
+        route    = resolved.get("route", "learning_path_curator")
+        reason   = resolved.get("reason", "")
+        payload  = resolved.get("payload", {})
+        payload["learner_id"] = ss.learner_id
         add_msg("assistant", f"Routing to **{route.replace('_', ' ').title()}** — {reason}")
 
         if route in ("learning_path_curator", "study_plan_generator"):
@@ -1632,6 +2037,9 @@ else:
     # [CHANGE 3] Open question dialog if assessment is in progress
     if ss.question_dialog_open:
         show_question_dialog()
+
+    if ss.get("mgr_dashboard_open"):
+        show_managing_dashboard_dialog()
 
     if ss.get("plan_dialog_open"):
         ss.plan_dialog_open = False

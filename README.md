@@ -1,83 +1,102 @@
-# TAT Reasoning Agent
+# Certification Coach Agent
 
-An enterprise certification preparation system built for the **Agents League Hackathon 2026** (Reasoning Agents Track). It helps organisations manage employee technical certification readiness through a multi-agent AI system built on Azure AI Foundry.
+An enterprise certification preparation system built for the **Agents League Hackathon 2026** (Reasoning Agents Track). It helps organisations manage employee technical certification readiness through a multi-agent AI system built on **Azure AI Foundry**.
 
 > **Note:** All learner, team, and work-activity data in this repository is entirely synthetic and contains no real personally identifiable information (PII). It is provided for demonstration purposes only.
 
 ---
 
+## What It Does
+
+Certification Coach Agent acts as a personal AI coach for every employee preparing for a Microsoft Azure certification. It knows their work schedule, their background knowledge, their exam date, and how they've performed in practice — and it adapts its guidance accordingly.
+
+For managers, it provides a real-time view of team readiness, at-risk learners, and common knowledge gaps.
+
+---
+
 ## Agent Architecture
 
-The system follows a **Hub-and-Spoke** pattern. All user interactions flow through the Dispatcher, which routes to the appropriate specialist agent. Sub-agents communicate only with the Dispatcher — never with each other directly.
+The system follows a **Hub-and-Spoke** pattern with a Responsible AI input guard. All user interactions flow through the Dispatcher, which routes to the appropriate specialist agent.
 
 ```
-User Input
-    ↓
-Dispatcher (Hub)
-    ├── Learning Path Curator
-    ├── Study Plan Generator
-    ├── Engagement Agent
-    ├── Assessment Agent
-    └── Manager Insights Agent
+User Input (Streamlit UI)
+        ↓
+  [Input Guard]          ← Responsible AI scoring (pre-Dispatcher)
+        ↓
+  [Dispatcher]           ← Routes to correct agent
+        │
+   ┌────┼────┬──────────────┬──────────────┐
+   ▼    ▼    ▼              ▼              ▼
+[LPC] [SPG] [Engagement] [Assessment] [Manager Insights]
 ```
 
 ### Dispatcher
-
 **File:** `agents/dispatcher.py`
 
-The Dispatcher is the central hub. It receives the user's raw message, extracts intent, and returns a structured routing decision (`route`, `reason`, `payload`). It identifies the target certification, job role, and team from the user's message and passes this context downstream.
+Central hub. Receives raw user input, extracts intent, job role, and certification (maps full cert names to codes, e.g. "DevOps Engineer Expert" → AZ-400), and returns a structured routing decision. Passes extracted context downstream to all specialist agents.
 
-### Learning Path Curator
-
+### Learning Path Curator (LPC)
 **File:** `agents/learning_path_curator.py`
 
-Runs a two-phase session:
+Two-phase session:
 
-- **Phase 1 — Background Familiarity Check:** Presents the learner with a self-scoring table (0–5) across all recommended background topics for the target certification. This is a single-turn exchange.
-- **Phase 2 — Learning Path Output:** Uses Azure AI Search (Foundry IQ) to retrieve cited resources from the knowledge base. Calculates a `study_hours_multiplier` from the learner's background scores and produces an `adjusted_study_hours` figure. Only includes resources that are actually returned by the search tool — hallucinated sources are flagged as `[unverified]`.
+- **Phase 1 — Background Familiarity Check:** Presents a self-scoring table (1–5) across all recommended background topics for the target certification.
+- **Phase 2 — Learning Path Output:** Uses Azure AI Search (Foundry IQ) to retrieve cited resources. Calculates `study_hours_multiplier` from background scores (Score 5 → 0.33×, Score 1 → 1.25×) and produces `adjusted_study_hours`. Unverifiable sources are flagged as `[unverified]`.
 
-Calls `manager_insights_agent.get_scope()` to determine which certifications are approved for the learner's role or team before making recommendations.
+Calls `manager_insights_agent.get_scope()` to determine approved certifications before making recommendations.
 
-### Study Plan Generator
-
+### Study Plan Generator (SPG)
 **File:** `agents/study_plan_generator.py`
 
-A two-layer design:
+Two-layer design:
 
-- **Python layer** (`_calculate_plan`): Loads work activity signals, historical learner performance, and skill module data from `certifications.json`. Calculates weekly available study hours (30% of focus hours), applies an efficiency multiplier based on prior exam outcomes (Pass → 0.85×, Fail → 1.2×), orders modules by priority (low background scores first, then by weighting), and builds a week-by-week allocation. Flags a risk if projected completion exceeds the exam date.
-- **LLM layer:** Receives the calculated plan as structured JSON and generates a natural language description with specific timing suggestions, weak-area analysis, and historical notes.
+- **Python layer:** Reads `work_activity_signals.json` (focus hours × 30% = weekly study budget), applies efficiency multiplier (Pass → 0.85×, Fail → 1.2×, None → 1.0×), orders modules by weak-area priority, detects scheduling risk if projected completion exceeds exam date.
+- **LLM layer:** Generates natural language weekly plan with timing recommendations and weak-area analysis.
 
-Supports dynamic plan adjustment via a persistent thread — the learner can request changes (e.g. "I can't study on Fridays") and the agent recalculates and re-describes the plan.
+Supports dynamic adjustment via persistent thread — learner can request changes ("I can't study on Fridays") and the plan recalculates.
 
 ### Engagement Agent
-
 **File:** `agents/engagement_agent.py`
 
-Keeps learners on track between study sessions:
-
-- **Python layer:** Classifies workload level from meeting hours (High ≥ 20 hrs/week, Medium 12–19, Low < 12). Calculates progress percentage from hours studied vs. adjusted study hours. Classifies urgency (Critical: < 14 days + < 70% progress; At Risk: < 30 days + < 50% progress; On Track otherwise). Checks held certifications for upcoming retirement dates (Fundamentals certs excluded). Determines current and next module from the weekly plan.
-- **LLM layer:** Generates a personalised reminder message adapted to load level and urgency, including a text-based progress bar, suggested study time, next module preview, and any renewal warnings.
+- **Python layer:** Classifies workload (High ≥ 20 meeting hrs/week, Medium 12–19, Low < 12). Calculates progress percentage. Classifies urgency (Critical / At Risk / On Track). Checks held certifications for upcoming renewal deadlines.
+- **LLM layer:** Personalised check-in message adapted to load level, urgency, and current module.
 
 ### Assessment Agent
-
 **File:** `agents/assessment_agent.py`
 
-Evaluates whether the learner is ready for the certification exam:
-
-- Generates questions grounded in the knowledge base via Azure AI Search (Foundry IQ) — no questions from memory.
-- Adaptive difficulty: correct answer → harder question, wrong answer → easier question.
-- Strict single-step protocol: each answer submission returns evaluation + next question in one response.
-- Final response embeds the complete summary (`questions_asked`, `correct_answers`, `score_percentage`, `weakest_topic`) before closing.
-- Module scores are written back to `learner_performance.json` via `complete_module()`. A weighted final score is calculated across all assessed modules against the pass threshold of 80%.
+- Questions grounded in the knowledge base via Azure AI Search — no memory-generated questions.
+- Adaptive difficulty: correct → harder, wrong → easier. 5 questions per module.
+- Single-step protocol: each answer returns evaluation + next question in one response.
+- Pass threshold: 80%. Final score = weighted average across modules using `certifications.json` weights.
+- Module scores stored as lists to support multi-attempt history.
 
 ### Manager Insights Agent
-
 **File:** `agents/manager_insights_agent.py`
 
-Serves two functions:
+Two functions:
 
-1. **`get_scope(payload)`** — Pure Python. Returns the approved certification list for a given role or team. Used by the Learning Path Curator before searching. Lookup order: team_id → role (manager_team_config.json) → manager_role_config.json → certifications.json target_roles.
-2. **`get_insights(payload)`** — Python calculates team-level stats (overall progress, at-risk learners, common weak modules, retirement warnings). LLM generates a professional summary with actionable recommendations for the manager. Individual sensitive data is not exposed beyond role and progress.
+1. **`get_scope(payload)`** — Pure Python. Returns the approved certification list for a given role or team. Lookup order: `team_id` → role → `certifications.json` target_roles. Emits retirement warnings (AZ-204 retiring 2026-07-31, AZ-500 retiring 2026-08-31).
+2. **`get_insights(payload)`** — Python calculates team-level stats; LLM generates a manager summary with actionable recommendations. Individual sensitive data is not surfaced.
+
+---
+
+## Manager-Controlled Scope Injection
+
+One of the more interesting design patterns in this system is **manager-controlled scope injection**: the manager user can inject configuration that silently shapes what every learner on their team is allowed to do — without the learner ever seeing it.
+
+**How it works:**
+
+1. The manager logs into the system and opens the **Managing Dashboard** (only visible to users with `is_manager: true`).
+2. In the **Scope Management** panel, the manager selects which certifications are approved for their team and saves the change to `manager_team_config.json`.
+3. When any learner on that team starts their journey, the **Dispatcher** calls `get_scope()` from the Manager Insights Agent before routing to the Learning Path Curator.
+4. `get_scope()` reads the manager-defined approved list and returns it as a constraint.
+5. The Learning Path Curator and other downstream agents respect this scope — they will only recommend certifications the manager has approved.
+
+**Why this matters:**
+
+The manager never needs to interact with individual learners directly. By setting scope once, they influence the entire team's certification direction. A manager can restrict a team to role-relevant certifications, prevent spend on deprecated exams, or align the team's upskilling with a business priority — all by adjusting a single list in the dashboard.
+
+This is a clean separation: **managers inject policy**, **agents enforce it**, **learners experience it** as personalised guidance.
 
 ---
 
@@ -85,9 +104,95 @@ Serves two functions:
 
 | Layer | Role in this system |
 |---|---|
-| **Foundry IQ** | Azure AI Search index over `data/knowledge/` markdown files. Powers cited question generation (Assessment Agent) and cited resource retrieval (Learning Path Curator). |
-| **Fabric IQ** | Simulated via `certifications.json`. Provides skill module structure, weightings, recommended study hours, and pass thresholds — the semantic foundation for plan generation and scoring. |
-| **Work IQ** | Simulated via `work_activity_signals.json`. Provides meeting load, focus hours, and preferred learning slots. Used by Study Plan Generator and Engagement Agent to make schedules realistic. |
+| **Foundry IQ** | Azure AI Search index over `data/knowledge/` (11 markdown files). Powers cited question generation (Assessment) and cited resource retrieval (LPC). |
+| **Fabric IQ** | Simulated via `certifications.json`. Skill module structure, weightings, study hours, and pass thresholds. |
+| **Work IQ** | Simulated via `work_activity_signals.json`. Meeting load, focus hours, and preferred learning slots — used by SPG and Engagement Agent. |
+
+---
+
+## Streamlit UI
+
+**Run:** `streamlit run app.py`
+
+### Layout
+
+**Sidebar (fixed)** + **Chat area (right)**
+
+#### Sidebar Sections
+
+| Section | Description |
+|---|---|
+| Account block | Username · Role · Team · Log out |
+| Register Exam Preparation | Opens inline chat flow — describe intent, set exam date, confirm recommended cert |
+| Managing Dashboard | Managers only — team readiness summary |
+| Target Certification | Appears after cert is confirmed via registration |
+| Background Scores | Collapsible, shown after LPC Phase 1 submission |
+| Study Plan | Opens dialog — weekly plan filtered to incomplete modules only |
+| Saved Questions | Opens dialog — questions bookmarked during assessment |
+| Days until exam | One row per cert (`AZ-400  47 days`), shown only after registration, updates daily |
+| Certifications Held | All held certs with retirement dates and renewal deadlines |
+| Module Progress | ☑ completed · ☐ in progress with last 3 assessment scores |
+| Calendar | Auto-marks rest days from Work IQ preferred slots; user can toggle any day |
+
+#### Chat Message Types
+
+| Type | Description |
+|---|---|
+| `text` | Standard assistant / user message |
+| `exam_register` | Inline form — exam date picker + cert intent input |
+| `cert_confirm` | Confirm recommended certification; sets Target Certification in sidebar on Yes |
+| `survey_confirm` | Offer background knowledge survey; Skip goes directly to SPG with default hours |
+| `slider_form` | Background scoring 1–5 per topic, single submission |
+| `hours_input` | Hours studied today |
+| `completion_check` | Yes / Not yet — module completion |
+| `continue_check` | Continue / Stop for today |
+
+#### Assessment Dialog
+
+- Adaptive A/B/C/D questions with difficulty level displayed
+- Each answer shows ✅/❌ evaluation + explanation + knowledge point
+- **🔖 Save** bookmarks the question to `saved_questions.json`
+- **Next Question →** / **Finish →** advances the session
+
+---
+
+## Learner Session Flow
+
+### New User
+1. Log in → click **📝 Register Exam Preparation**
+2. Describe goal in natural language → Dispatcher extracts certification code
+3. **Cert recommendation** — system explains why this cert fits the role, shows level / study hours / validity
+4. **Background survey offer** — Yes → LPC scoring (1–5 per topic) → personalised study hours · Skip → default hours
+5. **Study Plan** generated and saved; view in sidebar
+6. Enter per-module session loop
+
+### Returning User
+Loads saved state, restores plan thread, enters session loop directly — no LPC or SPG re-run.
+
+### Per-Module Session Loop
+
+```
+1. Check exit conditions (all passed / exam tomorrow / cert retired)
+2. Show current module + days until exam
+3. Log hours studied today → Engagement Agent check-in
+4. "Have you completed [module]?"
+   ├─ Not yet → offer plan adjustment
+   └─ Yes → Assessment (5 adaptive questions in dialog)
+             ├─ Pass ≥ 80% → advance module, save score to history
+             └─ Fail < 80% → auto-adjust plan (focus on weakest module)
+5. "Continue today?" → Yes: next module / No: Manager Insights → end session
+```
+
+---
+
+## Test Users (TEAM-PE — Platform Engineering Team)
+
+| ID | Name | Role | Demo Scenario |
+|---|---|---|---|
+| `L-TEST-001` | Alice | Cloud Engineer | Returning user — AZ-204 in progress, study plan saved, 1 module passed |
+| `L-TEST-002` | Bob | DevOps Engineer | New user — no exam registered, full flow demo |
+| `L-TEST-003` | Charlie | Senior Solutions Architect | 7 certs held, no new exam planned, cert renewals tracked |
+| `MGR-PE` | Dory | Manager | Manager view — team dashboard via Managing Dashboard button |
 
 ---
 
@@ -96,9 +201,11 @@ Serves two functions:
 ```
 tat-reasoning-agent/
 ├── app.py                          # Streamlit UI — main entry point
-├── main.py                         # CLI entry point for quick testing
-├── dev_reset.py                    # Resets learner_performance.json to baseline
+├── main.py                         # CLI entry point
+├── dev_reset.py                    # Resets L-TEST-* records to baseline
 ├── requirements.txt
+├── .streamlit/
+│   └── config.toml                 # Theme: primaryColor = rgb(30, 58, 95)
 ├── agents/
 │   ├── dispatcher.py
 │   ├── learning_path_curator.py
@@ -107,24 +214,16 @@ tat-reasoning-agent/
 │   ├── assessment_agent.py
 │   └── manager_insights_agent.py
 └── data/
-    ├── certifications.json         # Fabric IQ simulation — cert catalogue with skill modules
-    ├── learner_performance.json    # Learner records, scores, and progress
-    ├── work_activity_signals.json  # Work IQ simulation — meeting load, focus hours
-    ├── manager_team_config.json    # Team composition and approved certification scope
-    ├── manager_role_config.json    # Role-based certification recommendations
-    ├── saved_questions.json        # Questions bookmarked by the learner during assessment
-    └── knowledge/                  # Foundry IQ knowledge base (uploaded to Azure AI Search)
-        ├── az-104.md
-        ├── az-204.md
-        ├── az-305.md
-        ├── az-400.md
-        ├── az-500.md
-        ├── az-900.md
-        ├── azure-solutions-architect-expert.md
-        ├── devops-engineer-expert.md
-        ├── dp-300.md
-        ├── dp-700.md
-        └── sc-900.md
+    ├── certifications.json         # 11 certifications — modules, weights, retirement status
+    ├── learner_performance.json    # Learner records, scores, study plans, module progress
+    ├── work_activity_signals.json  # Meeting load, focus hours, preferred learning slots
+    ├── manager_team_config.json    # 6 teams — approved certification scope
+    ├── manager_role_config.json    # Role-based certification fallback lists
+    ├── saved_questions.json        # Bookmarked assessment questions (runtime)
+    └── knowledge/                  # Foundry IQ knowledge base (Azure AI Search)
+        ├── az-104.md · az-204.md · az-305.md · az-400.md · az-500.md · az-900.md
+        ├── azure-solutions-architect-expert.md · devops-engineer-expert.md
+        └── dp-300.md · dp-700.md · sc-900.md
 ```
 
 ---
@@ -135,7 +234,8 @@ tat-reasoning-agent/
 
 - Python 3.11+
 - Azure subscription with an Azure AI Foundry project
-- Azure AI Search index named `cert-knowledge-base-index` populated with files from `data/knowledge/`
+- Azure AI Search index `cert-knowledge-base-index` populated with `data/knowledge/`
+- IAM roles on the Search resource: `Search Index Data Reader` · `Search Service Contributor`
 
 ### Install
 
@@ -143,7 +243,6 @@ tat-reasoning-agent/
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-pip install streamlit
 ```
 
 ### Environment Variables
@@ -156,7 +255,7 @@ AZURE_AI_MODEL_DEPLOYMENT=gpt-4o
 FOUNDRY_KNOWLEDGE_BASE_CONNECTION_ID=<azure-ai-search-connection-id>
 ```
 
-Authentication uses `DefaultAzureCredential`. Run `az login` before starting the app.
+Authentication uses `DefaultAzureCredential`. Run `az login` before starting.
 
 ### Run
 
@@ -166,37 +265,22 @@ streamlit run app.py
 
 ---
 
-## Learner Session Flow
-
-1. Sign in with a learner ID (e.g. `L-TEST-001`)
-2. **Learning Path Curator** — self-score background topics, receive cited learning resources
-3. **Study Plan Generator** — view a personalised weekly study plan; adjust via natural language
-4. **Engagement Agent** — check in on progress, receive workload-aware reminders
-5. **Assessment Agent** — attempt a graded module assessment with adaptive questions; bookmark questions for later review
-6. Pass (≥ 80%) → recommended for the next certification. Fail → looped back to Study Plan Generator with weak areas highlighted.
-7. **Manager view** — managers can check team readiness, at-risk learners, and common weak modules at any time.
-
----
-
 ## Responsible AI
 
-- **Input filtering** is enforced at the Dispatcher — requests unrelated to certification preparation are not routed to specialist agents.
-- **Source grounding** — the Assessment Agent and Learning Path Curator are instructed to use Azure AI Search and must not generate content from memory. Unverifiable sources are flagged as `[unverified]`.
-- **No PII** — all learner identifiers are synthetic (L-TEST-001, EMP-001). The Manager Insights Agent aggregates data and does not surface individual sensitive details.
-- **Retirement warnings** — learners and managers are proactively warned when a target certification has a known retirement date.
+- **Input guard** — enforced before the Dispatcher; off-topic requests are not routed to specialist agents.
+- **Source grounding** — Assessment Agent and LPC must use Azure AI Search; memory-generated content is blocked. Unverifiable sources are flagged `[unverified]`.
+- **No PII** — all identifiers are synthetic. Manager Insights aggregates team data without surfacing individual sensitive details.
+- **Retirement warnings** — proactive warnings at registration and in the sidebar whenever a target certification has a known retirement date.
 
 ---
 
 ## Dev Utilities
 
 ```bash
-# Reset learner_performance.json to baseline (wipes scores and progress)
-python dev_reset.py
-
-# CLI smoke test — runs the full agent chain without the UI
-python main.py
+python dev_reset.py    # Reset L-TEST-* records to baseline
+streamlit run app.py   # Launch UI
 ```
 
 ---
 
-Built for the Agents League Hackathon 2026 — Reasoning Agents Track (Battle #2).
+Built for the Agents League Hackathon 2026 — Reasoning Agents Track.

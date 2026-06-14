@@ -34,7 +34,7 @@ You will receive team-level certification data including:
 
 Your job is to:
 1. Summarise the team's overall certification readiness
-2. Highlight at-risk learners (without exposing sensitive personal details beyond what is necessary)
+2. Highlight at-risk learners (without exposing sensitive personal details beyond what is necessary). A learner with no active certification (certification: null) must NOT be considered at-risk — they simply have no current enrollment.
 3. Identify the most common weak areas across the team
 4. Provide actionable recommendations for the manager
 
@@ -150,9 +150,10 @@ def _calculate_team_stats(team_id: str) -> dict:
         progress = _calculate_progress(hours_studied, adjusted_hours)
         total_progress += progress
 
-        # Find weakest module
+        # Find weakest module — scores may be a list (multi-attempt); use the latest value
         module_scores = learner.get("skill_module_scores") or {}
-        weakest = min(module_scores, key=module_scores.get) if module_scores else None
+        def _latest(v): return v[-1] if isinstance(v, list) else v
+        weakest = min(module_scores, key=lambda k: _latest(module_scores[k])) if module_scores else None
         if weakest:
             all_weak_modules.append(weakest)
 
@@ -160,6 +161,7 @@ def _calculate_team_stats(team_id: str) -> dict:
             "learner_id": learner["learner_id"],
             "role": learner.get("role"),
             "certification": cert_code,
+            "certifications_held": learner.get("certifications_held") or [],
             "hours_studied": hours_studied,
             "adjusted_study_hours": adjusted_hours,
             "progress_percentage": progress,
@@ -348,6 +350,9 @@ Team Stats:
             .strip()
         )
         parsed = json.loads(cleaned)
+        if parsed:
+            parsed["at_risk_learners"] = stats["at_risk_learners"]
+            parsed["at_risk_count"] = len(stats["at_risk_learners"])
     except json.JSONDecodeError:
         pass
 
