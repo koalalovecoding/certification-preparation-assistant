@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.svg" alt="Certification Preparation Assistant" width="480" />
+</p>
+
 # Certification Coach Agent
 
 An enterprise certification preparation system built for the **Agents League Hackathon 2026** (Reasoning Agents Track). It helps organisations manage employee technical certification readiness through a multi-agent AI system built on **Azure AI Foundry**.
