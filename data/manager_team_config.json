@@ -33,5 +33,12 @@
     "manager_id": "MGR-005",
     "primary_roles": ["Cloud Engineer", "Security Engineer"],
     "approved_certifications": ["AZ-900", "AZ-104", "SC-900"]
+  },
+  {
+    "team_id": "TEAM-PE",
+    "team_name": "Platform Engineering Team",
+    "manager_id": "MGR-PE",
+    "primary_roles": ["Cloud Engineer", "DevOps Engineer", "Senior Solutions Architect"],
+    "approved_certifications": ["AZ-104", "AZ-204", "AZ-305", "AZ-400"]
   }
 ]

@@ -29,6 +29,19 @@ Available agents:
 - assessment_agent: Evaluates readiness with grounded practice questions.
 - manager_insights_agent: Summarises team-level certification progress.
 
+Known certifications (map names OR codes to the code):
+- AZ-900: Azure Fundamentals
+- AZ-104: Azure Administrator Associate
+- AZ-204: Azure Developer Associate
+- AZ-305: Azure Solutions Architect Expert
+- AZ-400: DevOps Engineer Expert
+- AZ-500: Azure Security Engineer Associate
+- SC-900: Security, Compliance, and Identity Fundamentals
+- DP-300: Azure Database Administrator Associate
+- DP-700: Microsoft Fabric Data Engineer Associate
+- DP-900: Azure Data Fundamentals
+- SC-200: Microsoft Security Operations Analyst
+
 Respond in this JSON format:
 {
   "route": "<agent_name>",
@@ -36,7 +49,7 @@ Respond in this JSON format:
   "payload": {
     "user_input": "<original user message>",
     "extracted_intent": "<what the user wants>",
-    "certification": "<certification code if mentioned, else null>",
+    "certification": "<certification code if the user mentioned a cert name or code, else null>",
     "role": "<job role if mentioned, else null>",
     "team_id": "<team ID if mentioned e.g. TEAM-A, TEAM-B, else null>"
   }

@@ -64,11 +64,35 @@
     "preferred_learning_slot": "Morning"
   },
   {
-  "employee_id": "EMP-TEST-001",
-  "learner_id": "L-TEST-001",
-  "team_id": "TEAM-A",
-  "meeting_hours_per_week": 15,
-  "focus_hours_per_week": 18,
-  "preferred_learning_slot": "Morning"
-}
+    "employee_id": "EMP-TEST-001",
+    "learner_id": "L-TEST-001",
+    "team_id": "TEAM-PE",
+    "meeting_hours_per_week": 15,
+    "focus_hours_per_week": 18,
+    "preferred_learning_slot": "Morning"
+  },
+  {
+    "employee_id": "EMP-TEST-002",
+    "learner_id": "L-TEST-002",
+    "team_id": "TEAM-PE",
+    "meeting_hours_per_week": 22,
+    "focus_hours_per_week": 20,
+    "preferred_learning_slot": "Monday, Tuesday, Friday 3:00-5:00 PM"
+  },
+  {
+    "employee_id": "EMP-TEST-003",
+    "learner_id": "L-TEST-003",
+    "team_id": "TEAM-PE",
+    "meeting_hours_per_week": 30,
+    "focus_hours_per_week": 4,
+    "preferred_learning_slot": "Early Morning"
+  },
+  {
+    "employee_id": "EMP-MGR-PE",
+    "learner_id": "MGR-PE",
+    "team_id": "TEAM-PE",
+    "meeting_hours_per_week": 35,
+    "focus_hours_per_week": 3,
+    "preferred_learning_slot": "Morning"
+  }
 ]

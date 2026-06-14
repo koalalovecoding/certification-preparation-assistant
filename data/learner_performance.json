@@ -118,7 +118,8 @@
   },
   {
     "learner_id": "L-TEST-001",
-    "team_id": "TEAM-A",
+    "name": "Alice",
+    "team_id": "TEAM-PE",
     "role": "Cloud Engineer",
     "certification": "AZ-204",
     "certifications_held": [],
@@ -217,5 +218,66 @@
       }
     },
     "current_module_index": 1
+  },
+  {
+    "learner_id": "L-TEST-002",
+    "name": "Bob",
+    "team_id": "TEAM-PE",
+    "role": "DevOps Engineer",
+    "certification": null,
+    "certifications_held": [
+      "AZ-104"
+    ],
+    "certifications_renewal_dates": {
+      "AZ-104": "2026-10-15"
+    },
+    "practice_score_avg": null,
+    "hours_studied": 0,
+    "exam_outcome": null,
+    "days_until_exam": null,
+    "exam_date": null,
+    "skill_module_scores": null
+  },
+  {
+    "learner_id": "L-TEST-003",
+    "name": "Charlie",
+    "team_id": "TEAM-PE",
+    "role": "Senior Solutions Architect",
+    "certification": null,
+    "certifications_held": [
+      "AZ-900",
+      "AZ-104",
+      "AZ-204",
+      "AZ-305",
+      "AZ-400",
+      "AZ-500",
+      "SC-900"
+    ],
+    "certifications_renewal_dates": {
+      "AZ-104": "2026-09-20",
+      "AZ-305": "2027-02-14",
+      "AZ-400": "2026-11-30"
+    },
+    "practice_score_avg": 91.0,
+    "hours_studied": 0,
+    "exam_outcome": null,
+    "days_until_exam": null,
+    "exam_date": null,
+    "skill_module_scores": null
+  },
+  {
+    "learner_id": "MGR-PE",
+    "name": "Dory",
+    "team_id": "TEAM-PE",
+    "role": "Manager",
+    "is_manager": true,
+    "certification": null,
+    "certifications_held": [],
+    "practice_score_avg": null,
+    "hours_studied": 0,
+    "exam_outcome": null,
+    "days_until_exam": null,
+    "exam_date": null,
+    "skill_module_scores": null
   }
 ]

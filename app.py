@@ -28,12 +28,11 @@ st.set_page_config(
 )
 
 # ── Constants ──────────────────────────────────────────────────────────────
-LEARNER_ID    = "L-TEST-001"
+# ss.learner_id is now dynamic — stored in ss.learner_id, set at login
 DATA_PATH     = Path("data/learner_performance.json")
 SAVED_Q_PATH  = Path("data/saved_questions.json")   # [CHANGE 6] saved questions file
 
 SCORE_LABELS = {
-    0: "0 — No experience",
     1: "1 — Heard of it",
     2: "2 — Basic understanding",
     3: "3 — Somewhat familiar",
@@ -46,19 +45,19 @@ def load_learner() -> dict:
     with open(DATA_PATH) as f:
         raw = json.load(f)
     if isinstance(raw, list):
-        return next((l for l in raw if l.get("learner_id") == LEARNER_ID), {})
-    return raw.get(LEARNER_ID, {})
+        return next((l for l in raw if l.get("learner_id") == ss.learner_id), {})
+    return raw.get(ss.learner_id, {})
 
 def save_learner_fields(**fields):
     with open(DATA_PATH) as f:
         raw = json.load(f)
     if isinstance(raw, list):
         for l in raw:
-            if l.get("learner_id") == LEARNER_ID:
+            if l.get("learner_id") == ss.learner_id:
                 l.update(fields)
                 break
     else:
-        raw.setdefault(LEARNER_ID, {}).update(fields)
+        raw.setdefault(ss.learner_id, {}).update(fields)
     with open(DATA_PATH, "w") as f:
         json.dump(raw, f, indent=2)
 
@@ -69,9 +68,9 @@ def save_question(q_data: dict, eval_data: dict):
             data = json.load(f)
     else:
         data = {}
-    if LEARNER_ID not in data:
-        data[LEARNER_ID] = []
-    data[LEARNER_ID].append({
+    if ss.learner_id not in data:
+        data[ss.learner_id] = []
+    data[ss.learner_id].append({
         "question":   q_data,
         "evaluation": eval_data,
         "module":     st.session_state.get("current_mod", ""),
@@ -87,7 +86,7 @@ def load_saved_questions() -> list:
         return []
     with open(SAVED_Q_PATH) as f:
         data = json.load(f)
-    return data.get(LEARNER_ID, [])
+    return data.get(ss.learner_id, [])
 
 def days_until(date_str) -> int | None:
     if not date_str:
@@ -168,6 +167,7 @@ def add_msg(role: str, content: str, msg_type: str = "text", data: dict = None):
 _DEFAULTS = {
     "logged_in":            False,
     "username":             "",
+    "learner_id":           "",
     "learner":              {},
     "phase":                "login",
     "messages":             [],
@@ -180,6 +180,7 @@ _DEFAULTS = {
     "lpc_result":           None,
     "lpc_warnings":         [],
     "target_cert":          None,
+    "reg_payload":          None,   # payload stored during cert_confirm / survey_confirm flow
     # Study plan
     "plan_result":          None,
     "plan_thread_id":       None,
@@ -206,6 +207,8 @@ _DEFAULTS = {
     "no_study_dates":       [],
     "pending_no_study":     None,
     "pending_restore_study": None,
+    # Exam registration dialog
+    "exam_register_open":   False,
     # Pending action
     "pending":              None,
     # Exam date
@@ -409,6 +412,7 @@ def show_plan_dialog():
         # Render any list-focus weeks (edge case from LLM grouping multiple modules)
         for w in _list_focus_weeks:
             _render_week(w)
+
 
 # [CHANGE 6] Saved Questions dialog ────────────────────────────────────────
 @st.dialog("🔖 Saved Questions", width="medium")
@@ -662,8 +666,8 @@ def _handle_assessment_finish():
         existing.append(score)
     else:
         ss.skill_scores[ss.current_mod] = [score]
-    complete_module(LEARNER_ID, ss.current_mod, score)
-    final = calculate_final_score(LEARNER_ID, cert)
+    complete_module(ss.learner_id, ss.current_mod, score)
+    final = calculate_final_score(ss.learner_id, cert)
 
     # Post result to chat
     result_text = (
@@ -714,6 +718,9 @@ def render_sidebar():
             section[data-testid="stSidebar"] [data-testid="stMetric"] { padding: 2px 0 !important; }
             section[data-testid="stSidebar"] [data-testid="stProgress"] { margin: 3px 0 !important; }
             section[data-testid="stSidebar"] .stExpander { margin: 2px 0 !important; }
+            [data-testid="stSlider"] [role="slider"] { background-color: rgb(30, 58, 95) !important; border-color: rgb(30, 58, 95) !important; }
+            [data-testid="stSlider"] [role="progressbar"] { background-color: rgb(30, 58, 95) !important; }
+            [data-testid="stSlider"] p { color: rgb(30, 58, 95) !important; }
             </style>""",
             unsafe_allow_html=True,
         )
@@ -737,15 +744,32 @@ def render_sidebar():
             _init_state()
             st.rerun()
 
+        # Managing Dashboard — only for managers
+        if learner.get("is_manager"):
+            if st.button("📊 Managing Dashboard", use_container_width=True, key="mgr_dashboard_btn"):
+                ss.pending = {"action": "manager_insights"}
+                ss.phase   = "session"
+                st.rerun()
+
+        # Compute cert early — needed for Register Exam button visibility
+        cert = (
+            ss.target_cert
+            or (learner.get("lpc_output") or {}).get("recommended_certification")
+        )
+
+        # Register Exam Preparation — always visible, allows re-registration for new exams
+        if st.button("📝 Register Exam Preparation", use_container_width=True, key="register_exam_btn"):
+            add_msg(
+                "assistant",
+                "Let's get you registered! Please fill in your exam details below.",
+                msg_type="exam_register",
+            )
+            st.rerun()
+
         st.divider()
 
         # ── Target certification ───────────────────────────────────────────
         st.markdown("**🎯 Target Certification**")
-        cert = (
-            ss.target_cert
-            or (learner.get("lpc_output") or {}).get("recommended_certification")
-            or learner.get("certification")
-        )
         if cert:
             with open("data/certifications.json") as _f:
                 _certs = json.load(_f)
@@ -757,6 +781,35 @@ def render_sidebar():
                     st.caption(f"⚠️ {w}")
         else:
             st.caption("_Appears after learning path setup_")
+
+        # ── Certifications held ────────────────────────────────────────────
+        certs_held = learner.get("certifications_held") or []
+        if certs_held:
+            st.divider()
+            st.markdown("**🏅 Certifications Held**")
+            with open("data/certifications.json") as _f:
+                _all_certs = json.load(_f)
+            _cert_map     = {c["certification_code"]: c for c in _all_certs}
+            _renewal_dates = learner.get("certifications_renewal_dates") or {}
+            # Fundamentals certs don't require renewal
+            _FUNDAMENTALS = {"AZ-900", "SC-900", "DP-900", "AI-900", "MS-900"}
+            for c in certs_held:
+                _info    = _cert_map.get(c, {})
+                _ret     = _info.get("retirement_status", {})
+                _ret_date = _ret.get("retirement_date")
+                _retired  = _ret.get("is_retired", False)
+                _renewal  = _renewal_dates.get(c)
+                if _retired:
+                    st.markdown(f"☑ `{c}` ⚠️ *Retired*")
+                elif _ret_date:
+                    st.markdown(f"☑ `{c}`")
+                    st.caption(f"Retires {_ret_date}")
+                elif c in _FUNDAMENTALS:
+                    st.markdown(f"☑ `{c}`")
+                    st.caption("No renewal required")
+                elif _renewal:
+                    st.markdown(f"☑ `{c}`")
+                    st.caption(f"Renew by {_renewal}")
 
         # ── Background scores (collapsible, after slider submission) ───────
         if ss.background_submitted and ss.background_scores:
@@ -777,26 +830,29 @@ def render_sidebar():
         if st.button("🔖 Saved Questions", use_container_width=True):
             show_saved_questions_dialog()
 
-        # ── Exam countdown ─────────────────────────────────────────────────
-        exam_date = ss.exam_date or learner.get("exam_date")
-        if exam_date:
-            d = days_until(exam_date)
-            if d is None:
-                pass
-            elif d > 1:
-                st.metric("📆 Days until exam", d)
-            elif d == 1:
-                st.warning("📆 Exam is **tomorrow**!")
-            elif d == 0:
-                st.error("📆 Exam is **today**!")
-            else:
-                st.error("⚠️ Exam date has passed")
-        elif ss.phase not in ("login",):
-            val = st.date_input("📆 Set exam date", value=None, min_value=datetime.date.today())
-            if val:
-                ss.exam_date = val.isoformat()
-                save_learner_fields(exam_date=ss.exam_date)
-                st.rerun()
+        # ── Exam countdown — only show after user completes registration flow ─
+        # Use ss.target_cert (set in cert_confirm) or lpc_output (completed LPC).
+        # Do NOT fall back to learner["certification"] alone — it may be stale test data.
+        _countdown_cert = (
+            ss.target_cert
+            or (learner.get("lpc_output") or {}).get("recommended_certification")
+        )
+        _exam_date = ss.exam_date or (learner.get("exam_date") if _countdown_cert else None)
+        _scheduled = [(_countdown_cert, _exam_date)] if (_countdown_cert and _exam_date) else []
+        if _scheduled:
+            st.markdown("**📆 Days until exam**")
+            for _ec, _ed in _scheduled:
+                _d = days_until(_ed)
+                if _d is None:
+                    pass
+                elif _d > 1:
+                    st.markdown(f"`{_ec}` &nbsp; **{_d}** days")
+                elif _d == 1:
+                    st.warning(f"`{_ec}` — Exam is **tomorrow**!")
+                elif _d == 0:
+                    st.error(f"`{_ec}` — Exam is **today**!")
+                else:
+                    st.error(f"`{_ec}` — Exam date has passed")
 
         # ── Module progress bars ───────────────────────────────────────────
         mods   = ss.unique_mods or unique_modules(learner.get("study_plan", []))
@@ -829,38 +885,60 @@ def render_sidebar():
                         st.caption(f"Assessment history: {history_str}")
 
         # ── Calendar ──────────────────────────────────────────────────────
-        if has_plan:
-            import calendar as _cal
-            st.divider()
-            today  = datetime.date.today()
-            st.markdown(f"**📅 {today.strftime('%B %Y')}**")
-            # Weekday header
-            hcols = st.columns(7)
-            for i, d in enumerate(["Mo","Tu","We","Th","Fr","Sa","Su"]):
-                hcols[i].markdown(f"<div style='text-align:center;font-size:0.75rem;color:grey'>{d}</div>", unsafe_allow_html=True)
-            # Build full month grid (padded to start on correct weekday)
-            _, days_in_month = _cal.monthrange(today.year, today.month)
-            first_weekday = datetime.date(today.year, today.month, 1).weekday()
-            month_days = [None] * first_weekday + [
-                datetime.date(today.year, today.month, d) for d in range(1, days_in_month + 1)
-            ]
-            # Pad to complete last row
-            while len(month_days) % 7:
-                month_days.append(None)
-            for week_start in range(0, len(month_days), 7):
-                wcols = st.columns(7)
-                for i, day in enumerate(month_days[week_start:week_start + 7]):
-                    if day is None:
-                        wcols[i].write("")
-                        continue
-                    day_str = day.isoformat()
-                    is_off     = day_str in ss.no_study_dates
-                    is_past    = day < today
-                    is_weekend = day.weekday() >= 5
-                    label      = f"🚫 {day.day}" if is_off else str(day.day)
-                    if is_past or is_weekend:
-                        wcols[i].button(label, key=f"cal_past_{day_str}", disabled=True, use_container_width=True)
-                    elif wcols[i].button(label, key=f"cal_{day_str}", help=day.strftime("%a %b %d"), use_container_width=True):
+        import calendar as _cal
+
+        # Derive auto rest days from Work IQ preferred_learning_slot.
+        # If the slot names specific weekdays (e.g. "Monday, Tuesday, Friday 3-5pm"),
+        # all other weekdays are automatically treated as rest days.
+        _DAY_NAMES = {"monday":0,"tuesday":1,"wednesday":2,"thursday":3,"friday":4,"saturday":5,"sunday":6}
+        try:
+            from data_utils import _noop  # won't exist — just a try block to scope imports
+        except Exception:
+            pass
+        _work_signals = next(
+            (s for s in json.load(open("data/work_activity_signals.json"))
+             if s.get("learner_id") == ss.learner_id), {}
+        )
+        _slot = (_work_signals.get("preferred_learning_slot") or "").lower()
+        # Extract day names mentioned in the slot string
+        _study_weekdays = {v for k, v in _DAY_NAMES.items() if k in _slot}
+        # Auto rest days = weekdays (Mon-Fri) NOT in the study schedule
+        _auto_rest_weekdays = (
+            {0,1,2,3,4} - _study_weekdays if _study_weekdays else set()
+        )
+
+        st.divider()
+        today  = datetime.date.today()
+        st.markdown(f"**📅 {today.strftime('%B %Y')}**")
+        # Weekday header
+        hcols = st.columns(7)
+        for i, d in enumerate(["Mo","Tu","We","Th","Fr","Sa","Su"]):
+            hcols[i].markdown(f"<div style='text-align:center;font-size:0.75rem;color:grey'>{d}</div>", unsafe_allow_html=True)
+        # Build full month grid (padded to start on correct weekday)
+        _, days_in_month = _cal.monthrange(today.year, today.month)
+        first_weekday = datetime.date(today.year, today.month, 1).weekday()
+        month_days = [None] * first_weekday + [
+            datetime.date(today.year, today.month, d) for d in range(1, days_in_month + 1)
+        ]
+        # Pad to complete last row
+        while len(month_days) % 7:
+            month_days.append(None)
+        for week_start in range(0, len(month_days), 7):
+            wcols = st.columns(7)
+            for i, day in enumerate(month_days[week_start:week_start + 7]):
+                if day is None:
+                    wcols[i].write("")
+                    continue
+                day_str = day.isoformat()
+                is_off      = day_str in ss.no_study_dates
+                is_past     = day < today
+                is_weekend  = day.weekday() >= 5
+                # Auto rest day: weekday not in learner's study schedule
+                is_auto_rest = day.weekday() in _auto_rest_weekdays
+                label = "🚫" if (is_off or is_auto_rest) else str(day.day)
+                if is_past or is_weekend or is_auto_rest:
+                    wcols[i].button(label, key=f"cal_past_{day_str}", disabled=True, use_container_width=True)
+                elif wcols[i].button(label, key=f"cal_{day_str}", help=day.strftime("%a %b %d"), use_container_width=True):
                         if is_off:
                             ss.pending_restore_study = day_str
                             ss.pending_no_study = None
@@ -997,6 +1075,152 @@ def render_messages():
                 else:
                     st.caption("Continuing ▶" if state.get("continue") else "Stopped for today 👋")
 
+            elif msg["type"] == "exam_register":
+                state = ss.q_states.get(f"reg_{idx}", {"answered": False})
+                st.markdown(msg["content"])
+                if not state["answered"]:
+                    with st.form(f"exam_reg_form_{idx}"):
+                        exam_date_input = st.date_input(
+                            "Target exam date",
+                            value=None,
+                            min_value=datetime.date.today(),
+                        )
+                        cert_intent = st.text_input(
+                            "What certification are you preparing for?",
+                            placeholder="e.g. I am a Data Scientist and I want to prepare for DP-300",
+                        )
+                        if st.form_submit_button("Submit →", type="primary"):
+                            if not cert_intent.strip():
+                                st.error("Please describe the certification you want to pursue.")
+                            else:
+                                # Save exam date
+                                if exam_date_input:
+                                    ss.exam_date = exam_date_input.isoformat()
+                                    save_learner_fields(exam_date=ss.exam_date)
+                                # Dispatch to get cert + role from user's message
+                                from agents.dispatcher import dispatch
+                                from agents.manager_insights_agent import get_scope
+                                learner = load_learner()
+                                result  = dispatch(cert_intent)
+                                parsed  = parse_json_safe(result.get("raw", "")) or {}
+                                dp      = parsed.get("payload", {})
+                                payload = {
+                                    "role":         dp.get("role") or learner.get("role"),
+                                    "certification":dp.get("certification") or learner.get("certification"),
+                                    "team_id":      dp.get("team_id") or learner.get("team_id"),
+                                    "learner_id":   ss.learner_id,
+                                }
+                                target_cert = payload.get("certification", "")
+                                # Build recommendation message from certifications.json
+                                with open("data/certifications.json") as _cf:
+                                    _all_certs = json.load(_cf)
+                                _cert_info = next(
+                                    (c for c in _all_certs if c.get("certification_code") == target_cert),
+                                    None,
+                                )
+                                if _cert_info:
+                                    _roles_str = ", ".join(_cert_info.get("target_roles", []))
+                                    _hours     = _cert_info.get("recommended_study_hours", "—")
+                                    _validity  = _cert_info.get("validity_period", "—")
+                                    _rec_msg = (
+                                        f"Based on your goal, I recommend **{target_cert} — "
+                                        f"{_cert_info['certification_name']}**.\n\n"
+                                        f"This is a **{_cert_info.get('certification_level', '')}**-level "
+                                        f"certification designed for: {_roles_str}. "
+                                        f"It covers CI/CD pipelines, infrastructure as code, source control "
+                                        f"automation, and continuous delivery with Azure.\n\n"
+                                        f"**Recommended study hours:** {_hours}h · "
+                                        f"**Validity:** {_validity}\n\n"
+                                        f"Would you like to prepare for **{target_cert}**?"
+                                    )
+                                else:
+                                    _rec_msg = (
+                                        f"Based on your goal, I recommend preparing for **{target_cert}**.\n\n"
+                                        f"Would you like to proceed with this certification?"
+                                    )
+                                # Check retirement warnings for this specific cert
+                                scope = get_scope(payload)
+                                for w in scope.get("warnings", []):
+                                    if not target_cert or w.get("certification") == target_cert:
+                                        add_msg("assistant", f"⚠️ {w.get('message', w)}")
+                                ss.q_states[f"reg_{idx}"] = {"answered": True}
+                                add_msg("user", cert_intent)
+                                ss.reg_payload = payload
+                                add_msg("assistant", _rec_msg, msg_type="cert_confirm",
+                                        data={"cert_code": target_cert})
+                                st.rerun()
+                else:
+                    st.caption("Exam registration submitted ✓")
+
+            elif msg["type"] == "cert_confirm":
+                state    = ss.q_states.get(f"cconf_{idx}", {"answered": False})
+                data     = msg.get("data") or {}
+                cert_code = data.get("cert_code", "")
+                st.markdown(msg["content"])
+                if not state["answered"]:
+                    c1, c2 = st.columns(2)
+                    if c1.button(f"✅ Yes, I want to prepare for {cert_code}",
+                                 key=f"cconf_yes_{idx}", type="primary"):
+                        ss.q_states[f"cconf_{idx}"] = {"answered": True, "confirmed": True}
+                        save_learner_fields(certification=cert_code)
+                        ss.target_cert = cert_code
+                        add_msg("user", f"Yes, I want to prepare for {cert_code}.")
+                        add_msg(
+                            "assistant",
+                            "Great! Would you like to do a quick background knowledge survey? "
+                            "It helps personalise your study hours based on what you already know.",
+                            msg_type="survey_confirm",
+                        )
+                        st.rerun()
+                    if c2.button("🔄 Choose a different cert", key=f"cconf_no_{idx}"):
+                        ss.q_states[f"cconf_{idx}"] = {"answered": True, "confirmed": False}
+                        add_msg("user", "I'd like to choose a different certification.")
+                        add_msg("assistant",
+                                "No problem! Click **📝 Register Exam Preparation** in the sidebar "
+                                "to start over with a different certification.")
+                        st.rerun()
+                else:
+                    if state.get("confirmed"):
+                        st.caption(f"Confirmed: {cert_code} ✅")
+                    else:
+                        st.caption("Cancelled 🔄")
+
+            elif msg["type"] == "survey_confirm":
+                state = ss.q_states.get(f"sconf_{idx}", {"answered": False})
+                st.markdown(msg["content"])
+                if not state["answered"]:
+                    c1, c2 = st.columns(2)
+                    if c1.button("📊 Yes, let's personalise", key=f"sconf_yes_{idx}", type="primary"):
+                        ss.q_states[f"sconf_{idx}"] = {"answered": True, "survey": True}
+                        add_msg("user", "Yes, I'd like to do the background survey.")
+                        ss.pending = {"action": "lpc_start", "payload": ss.reg_payload}
+                        ss.phase   = "lpc"
+                        st.rerun()
+                    if c2.button("⏭ Skip for now", key=f"sconf_no_{idx}"):
+                        ss.q_states[f"sconf_{idx}"] = {"answered": True, "survey": False}
+                        add_msg("user", "I'll skip the survey for now.")
+                        # Build a default LPC output so SPG can proceed without background scores
+                        with open("data/certifications.json") as _cf2:
+                            _all_certs2 = json.load(_cf2)
+                        _ci = next(
+                            (c for c in _all_certs2
+                             if c.get("certification_code") == ss.target_cert), {}
+                        )
+                        default_lpc = {
+                            "status": "complete",
+                            "recommended_certification": ss.target_cert,
+                            "study_hours_multiplier": 1.0,
+                            "adjusted_study_hours": _ci.get("recommended_study_hours", 40),
+                            "background_summary": {},
+                            "learning_resources": [],
+                            "warnings": [],
+                        }
+                        ss.pending = {"action": "spg_generate", "parsed": default_lpc}
+                        ss.phase   = "lpc"
+                        st.rerun()
+                else:
+                    st.caption("Survey done 📊" if state.get("survey") else "Survey skipped ⏭")
+
             elif msg["type"] == "question":
                 # [CHANGE 3] Questions now open in dialog — show placeholder only
                 # This branch handles any legacy question messages in history
@@ -1018,7 +1242,7 @@ def execute_pending():
         learner    = load_learner()
         lpc_output = learner.get("lpc_output") or {}
         payload = {
-            "learner_id":                LEARNER_ID,
+            "learner_id":                ss.learner_id,
             "recommended_certification": lpc_output.get("recommended_certification") or learner.get("certification"),
             "adjusted_study_hours":      lpc_output.get("adjusted_study_hours") or learner.get("adjusted_study_hours"),
             "background_summary":        lpc_output.get("background_summary", {}),
@@ -1086,7 +1310,7 @@ def execute_pending():
         from agents.study_plan_generator import generate as spg_generate
         lpc_parsed = action.get("parsed") or (ss.lpc_result or {}).get("parsed") or {}
         payload = {
-            "learner_id":                LEARNER_ID,
+            "learner_id":                ss.learner_id,
             "recommended_certification": lpc_parsed.get("recommended_certification"),
             "adjusted_study_hours":      lpc_parsed.get("adjusted_study_hours"),
             "background_summary":        lpc_parsed.get("background_summary", {}),
@@ -1176,7 +1400,7 @@ def execute_pending():
         from agents.engagement_agent import check_in
         learner = load_learner()
         payload = {
-            "learner_id":           LEARNER_ID,
+            "learner_id":           ss.learner_id,
             "adjusted_study_hours": (
                 ss.plan_payload.get("adjusted_study_hours") if ss.plan_payload
                 else learner.get("adjusted_study_hours", 20)
@@ -1219,7 +1443,7 @@ def execute_pending():
         payload = {
             "certification_code": cert,
             "module_name":        mod,
-            "learner_id":         LEARNER_ID,
+            "learner_id":         ss.learner_id,
             "max_questions":      5,
             "prior_module_score": prior,
         }
@@ -1249,7 +1473,7 @@ def execute_pending():
             if ss.plan_thread_id and ss.plan_payload:
                 result = spg_adjust(ss.plan_thread_id, ss.plan_agent_id, adj_request, ss.plan_payload)
             else:
-                result = spg_generate(ss.plan_payload or {"learner_id": LEARNER_ID})
+                result = spg_generate(ss.plan_payload or {"learner_id": ss.learner_id})
         ss.plan_result = result
         plan_data      = result.get("plan_data") or {}
         weekly_plan    = plan_data.get("weekly_plan", [])
@@ -1290,17 +1514,20 @@ def render_login():
         st.caption("Enterprise Learning Management · Your Personal Certification Coach")
         st.markdown("<br>", unsafe_allow_html=True)
 
-        username = st.text_input("Username", placeholder="Enter your name")
-        password = st.text_input("Password", type="password", placeholder="Enter any password")
+        learner_id_input = st.text_input("Learner ID", placeholder="e.g. L-TEST-001")
+        password         = st.text_input("Password", type="password", placeholder="Enter any password")
         st.markdown("<br>", unsafe_allow_html=True)
 
         if st.button("Sign in →", type="primary", use_container_width=True):
-            if not username.strip():
-                st.error("Please enter a username.")
+            if not learner_id_input.strip():
+                st.error("Please enter your Learner ID.")
                 return
+            # Set learner_id before calling load_learner() — it reads from ss.learner_id
+            ss.learner_id   = learner_id_input.strip()
             learner         = load_learner()
             ss.logged_in    = True
-            ss.username     = username.strip()
+            # Display name comes from the learner's JSON record, fallback to learner ID
+            ss.username     = learner.get("name") or learner_id_input.strip()
             ss.learner      = learner
             ss.exam_date    = learner.get("exam_date")
             ss.skill_scores = learner.get("skill_module_scores") or {}
@@ -1349,7 +1576,7 @@ def handle_chat_input(user_input: str):
             "role":          dp.get("role") or ss.learner.get("role"),
             "certification": dp.get("certification") or ss.learner.get("certification"),
             "team_id":       dp.get("team_id") or ss.learner.get("team_id"),
-            "learner_id":    LEARNER_ID,
+            "learner_id":    ss.learner_id,
         }
         add_msg("assistant", f"Routing to **{route.replace('_', ' ').title()}** — {reason}")
 
