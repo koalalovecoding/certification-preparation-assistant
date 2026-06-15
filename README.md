@@ -1,41 +1,5 @@
 <p align="center">
-<svg width="600" viewBox="0 0 680 410" role="img" xmlns="http://www.w3.org/2000/svg">
-  <title>Certification Preparation Assistant logo</title>
-  <desc>A certification badge icon with neural graph and checkmark, with Work IQ, Fabric IQ, Foundry IQ pills</desc>
-  <defs>
-    <style>
-      .logo-title { font-family: sans-serif; font-size: 26px; font-weight: 500; fill: #111; }
-      .logo-sub   { font-family: sans-serif; font-size: 13px; font-weight: 400; fill: #555; letter-spacing: 0.10em; }
-      .logo-tag   { font-family: sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 0.04em; }
-    </style>
-  </defs>
-  <path d="M340 60 L400 88 L400 168 Q400 220 340 248 Q280 220 280 168 L280 88 Z" fill="#2563EB"/>
-  <path d="M340 72 L390 96 L390 166 Q390 210 340 234 Q290 210 290 166 L290 96 Z" fill="#1D4ED8"/>
-  <circle cx="340" cy="115" r="7" fill="#BAE6FD"/>
-  <circle cx="320" cy="130" r="4" fill="#93C5FD"/>
-  <circle cx="360" cy="130" r="4" fill="#93C5FD"/>
-  <circle cx="315" cy="155" r="4" fill="#93C5FD"/>
-  <circle cx="365" cy="155" r="4" fill="#93C5FD"/>
-  <circle cx="340" cy="170" r="4" fill="#93C5FD"/>
-  <line x1="340" y1="115" x2="320" y2="130" stroke="#60A5FA" stroke-width="1.5"/>
-  <line x1="340" y1="115" x2="360" y2="130" stroke="#60A5FA" stroke-width="1.5"/>
-  <line x1="320" y1="130" x2="315" y2="155" stroke="#60A5FA" stroke-width="1.5"/>
-  <line x1="360" y1="130" x2="365" y2="155" stroke="#60A5FA" stroke-width="1.5"/>
-  <line x1="315" y1="155" x2="340" y2="170" stroke="#60A5FA" stroke-width="1.5"/>
-  <line x1="365" y1="155" x2="340" y2="170" stroke="#60A5FA" stroke-width="1.5"/>
-  <path d="M323 190 L335 204 L358 178" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <polygon points="272,72 274,78 280,78 275,82 277,88 272,84 267,88 269,82 264,78 270,78" fill="#FCD34D"/>
-  <polygon points="408,72 410,78 416,78 411,82 413,88 408,84 403,88 405,82 400,78 406,78" fill="#FCD34D"/>
-  <text x="340" y="292" text-anchor="middle" class="logo-title">Certification Preparation Assistant</text>
-  <text x="340" y="316" text-anchor="middle" class="logo-sub">YOUR AI. YOUR PACE. YOUR CERTIFICATION.</text>
-  <line x1="210" y1="330" x2="470" y2="330" stroke="#ddd" stroke-width="1"/>
-  <rect x="196" y="342" width="84" height="24" rx="12" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
-  <text x="238" y="358" text-anchor="middle" class="logo-tag" fill="#1D4ED8">Work IQ</text>
-  <rect x="298" y="342" width="84" height="24" rx="12" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
-  <text x="340" y="358" text-anchor="middle" class="logo-tag" fill="#15803D">Fabric IQ</text>
-  <rect x="400" y="342" width="84" height="24" rx="12" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
-  <text x="442" y="358" text-anchor="middle" class="logo-tag" fill="#B45309">Foundry IQ</text>
-</svg>
+  <img src="assets/logo.svg" alt="Certification Preparation Assistant" width="600" />
 </p>
 
 <p align="center">
