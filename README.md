@@ -7,6 +7,22 @@
 </p>
 
 
+## Table of Contents
+
+- [What It Does](#what-it-does)
+- [Reasoning Design](#reasoning-design)
+- [Agent Architecture](#agent-architecture)
+- [Manager-Controlled Scope Injection](#manager-controlled-scope-injection)
+- [Microsoft IQ Layers](#microsoft-iq-layers)
+- [Streamlit UI](#streamlit-ui)
+- [Learner Session Flow](#learner-session-flow)
+- [Test Users](#test-users-team-pe--platform-engineering-team)
+- [Project Structure](#project-structure)
+- [Setup](#setup)
+- [Responsible AI](#responsible-ai)
+
+---
+
 ## What It Does
 
 Most certification tools stop at individual learners, providing a syllabus and a bank of practice questions. Built on **Azure AI Foundry** and powered by **Work IQ**, **Fabric IQ**, and **Foundry IQ**, Certification Preparation Assistant introduces a **dual-track** certification experience: a personalized learning assistant for individual contributors and a certification intelligence platform for team leads.
@@ -19,6 +35,41 @@ For **team leads**, it extends beyond exam preparation. Managers can recommend c
 
 ---
 
+
+## Reasoning Design
+
+Agents in this system do not reason freely. Two mechanisms work together to keep every output grounded and within bounds.
+
+The first is a **policy framework** set by the team's manager. Approved certification scope, role constraints, and individual exam recommendations are injected at routing time before any agent begins reasoning. Every downstream recommendation operates inside these constraints. A learner never sees a certification their manager has not approved.
+
+The second is **source grounding**. The Assessment Agent and the Learning Path Curator are prohibited from generating content from model memory. All questions and cited resources must originate from the Azure AI Search index over the knowledge base. Sources are validated against a known set; any unverifiable reference is flagged as `[unverified]` rather than silently passed through. This eliminates a class of hallucination where a model confidently cites a resource that does not exist.
+
+Together, policy sets the outer boundary and grounding sets the factual boundary. Agents reason within a defined space, not an open one.
+
+| Agent | Reasoning Pattern | What it prevents |
+|---|---|---|
+| Manager Insights | Constraint-first reasoning | Agents cannot recommend outside approved scope, eliminating an entire class of policy violations |
+| Learning Path Curator | Calibrated personalization | Study hours derived from demonstrated knowledge gaps, not a fixed estimate |
+| Study Plan Generator | Reality-anchored scheduling | Plan built from actual work capacity signals, not idealized availability |
+| Assessment Agent | Ability-tracking adaptation | Difficulty adjusts to demonstrated performance in real time, not preset levels |
+| Engagement Agent | Multi-signal triage | Workload, progress, and exam deadline combined into a single urgency decision |
+
+### Manager-Scoped Reasoning
+`get_scope()` runs before any agent makes a recommendation. It applies a three-layer fallback — team config → role config → certification target roles — and returns the approved scope as a hard constraint. Every downstream agent respects this boundary. A learner never sees certifications their manager has not approved.
+
+### Score-Driven Study Hour Adjustment
+The Learning Path Curator collects background familiarity scores (0–5) across all prerequisite topics. It computes a `study_hours_multiplier` from the average: Score 5 → 0.33× (expert), Score 0 → 1.5× (novice). This calculation happens before any LLM call.
+
+### Work-Signal-Aware Plan Generation
+The Study Plan Generator reads `work_activity_signals.json` first. Focus hours × 30% sets the weekly study budget. A past exam outcome applies an efficiency multiplier (Pass → 0.85×, Fail → 1.2×). Modules are ordered by weak-area priority. If projected completion exceeds the exam date, a risk flag is raised — all before the LLM generates output.
+
+### Adaptive Assessment Difficulty
+The Assessment Agent adjusts difficulty after every answer: correct → harder, wrong → easier. Final score is a weighted average across modules using `certifications.json` weights.
+
+### Multi-Factor Urgency Classification
+The Engagement Agent classifies workload (High ≥ 20 meeting hrs / Medium 12–19 / Low < 12), computes progress percentage, and assigns urgency (Critical / At Risk / On Track). The LLM receives this structured context and generates a message adapted to the learner's actual situation.
+
+---
 
 ## Agent Architecture
 
