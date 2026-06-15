@@ -1,41 +1,169 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="Certification Preparation Assistant" width="480" />
+<svg width="600" viewBox="0 0 680 410" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Certification Preparation Assistant logo</title>
+  <desc>A certification badge icon with neural graph and checkmark, with Work IQ, Fabric IQ, Foundry IQ pills</desc>
+  <defs>
+    <style>
+      .logo-title { font-family: sans-serif; font-size: 26px; font-weight: 500; fill: #111; }
+      .logo-sub   { font-family: sans-serif; font-size: 13px; font-weight: 400; fill: #555; letter-spacing: 0.10em; }
+      .logo-tag   { font-family: sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 0.04em; }
+    </style>
+  </defs>
+  <path d="M340 60 L400 88 L400 168 Q400 220 340 248 Q280 220 280 168 L280 88 Z" fill="#2563EB"/>
+  <path d="M340 72 L390 96 L390 166 Q390 210 340 234 Q290 210 290 166 L290 96 Z" fill="#1D4ED8"/>
+  <circle cx="340" cy="115" r="7" fill="#BAE6FD"/>
+  <circle cx="320" cy="130" r="4" fill="#93C5FD"/>
+  <circle cx="360" cy="130" r="4" fill="#93C5FD"/>
+  <circle cx="315" cy="155" r="4" fill="#93C5FD"/>
+  <circle cx="365" cy="155" r="4" fill="#93C5FD"/>
+  <circle cx="340" cy="170" r="4" fill="#93C5FD"/>
+  <line x1="340" y1="115" x2="320" y2="130" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="340" y1="115" x2="360" y2="130" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="320" y1="130" x2="315" y2="155" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="360" y1="130" x2="365" y2="155" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="315" y1="155" x2="340" y2="170" stroke="#60A5FA" stroke-width="1.5"/>
+  <line x1="365" y1="155" x2="340" y2="170" stroke="#60A5FA" stroke-width="1.5"/>
+  <path d="M323 190 L335 204 L358 178" fill="none" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="272,72 274,78 280,78 275,82 277,88 272,84 267,88 269,82 264,78 270,78" fill="#FCD34D"/>
+  <polygon points="408,72 410,78 416,78 411,82 413,88 408,84 403,88 405,82 400,78 406,78" fill="#FCD34D"/>
+  <text x="340" y="292" text-anchor="middle" class="logo-title">Certification Preparation Assistant</text>
+  <text x="340" y="316" text-anchor="middle" class="logo-sub">YOUR AI. YOUR PACE. YOUR CERTIFICATION.</text>
+  <line x1="210" y1="330" x2="470" y2="330" stroke="#ddd" stroke-width="1"/>
+  <rect x="196" y="342" width="84" height="24" rx="12" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+  <text x="238" y="358" text-anchor="middle" class="logo-tag" fill="#1D4ED8">Work IQ</text>
+  <rect x="298" y="342" width="84" height="24" rx="12" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1"/>
+  <text x="340" y="358" text-anchor="middle" class="logo-tag" fill="#15803D">Fabric IQ</text>
+  <rect x="400" y="342" width="84" height="24" rx="12" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+  <text x="442" y="358" text-anchor="middle" class="logo-tag" fill="#B45309">Foundry IQ</text>
+</svg>
 </p>
 
-# Certification Coach Agent
+<p align="center">
+  <strong>Agents League Hackathon 2026 · Reasoning Agents Track</strong>
+</p>
 
-An enterprise certification preparation system built for the **Agents League Hackathon 2026** (Reasoning Agents Track). It helps organisations manage employee technical certification readiness through a multi-agent AI system built on **Azure AI Foundry**.
+
+## What It Does
+
+Most certification tools stop at individual learners, providing a syllabus and a bank of practice questions. Built on **Azure AI Foundry** and powered by **Work IQ**, **Fabric IQ**, and **Foundry IQ**, Certification Preparation Assistant introduces a **dual-track** certification experience: a personalized learning assistant for individual contributors and a certification intelligence platform for team leads.
+
+For **learners**, it adapts study plans to existing knowledge, current certifications, renewal deadlines, real work commitments, and exam timelines.
+
+For **team leads**, it extends beyond exam preparation. Managers can recommend certifications to specific employees, define approved certification pathways for entire teams, and gain real-time visibility into organizational knowledge coverage and certification progress.
 
 > **Note:** All learner, team, and work-activity data in this repository is entirely synthetic and contains no real personally identifiable information (PII). It is provided for demonstration purposes only.
 
 ---
 
-## What It Does
-
-Certification Coach Agent acts as a personal AI coach for every employee preparing for a Microsoft Azure certification. It knows their work schedule, their background knowledge, their exam date, and how they've performed in practice — and it adapts its guidance accordingly.
-
-For managers, it provides a real-time view of team readiness, at-risk learners, and common knowledge gaps.
-
----
 
 ## Agent Architecture
 
 The system follows a **Hub-and-Spoke** pattern with a Responsible AI input guard. All user interactions flow through the Dispatcher, which routes to the appropriate specialist agent.
 
-```
-User Input (Streamlit UI)
-        ↓
-  [Input Guard]          ← Responsible AI scoring (pre-Dispatcher)
-        ↓
-  [Dispatcher]           ← Routes to correct agent
-        │
-   ┌────┼────┬──────────────┬──────────────┐
-   ▼    ▼    ▼              ▼              ▼
-[LPC] [SPG] [Engagement] [Assessment] [Manager Insights]
-```
+<p align="center">
+<svg width="560" viewBox="0 0 680 570" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>System Architecture</title>
+<defs>
+  <marker id="ab2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ac2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ag2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#B4B2A9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- USERS -->
+<rect x="40" y="28" width="110" height="40" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="95" y="48" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#0C447C">Learners</text>
+
+<rect x="530" y="28" width="110" height="40" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="585" y="48" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#712B13">Team leads</text>
+
+<!-- STREAMLIT UI -->
+<rect x="230" y="106" width="220" height="44" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="340" y="128" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#0C447C">Streamlit UI</text>
+
+<!-- INPUT GUARD -->
+<rect x="265" y="188" width="150" height="56" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="340" y="207" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#085041">Input Guard</text>
+<text x="340" y="227" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" font-weight="400" fill="#085041">Responsible AI</text>
+
+<!-- HUB -->
+<rect x="230" y="276" width="220" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="1"/>
+<text x="340" y="304" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#3C3489">Dispatcher (hub)</text>
+
+<!-- AGENTS -->
+<rect x="40" y="390" width="108" height="56" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="94" y="410" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#0C447C">LPC</text>
+<text x="94" y="430" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" font-weight="400" fill="#0C447C">Learning path</text>
+
+<rect x="163" y="390" width="108" height="56" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="217" y="410" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#0C447C">SPG</text>
+<text x="217" y="430" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" font-weight="400" fill="#0C447C">Study plan</text>
+
+<rect x="286" y="390" width="108" height="56" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="340" y="418" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#0C447C">Engagement</text>
+
+<rect x="409" y="390" width="108" height="56" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="463" y="418" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#0C447C">Assessment</text>
+
+<rect x="532" y="390" width="108" height="56" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text x="586" y="410" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#0C447C">Manager</text>
+<text x="586" y="430" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" font-weight="400" fill="#0C447C">Insights</text>
+
+<!-- IQ LAYERS -->
+<rect x="40" y="490" width="187" height="48" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="133" y="507" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#633806">Foundry IQ</text>
+<text x="133" y="526" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" font-weight="400" fill="#633806">Azure AI Search</text>
+
+<rect x="247" y="490" width="186" height="48" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="340" y="507" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#633806">Work IQ</text>
+<text x="340" y="526" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" font-weight="400" fill="#633806">work_activity_signals</text>
+
+<rect x="453" y="490" width="187" height="48" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text x="546" y="507" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="14" font-weight="500" fill="#633806">Fabric IQ</text>
+<text x="546" y="526" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" font-weight="400" fill="#633806">certifications.json</text>
+
+<!-- CONNECTIONS -->
+<line x1="150" y1="66" x2="273" y2="106" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+<line x1="530" y1="66" x2="407" y2="106" stroke="#D85A30" stroke-width="1.8" marker-start="url(#ac2)" marker-end="url(#ac2)"/>
+<line x1="335" y1="150" x2="335" y2="188" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+<line x1="345" y1="150" x2="345" y2="188" stroke="#D85A30" stroke-width="1.8" marker-start="url(#ac2)" marker-end="url(#ac2)"/>
+<line x1="335" y1="244" x2="335" y2="276" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+<line x1="345" y1="244" x2="345" y2="276" stroke="#D85A30" stroke-width="1.8" marker-start="url(#ac2)" marker-end="url(#ac2)"/>
+<line x1="280" y1="332" x2="148" y2="393" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+<line x1="310" y1="332" x2="247" y2="390" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+<line x1="340" y1="332" x2="340" y2="390" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+<line x1="370" y1="332" x2="433" y2="390" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+<line x1="405" y1="332" x2="540" y2="390" stroke="#D85A30" stroke-width="2" marker-start="url(#ac2)" marker-end="url(#ac2)"/>
+<line x1="396" y1="332" x2="532" y2="390" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+
+<!-- IQ CONNECTIONS -->
+<line x1="94" y1="446" x2="110" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<line x1="100" y1="446" x2="500" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<line x1="210" y1="446" x2="300" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<line x1="222" y1="446" x2="515" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<line x1="326" y1="446" x2="325" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<line x1="352" y1="446" x2="528" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<line x1="445" y1="446" x2="172" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<line x1="474" y1="446" x2="540" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<line x1="578" y1="446" x2="570" y2="490" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+
+<!-- LEGEND -->
+<line x1="40" y1="554" x2="66" y2="554" stroke="#378ADD" stroke-width="1.5" marker-start="url(#ab2)" marker-end="url(#ab2)"/>
+<text x="72" y="554" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" fill="#5F5E5A">learner flow</text>
+<line x1="190" y1="554" x2="216" y2="554" stroke="#D85A30" stroke-width="1.8" marker-start="url(#ac2)" marker-end="url(#ac2)"/>
+<text x="222" y="554" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" fill="#5F5E5A">team lead path</text>
+<line x1="368" y1="554" x2="394" y2="554" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="4,3" marker-end="url(#ag2)"/>
+<text x="400" y="554" dominant-baseline="central" font-family="system-ui,sans-serif" font-size="12" fill="#5F5E5A">IQ read (one-way)</text>
+</svg>
+</p>
 
 ### Dispatcher
-**File:** `agents/dispatcher.py`
+**File:** `app.py`
 
 Central hub. Receives raw user input, extracts intent, job role, and certification (maps full cert names to codes, e.g. "DevOps Engineer Expert" → AZ-400), and returns a structured routing decision. Passes extracted context downstream to all specialist agents.
 
@@ -44,8 +172,8 @@ Central hub. Receives raw user input, extracts intent, job role, and certificati
 
 Two-phase session:
 
-- **Phase 1 — Background Familiarity Check:** Presents a self-scoring table (1–5) across all recommended background topics for the target certification.
-- **Phase 2 — Learning Path Output:** Uses Azure AI Search (Foundry IQ) to retrieve cited resources. Calculates `study_hours_multiplier` from background scores (Score 5 → 0.33×, Score 1 → 1.25×) and produces `adjusted_study_hours`. Unverifiable sources are flagged as `[unverified]`.
+- **Phase 1 — Background Familiarity Check:** Presents a self-scoring table (0–5) across all recommended background topics for the target certification.
+- **Phase 2 — Learning Path Output:** Uses Azure AI Search (Foundry IQ) to retrieve cited resources. Calculates `study_hours_multiplier` from background scores (Score 5 → 0.33×, Score 0 → 1.5×) and produces `adjusted_study_hours`. Unverifiable sources are flagged as `[unverified]`.
 
 Calls `manager_insights_agent.get_scope()` to determine approved certifications before making recommendations.
 
@@ -57,7 +185,7 @@ Two-layer design:
 - **Python layer:** Reads `work_activity_signals.json` (focus hours × 30% = weekly study budget), applies efficiency multiplier (Pass → 0.85×, Fail → 1.2×, None → 1.0×), orders modules by weak-area priority, detects scheduling risk if projected completion exceeds exam date.
 - **LLM layer:** Generates natural language weekly plan with timing recommendations and weak-area analysis.
 
-Supports dynamic adjustment via persistent thread — learner can request changes ("I can't study on Fridays") and the plan recalculates.
+Supports dynamic adjustment via persistent thread: learner can request changes ("I can't study on Fridays") and the plan recalculates.
 
 ### Engagement Agent
 **File:** `agents/engagement_agent.py`
@@ -77,10 +205,11 @@ Supports dynamic adjustment via persistent thread — learner can request change
 ### Manager Insights Agent
 **File:** `agents/manager_insights_agent.py`
 
-Two functions:
+Three responsibilities:
 
-1. **`get_scope(payload)`** — Pure Python. Returns the approved certification list for a given role or team. Lookup order: `team_id` → role → `certifications.json` target_roles. Emits retirement warnings (AZ-204 retiring 2026-07-31, AZ-500 retiring 2026-08-31).
-2. **`get_insights(payload)`** — Python calculates team-level stats; LLM generates a manager summary with actionable recommendations. Individual sensitive data is not surfaced.
+1. **Scope Management**  Team leads define approved certifications for their team via the Managing Dashboard. `get_scope(payload)` enforces this at runtime: lookup order is `team_id` → role → `certifications.json` target_roles. Emits retirement warnings (AZ-204 retiring 2026-07-31, AZ-500 retiring 2026-08-31).
+2. **`get_insights(payload)`**  Python calculates team-level stats; LLM generates a manager summary with actionable recommendations. Individual sensitive data is not surfaced.
+3. **Exam recommendations**  Managers can recommend specific certifications with deadlines to individual learners via the Managing Dashboard. Recommendations are stored in `manager_exam_recs.json` and surfaced to learners during registration.
 
 ---
 
@@ -95,6 +224,7 @@ One of the more interesting design patterns in this system is **manager-controll
 3. When any learner on that team starts their journey, the **Dispatcher** calls `get_scope()` from the Manager Insights Agent before routing to the Learning Path Curator.
 4. `get_scope()` reads the manager-defined approved list and returns it as a constraint.
 5. The Learning Path Curator and other downstream agents respect this scope — they will only recommend certifications the manager has approved.
+6. Managers can also recommend a specific certification with a deadline to an individual learner directly from the dashboard. The recommendation is stored in `manager_exam_recs.json` and surfaced to that learner during registration.
 
 **Why this matters:**
 
@@ -124,32 +254,32 @@ This is a clean separation: **managers inject policy**, **agents enforce it**, *
 
 #### Sidebar Sections
 
-| Section | Description |
-|---|---|
-| Account block | Username · Role · Team · Log out |
-| Register Exam Preparation | Opens inline chat flow — describe intent, set exam date, confirm recommended cert |
-| Managing Dashboard | Managers only — team readiness summary |
-| Target Certification | Appears after cert is confirmed via registration |
-| Background Scores | Collapsible, shown after LPC Phase 1 submission |
-| Study Plan | Opens dialog — weekly plan filtered to incomplete modules only |
-| Saved Questions | Opens dialog — questions bookmarked during assessment |
+| Section | Description                                                                        |
+|---|------------------------------------------------------------------------------------|
+| Account block | Username · Role · Team · Log out                                                   |
+| Register Exam Preparation | Opens inline chat flow — describe intent, set exam date, confirm recommended cert  |
+| Managing Dashboard | Managers only: team readiness summary                                              |
+| Target Certification | Appears after cert is confirmed via registration                                   |
+| Background Scores | Collapsible, shown after LPC Phase 1 submission                                    |
+| Study Plan | Opens dialog: weekly plan filtered to incomplete modules only                      |
+| Saved Questions | Opens dialog: questions bookmarked during assessment                               |
 | Days until exam | One row per cert (`AZ-400  47 days`), shown only after registration, updates daily |
-| Certifications Held | All held certs with retirement dates and renewal deadlines |
-| Module Progress | ☑ completed · ☐ in progress with last 3 assessment scores |
-| Calendar | Auto-marks rest days from Work IQ preferred slots; user can toggle any day |
+| Certifications Held | All held certs with retirement dates and renewal deadlines                         |
+| Module Progress | ☑ completed · ☐ in progress with last 3 assessment scores                          |
+| Calendar | Auto-marks rest days from Work IQ preferred slots; user can toggle any day         |
 
 #### Chat Message Types
 
-| Type | Description |
-|---|---|
-| `text` | Standard assistant / user message |
-| `exam_register` | Inline form — exam date picker + cert intent input |
+| Type | Description                                                                    |
+|---|--------------------------------------------------------------------------------|
+| `text` | Standard assistant / user message                                              |
+| `exam_register` | Inline form: exam date picker + cert intent input                              |
 | `cert_confirm` | Confirm recommended certification; sets Target Certification in sidebar on Yes |
 | `survey_confirm` | Offer background knowledge survey; Skip goes directly to SPG with default hours |
-| `slider_form` | Background scoring 1–5 per topic, single submission |
-| `hours_input` | Hours studied today |
-| `completion_check` | Yes / Not yet — module completion |
-| `continue_check` | Continue / Stop for today |
+| `slider_form` | Background scoring 1–5 per topic, single submission                            |
+| `hours_input` | Hours studied today                                                            |
+| `completion_check` | Yes / Not yet  module completion                                               |
+| `continue_check` | Continue / Stop for today                                                      |
 
 #### Assessment Dialog
 
@@ -165,8 +295,8 @@ This is a clean separation: **managers inject policy**, **agents enforce it**, *
 ### New User
 1. Log in → click **📝 Register Exam Preparation**
 2. Describe goal in natural language → Dispatcher extracts certification code
-3. **Cert recommendation** — system explains why this cert fits the role, shows level / study hours / validity
-4. **Background survey offer** — Yes → LPC scoring (1–5 per topic) → personalised study hours · Skip → default hours
+3. **Cert recommendation**  system explains why this cert fits the role, shows level / study hours / validity
+4. **Background survey offer**  Yes → LPC scoring (1–5 per topic) → personalised study hours · Skip → default hours
 5. **Study Plan** generated and saved; view in sidebar
 6. Enter per-module session loop
 
@@ -191,12 +321,12 @@ Loads saved state, restores plan thread, enters session loop directly — no LPC
 
 ## Test Users (TEAM-PE — Platform Engineering Team)
 
-| ID | Name | Role | Demo Scenario |
-|---|---|---|---|
+| ID | Name | Role | Demo Scenario                                                         |
+|---|---|---|-----------------------------------------------------------------------|
 | `L-TEST-001` | Alice | Cloud Engineer | Returning user — AZ-204 in progress, study plan saved, 1 module passed |
-| `L-TEST-002` | Bob | DevOps Engineer | New user — no exam registered, full flow demo |
-| `L-TEST-003` | Charlie | Senior Solutions Architect | 7 certs held, no new exam planned, cert renewals tracked |
-| `MGR-PE` | Dory | Manager | Manager view — team dashboard via Managing Dashboard button |
+| `L-TEST-002` | Bob | DevOps Engineer | New user: no exam registered, full flow demo                          |
+| `L-TEST-003` | Charlie | Senior Solutions Architect | 7 certs held, no new exam planned, cert renewals tracked              |
+| `MGR-PE` | Dory | Manager | Manager view: team dashboard via Managing Dashboard button            |
 
 ---
 
@@ -204,7 +334,7 @@ Loads saved state, restores plan thread, enters session loop directly — no LPC
 
 ```
 tat-reasoning-agent/
-├── app.py                          # Streamlit UI — main entry point
+├── app.py                          # Streamlit UI: main entry point
 ├── main.py                         # CLI entry point
 ├── dev_reset.py                    # Resets L-TEST-* records to baseline
 ├── requirements.txt
@@ -271,10 +401,10 @@ streamlit run app.py
 
 ## Responsible AI
 
-- **Input guard** — enforced before the Dispatcher; off-topic requests are not routed to specialist agents.
-- **Source grounding** — Assessment Agent and LPC must use Azure AI Search; memory-generated content is blocked. Unverifiable sources are flagged `[unverified]`.
-- **No PII** — all identifiers are synthetic. Manager Insights aggregates team data without surfacing individual sensitive details.
-- **Retirement warnings** — proactive warnings at registration and in the sidebar whenever a target certification has a known retirement date.
+- **Input guard**  enforced before the Dispatcher; off-topic requests are not routed to specialist agents.
+- **Source grounding**  Assessment Agent and LPC must use Azure AI Search; memory-generated content is blocked. Unverifiable sources are flagged `[unverified]`.
+- **No PII**  all identifiers are synthetic. Manager Insights aggregates team data without surfacing individual sensitive details.
+- **Retirement warnings**  proactive warnings at registration and in the sidebar whenever a target certification has a known retirement date.
 
 ---
 
