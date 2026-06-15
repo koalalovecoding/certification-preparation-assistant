@@ -77,6 +77,346 @@
       },
       "module": "Connect to and consume Azure services and third-party services",
       "saved_at": "2026-06-13T16:26:30.824760"
+    },
+    {
+      "question": {
+        "question_number": 2,
+        "max_questions": 5,
+        "question": "When configuring Azure Event Grid, what is an essential step for enabling event publishing to a topic?",
+        "options": {
+          "A": "Specify a globally unique topic name.",
+          "B": "Enable the Always Encrypted feature.",
+          "C": "Link directly with Azure Service Bus Queues.",
+          "D": "Integrate with the Azure Logic Apps Workflow."
+        },
+        "source": "az-204.md",
+        "difficulty": "hard"
+      },
+      "evaluation": {
+        "raw": "{\n  \"status\": \"evaluated\",\n  \"question_number\": 2,\n  \"correct\": true,\n  \"correct_answer\": \"A\",\n  \"encouragement\": \"Brilliant work! You're on a roll!\",\n  \"explanation\": \"For Azure Event Grid, specifying a globally unique topic name is necessary to enable event publishing to a topic and prevent naming conflicts.\",\n  \"knowledge_point\": \"A globally unique topic name is essential in Azure Event Grid to facilitate event publishing and distinguish the topic from others.\",\n  \"study_recommendation\": null,\n  \"source\": \"az-204.md\",\n  \"next_question\": {\n    \"question_number\": 3,\n    \"max_questions\": 5,\n    \"question\": \"What benefit does implementing Azure Service Bus with sessions provide?\",\n    \"options\": {\n      \"A\": \"Higher message throughput.\",\n      \"B\": \"Message deduplication.\",\n      \"C\": \"Message ordering within a session.\",\n      \"D\": \"Reduced message latency.\"\n    },\n    \"source\": \"az-204.md\",\n    \"difficulty\": \"hard\"\n  }\n}",
+        "parsed": {
+          "status": "evaluated",
+          "question_number": 2,
+          "correct": true,
+          "correct_answer": "A",
+          "encouragement": "Brilliant work! You're on a roll!",
+          "explanation": "For Azure Event Grid, specifying a globally unique topic name is necessary to enable event publishing to a topic and prevent naming conflicts.",
+          "knowledge_point": "A globally unique topic name is essential in Azure Event Grid to facilitate event publishing and distinguish the topic from others.",
+          "study_recommendation": null,
+          "source": "az-204.md",
+          "next_question": {
+            "question_number": 3,
+            "max_questions": 5,
+            "question": "What benefit does implementing Azure Service Bus with sessions provide?",
+            "options": {
+              "A": "Higher message throughput.",
+              "B": "Message deduplication.",
+              "C": "Message ordering within a session.",
+              "D": "Reduced message latency."
+            },
+            "source": "az-204.md",
+            "difficulty": "hard"
+          }
+        },
+        "status": "evaluated",
+        "thread_id": "thread_hFccSdjHtTiSNkZw4UmSBL2K",
+        "agent_id": "asst_apuaZvseTBdgOenwpWEGmnsr",
+        "_selected": "A"
+      },
+      "module": "Connect to and consume Azure services and third-party services",
+      "saved_at": "2026-06-14T00:11:33.909668"
+    },
+    {
+      "question": {
+        "question_number": 2,
+        "max_questions": 5,
+        "question": "When configuring Azure Event Grid, what is an essential step for enabling event publishing to a topic?",
+        "options": {
+          "A": "Specify a globally unique topic name.",
+          "B": "Enable the Always Encrypted feature.",
+          "C": "Link directly with Azure Service Bus Queues.",
+          "D": "Integrate with the Azure Logic Apps Workflow."
+        },
+        "source": "az-204.md",
+        "difficulty": "hard"
+      },
+      "evaluation": {
+        "raw": "{\n  \"status\": \"evaluated\",\n  \"question_number\": 2,\n  \"correct\": true,\n  \"correct_answer\": \"A\",\n  \"encouragement\": \"Brilliant work! You're on a roll!\",\n  \"explanation\": \"For Azure Event Grid, specifying a globally unique topic name is necessary to enable event publishing to a topic and prevent naming conflicts.\",\n  \"knowledge_point\": \"A globally unique topic name is essential in Azure Event Grid to facilitate event publishing and distinguish the topic from others.\",\n  \"study_recommendation\": null,\n  \"source\": \"az-204.md\",\n  \"next_question\": {\n    \"question_number\": 3,\n    \"max_questions\": 5,\n    \"question\": \"What benefit does implementing Azure Service Bus with sessions provide?\",\n    \"options\": {\n      \"A\": \"Higher message throughput.\",\n      \"B\": \"Message deduplication.\",\n      \"C\": \"Message ordering within a session.\",\n      \"D\": \"Reduced message latency.\"\n    },\n    \"source\": \"az-204.md\",\n    \"difficulty\": \"hard\"\n  }\n}",
+        "parsed": {
+          "status": "evaluated",
+          "question_number": 2,
+          "correct": true,
+          "correct_answer": "A",
+          "encouragement": "Brilliant work! You're on a roll!",
+          "explanation": "For Azure Event Grid, specifying a globally unique topic name is necessary to enable event publishing to a topic and prevent naming conflicts.",
+          "knowledge_point": "A globally unique topic name is essential in Azure Event Grid to facilitate event publishing and distinguish the topic from others.",
+          "study_recommendation": null,
+          "source": "az-204.md",
+          "next_question": {
+            "question_number": 3,
+            "max_questions": 5,
+            "question": "What benefit does implementing Azure Service Bus with sessions provide?",
+            "options": {
+              "A": "Higher message throughput.",
+              "B": "Message deduplication.",
+              "C": "Message ordering within a session.",
+              "D": "Reduced message latency."
+            },
+            "source": "az-204.md",
+            "difficulty": "hard"
+          }
+        },
+        "status": "evaluated",
+        "thread_id": "thread_hFccSdjHtTiSNkZw4UmSBL2K",
+        "agent_id": "asst_apuaZvseTBdgOenwpWEGmnsr",
+        "_selected": "A"
+      },
+      "module": "Connect to and consume Azure services and third-party services",
+      "saved_at": "2026-06-14T00:11:35.967724"
+    },
+    {
+      "question": {
+        "question_number": 2,
+        "max_questions": 5,
+        "question": "When configuring Azure Event Grid, what is an essential step for enabling event publishing to a topic?",
+        "options": {
+          "A": "Specify a globally unique topic name.",
+          "B": "Enable the Always Encrypted feature.",
+          "C": "Link directly with Azure Service Bus Queues.",
+          "D": "Integrate with the Azure Logic Apps Workflow."
+        },
+        "source": "az-204.md",
+        "difficulty": "hard"
+      },
+      "evaluation": {
+        "raw": "{\n  \"status\": \"evaluated\",\n  \"question_number\": 2,\n  \"correct\": true,\n  \"correct_answer\": \"A\",\n  \"encouragement\": \"Brilliant work! You're on a roll!\",\n  \"explanation\": \"For Azure Event Grid, specifying a globally unique topic name is necessary to enable event publishing to a topic and prevent naming conflicts.\",\n  \"knowledge_point\": \"A globally unique topic name is essential in Azure Event Grid to facilitate event publishing and distinguish the topic from others.\",\n  \"study_recommendation\": null,\n  \"source\": \"az-204.md\",\n  \"next_question\": {\n    \"question_number\": 3,\n    \"max_questions\": 5,\n    \"question\": \"What benefit does implementing Azure Service Bus with sessions provide?\",\n    \"options\": {\n      \"A\": \"Higher message throughput.\",\n      \"B\": \"Message deduplication.\",\n      \"C\": \"Message ordering within a session.\",\n      \"D\": \"Reduced message latency.\"\n    },\n    \"source\": \"az-204.md\",\n    \"difficulty\": \"hard\"\n  }\n}",
+        "parsed": {
+          "status": "evaluated",
+          "question_number": 2,
+          "correct": true,
+          "correct_answer": "A",
+          "encouragement": "Brilliant work! You're on a roll!",
+          "explanation": "For Azure Event Grid, specifying a globally unique topic name is necessary to enable event publishing to a topic and prevent naming conflicts.",
+          "knowledge_point": "A globally unique topic name is essential in Azure Event Grid to facilitate event publishing and distinguish the topic from others.",
+          "study_recommendation": null,
+          "source": "az-204.md",
+          "next_question": {
+            "question_number": 3,
+            "max_questions": 5,
+            "question": "What benefit does implementing Azure Service Bus with sessions provide?",
+            "options": {
+              "A": "Higher message throughput.",
+              "B": "Message deduplication.",
+              "C": "Message ordering within a session.",
+              "D": "Reduced message latency."
+            },
+            "source": "az-204.md",
+            "difficulty": "hard"
+          }
+        },
+        "status": "evaluated",
+        "thread_id": "thread_hFccSdjHtTiSNkZw4UmSBL2K",
+        "agent_id": "asst_apuaZvseTBdgOenwpWEGmnsr",
+        "_selected": "A"
+      },
+      "module": "Connect to and consume Azure services and third-party services",
+      "saved_at": "2026-06-14T00:11:39.114265"
+    },
+    {
+      "question": {
+        "question_number": 4,
+        "max_questions": 5,
+        "question": "What is a crucial step when configuring Azure Queue Storage to ensure high availability and disaster recovery for message data?",
+        "options": {
+          "A": "Enable Soft Delete for queued messages.",
+          "B": "Replicate the queue data across multiple regions.",
+          "C": "Implement HTTPS for accessing the queue.",
+          "D": "Use a direct integration with Azure Cognitive Services."
+        },
+        "source": "az-204.md",
+        "difficulty": "hard"
+      },
+      "evaluation": {
+        "raw": "{\n  \"status\": \"evaluated\",\n  \"question_number\": 4,\n  \"correct\": false,\n  \"correct_answer\": \"B\",\n  \"encouragement\": \"No worries, this is a tricky one!\",\n  \"explanation\": \"To ensure high availability and disaster recovery for Azure Queue Storage, replicating the queue data across multiple regions is a critical step.\",\n  \"knowledge_point\": \"Replicating data across multiple regions is essential for high availability and disaster recovery in Azure Queue Storage.\",\n  \"study_recommendation\": \"Review the configuration options for Azure Queue Storage, focusing on replication and disaster recovery strategies.\",\n  \"source\": \"az-204.md\",\n  \"next_question\": {\n    \"question_number\": 5,\n    \"max_questions\": 5,\n    \"question\": \"Which Azure API Management policy can be used to limit the number of API calls a user can make within a specific time period?\",\n    \"options\": {\n      \"A\": \"Quota policy\",\n      \"B\": \"Redirect policy\",\n      \"C\": \"Rate limit policy\",\n      \"D\": \"Retry policy\"\n    },\n    \"source\": \"az-204.md\",\n    \"difficulty\": \"medium\"\n  }\n}",
+        "parsed": {
+          "status": "evaluated",
+          "question_number": 4,
+          "correct": false,
+          "correct_answer": "B",
+          "encouragement": "No worries, this is a tricky one!",
+          "explanation": "To ensure high availability and disaster recovery for Azure Queue Storage, replicating the queue data across multiple regions is a critical step.",
+          "knowledge_point": "Replicating data across multiple regions is essential for high availability and disaster recovery in Azure Queue Storage.",
+          "study_recommendation": "Review the configuration options for Azure Queue Storage, focusing on replication and disaster recovery strategies.",
+          "source": "az-204.md",
+          "next_question": {
+            "question_number": 5,
+            "max_questions": 5,
+            "question": "Which Azure API Management policy can be used to limit the number of API calls a user can make within a specific time period?",
+            "options": {
+              "A": "Quota policy",
+              "B": "Redirect policy",
+              "C": "Rate limit policy",
+              "D": "Retry policy"
+            },
+            "source": "az-204.md",
+            "difficulty": "medium"
+          }
+        },
+        "status": "evaluated",
+        "thread_id": "thread_hFccSdjHtTiSNkZw4UmSBL2K",
+        "agent_id": "asst_apuaZvseTBdgOenwpWEGmnsr",
+        "_selected": "C"
+      },
+      "module": "Connect to and consume Azure services and third-party services",
+      "saved_at": "2026-06-14T00:12:46.492266"
+    },
+    {
+      "question": {
+        "question_number": 2,
+        "max_questions": 5,
+        "question": "Which Azure Cosmos DB consistency level provides the strongest guarantees for data consistency?",
+        "options": {
+          "A": "Bounded Staleness",
+          "B": "Eventual",
+          "C": "Session",
+          "D": "Strong"
+        },
+        "source": "az-204.md",
+        "difficulty": "hard"
+      },
+      "evaluation": {
+        "raw": "{\n  \"status\": \"evaluated\",\n  \"question_number\": 2,\n  \"correct\": false,\n  \"correct_answer\": \"D\",\n  \"encouragement\": \"No worries, this is a tricky one!\",\n  \"explanation\": \"The 'Strong' consistency level ensures that your application gets the highest guarantees for data consistency in Azure Cosmos DB.\",\n  \"knowledge_point\": \"The 'Strong' consistency level in Azure Cosmos DB provides guarantees of linearizability and ensures read and write operations are always synchronized.\",\n  \"study_recommendation\": \"Review the documentation on different consistency levels in Azure Cosmos DB to understand their trade-offs.\",\n  \"source\": \"az-204.md\",\n  \"next_question\": {\n    \"question_number\": 3,\n    \"max_questions\": 5,\n    \"question\": \"What is the purpose of the Azure Cosmos DB change feed?\",\n    \"options\": {\n      \"A\": \"To replicate data across different geographic regions\",\n      \"B\": \"To notify applications of inserts and updates in a container\",\n      \"C\": \"To permanently delete data after migration\",\n      \"D\": \"To capture error logs from container operations\"\n    },\n    \"source\": \"az-204.md\",\n    \"difficulty\": \"medium\"\n  }\n}",
+        "parsed": {
+          "status": "evaluated",
+          "question_number": 2,
+          "correct": false,
+          "correct_answer": "D",
+          "encouragement": "No worries, this is a tricky one!",
+          "explanation": "The 'Strong' consistency level ensures that your application gets the highest guarantees for data consistency in Azure Cosmos DB.",
+          "knowledge_point": "The 'Strong' consistency level in Azure Cosmos DB provides guarantees of linearizability and ensures read and write operations are always synchronized.",
+          "study_recommendation": "Review the documentation on different consistency levels in Azure Cosmos DB to understand their trade-offs.",
+          "source": "az-204.md",
+          "next_question": {
+            "question_number": 3,
+            "max_questions": 5,
+            "question": "What is the purpose of the Azure Cosmos DB change feed?",
+            "options": {
+              "A": "To replicate data across different geographic regions",
+              "B": "To notify applications of inserts and updates in a container",
+              "C": "To permanently delete data after migration",
+              "D": "To capture error logs from container operations"
+            },
+            "source": "az-204.md",
+            "difficulty": "medium"
+          }
+        },
+        "status": "evaluated",
+        "thread_id": "thread_IRbCHDVWNm0vMf0mBQExTWyw",
+        "agent_id": "asst_rXYMeqtSR0lakjjI91tshhnl",
+        "_selected": "C"
+      },
+      "module": "Develop for Azure storage",
+      "saved_at": "2026-06-14T16:06:56.782547"
+    },
+    {
+      "question": {
+        "question_number": 4,
+        "max_questions": 5,
+        "question": "Which of the following actions can be done using the Azure Blob Storage SDK to manage metadata?",
+        "options": {
+          "A": "Encrypt data at rest",
+          "B": "Set custom metadata key-value pairs",
+          "C": "Configure replication strategies",
+          "D": "Set a policy to delete items after expiration"
+        },
+        "source": "az-204.md",
+        "difficulty": "hard"
+      },
+      "evaluation": {
+        "raw": "{\n  \"status\": \"evaluated\",\n  \"question_number\": 4,\n  \"correct\": false,\n  \"correct_answer\": \"B\",\n  \"encouragement\": \"No worries, metadata management can be specific! Keep it up!\",\n  \"explanation\": \"Azure Blob Storage SDK allows you to manage custom metadata by setting specific key-value pairs for individual blobs.\",\n  \"knowledge_point\": \"Using Azure Blob Storage SDK, developers can set and manage custom metadata (key-value pairs) for better organization and data handling.\",\n  \"study_recommendation\": \"Review how to set and retrieve metadata using the Azure Blob Storage SDK in Microsoft's documentation.\",\n  \"source\": \"az-204.md\",\n  \"next_question\": {\n    \"question_number\": 5,\n    \"max_questions\": 5,\n    \"question\": \"Which Azure Storage feature is used to automatically manage data lifecycle by applying rules such as data deletion or tier movement?\",\n    \"options\": {\n      \"A\": \"Storage analytics logs\",\n      \"B\": \"Data Box\",\n      \"C\": \"Lifecycle management policies\",\n      \"D\": \"Managed disks\"\n    },\n    \"source\": \"az-204.md\",\n    \"difficulty\": \"medium\"\n  }\n}",
+        "parsed": {
+          "status": "evaluated",
+          "question_number": 4,
+          "correct": false,
+          "correct_answer": "B",
+          "encouragement": "No worries, metadata management can be specific! Keep it up!",
+          "explanation": "Azure Blob Storage SDK allows you to manage custom metadata by setting specific key-value pairs for individual blobs.",
+          "knowledge_point": "Using Azure Blob Storage SDK, developers can set and manage custom metadata (key-value pairs) for better organization and data handling.",
+          "study_recommendation": "Review how to set and retrieve metadata using the Azure Blob Storage SDK in Microsoft's documentation.",
+          "source": "az-204.md",
+          "next_question": {
+            "question_number": 5,
+            "max_questions": 5,
+            "question": "Which Azure Storage feature is used to automatically manage data lifecycle by applying rules such as data deletion or tier movement?",
+            "options": {
+              "A": "Storage analytics logs",
+              "B": "Data Box",
+              "C": "Lifecycle management policies",
+              "D": "Managed disks"
+            },
+            "source": "az-204.md",
+            "difficulty": "medium"
+          }
+        },
+        "status": "evaluated",
+        "thread_id": "thread_IRbCHDVWNm0vMf0mBQExTWyw",
+        "agent_id": "asst_rXYMeqtSR0lakjjI91tshhnl",
+        "_selected": "D"
+      },
+      "module": "Develop for Azure storage",
+      "saved_at": "2026-06-14T16:07:41.397243"
+    },
+    {
+      "question": {
+        "question_number": 5,
+        "max_questions": 5,
+        "question": "Which Azure Storage feature is used to automatically manage data lifecycle by applying rules such as data deletion or tier movement?",
+        "options": {
+          "A": "Storage analytics logs",
+          "B": "Data Box",
+          "C": "Lifecycle management policies",
+          "D": "Managed disks"
+        },
+        "source": "az-204.md",
+        "difficulty": "medium"
+      },
+      "evaluation": {
+        "raw": "{\n  \"status\": \"evaluated\",\n  \"question_number\": 5,\n  \"correct\": false,\n  \"correct_answer\": \"C\",\n  \"encouragement\": \"No worries, lifecycle management policies can be confusing!\",\n  \"explanation\": \"Azure lifecycle management policies enable automated rules for data movement or deletion, optimizing storage usage across tiers.\",\n  \"knowledge_point\": \"Azure Storage lifecycle management allows setting rules for automatic data tier transitions or deletion based on defined conditions.\",\n  \"study_recommendation\": \"Review how lifecycle management policies are configured in Azure Storage accounts.\",\n  \"source\": \"az-204.md\",\n  \"next_question\": null,\n  \"complete_summary\": {\n    \"status\": \"complete\",\n    \"module_name\": \"Develop for Azure storage\",\n    \"questions_asked\": 5,\n    \"correct_answers\": 2,\n    \"score_percentage\": 40.0,\n    \"difficulty_progression\": [\"medium\", \"hard\", \"medium\", \"hard\", \"medium\"],\n    \"weakest_topic\": \"Implement storage policies and data lifecycle management\",\n    \"summary\": \"You gave it your best shot! While some areas like CRUD operations and change feed were strengths, others like consistency levels and lifecycle policies could use more review. Keep up the effort, and success will follow!\"\n  }\n}",
+        "parsed": {
+          "status": "evaluated",
+          "question_number": 5,
+          "correct": false,
+          "correct_answer": "C",
+          "encouragement": "No worries, lifecycle management policies can be confusing!",
+          "explanation": "Azure lifecycle management policies enable automated rules for data movement or deletion, optimizing storage usage across tiers.",
+          "knowledge_point": "Azure Storage lifecycle management allows setting rules for automatic data tier transitions or deletion based on defined conditions.",
+          "study_recommendation": "Review how lifecycle management policies are configured in Azure Storage accounts.",
+          "source": "az-204.md",
+          "next_question": null,
+          "complete_summary": {
+            "status": "complete",
+            "module_name": "Develop for Azure storage",
+            "questions_asked": 5,
+            "correct_answers": 2,
+            "score_percentage": 40.0,
+            "difficulty_progression": [
+              "medium",
+              "hard",
+              "medium",
+              "hard",
+              "medium"
+            ],
+            "weakest_topic": "Implement storage policies and data lifecycle management",
+            "summary": "You gave it your best shot! While some areas like CRUD operations and change feed were strengths, others like consistency levels and lifecycle policies could use more review. Keep up the effort, and success will follow!"
+          }
+        },
+        "status": "evaluated",
+        "thread_id": "thread_IRbCHDVWNm0vMf0mBQExTWyw",
+        "agent_id": "asst_rXYMeqtSR0lakjjI91tshhnl",
+        "_selected": "A"
+      },
+      "module": "Develop for Azure storage",
+      "saved_at": "2026-06-14T16:07:56.066222"
     }
   ]
 }

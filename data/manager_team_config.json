@@ -74,11 +74,12 @@
       "Senior Solutions Architect"
     ],
     "approved_certifications": [
-      "AZ-104",
       "AZ-204",
       "AZ-305",
       "AZ-400",
-      "AZ-500"
+      "AZ-500",
+      "DEVOPS-ENGINEER-EXPERT",
+      "DP-300"
     ]
   }
 ]

@@ -168,6 +168,8 @@ def _resolve_intent(user_input: str, learner: dict) -> dict:
         cert_code = code_match.group(0).upper()
     else:
         for _c in _certs:
+            if not _c.get("recommended_study_hours"):
+                continue
             _words = [w for w in _c["certification_name"].lower().split() if len(w) > 4]
             if any(w in user_input.lower() for w in _words):
                 cert_code = _c["certification_code"]
@@ -1494,17 +1496,30 @@ def render_messages():
                                     (c for c in _all_certs if c.get("certification_code") == target_cert),
                                     None,
                                 )
+                                scope = get_scope(payload)
                                 if _cert_info:
-                                    _roles_str = ", ".join(_cert_info.get("target_roles", []))
-                                    _hours     = _cert_info.get("recommended_study_hours", "—")
-                                    _validity  = _cert_info.get("validity_period", "—")
+                                    _roles_str  = ", ".join(_cert_info.get("target_roles", []))
+                                    _hours      = _cert_info.get("recommended_study_hours") or "—"
+                                    _validity   = _cert_info.get("validity_period", "—")
+                                    _learner    = load_learner()
+                                    _held       = _learner.get("certifications_held") or []
+                                    _role       = _learner.get("role", "")
+                                    # Build reasons
+                                    _reasons = []
+                                    if _role in _cert_info.get("target_roles", []):
+                                        _reasons.append(f"✅ **Role match** — {target_cert} is designed for **{_role}**")
+                                    if target_cert in scope.get("approved_certifications", []):
+                                        _reasons.append(f"✅ **Team approved** — your manager has approved {target_cert} for your team")
+                                    _relevant_held = [c for c in _held if c in ["AZ-104", "AZ-900"] and target_cert not in ["AZ-900", "AZ-104"]]
+                                    if _relevant_held:
+                                        _reasons.append(f"✅ **Prerequisites met** — you already hold {', '.join(_relevant_held)}, which provides a strong foundation")
+                                    _reasons_str = "\n\n".join(_reasons)
                                     _rec_msg = (
                                         f"Based on your goal, I recommend **{target_cert} — "
                                         f"{_cert_info['certification_name']}**.\n\n"
+                                        f"**Why this certification?**\n\n{_reasons_str}\n\n"
                                         f"This is a **{_cert_info.get('certification_level', '')}**-level "
-                                        f"certification designed for: {_roles_str}. "
-                                        f"It covers CI/CD pipelines, infrastructure as code, source control "
-                                        f"automation, and continuous delivery with Azure.\n\n"
+                                        f"certification designed for: {_roles_str}.\n\n"
                                         f"**Recommended study hours:** {_hours}h · "
                                         f"**Validity:** {_validity}\n\n"
                                         f"Would you like to prepare for **{target_cert}**?"
@@ -1515,7 +1530,6 @@ def render_messages():
                                         f"Would you like to proceed with this certification?"
                                     )
                                 # Check retirement warnings for this specific cert
-                                scope = get_scope(payload)
                                 for w in scope.get("warnings", []):
                                     if not target_cert or w.get("certification") == target_cert:
                                         add_msg("assistant", f"⚠️ {w.get('message', w)}")

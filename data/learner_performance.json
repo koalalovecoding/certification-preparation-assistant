@@ -123,20 +123,24 @@
     "role": "Cloud Engineer",
     "certification": "AZ-204",
     "certifications_held": [],
-    "practice_score_avg": 81.7,
-    "hours_studied": 63.1,
-    "exam_outcome": "Pass",
+    "practice_score_avg": 78.7,
+    "hours_studied": 65.7,
+    "exam_outcome": "Fail",
     "days_until_exam": null,
     "skill_module_scores": {
       "Implement Azure security": 80.0,
       "Develop Azure compute solutions": 100.0,
       "Connect to and consume Azure services and third-party services": [
         60.0,
-        60.0
+        60.0,
+        80.0
+      ],
+      "Develop for Azure storage": [
+        40.0
       ]
     },
-    "adjusted_study_hours": 29,
-    "exam_date": "2026-07-31",
+    "adjusted_study_hours": 40,
+    "exam_date": "2026-07-24",
     "study_plan": [
       {
         "week": 1,
@@ -146,32 +150,52 @@
       {
         "week": 2,
         "focus": "Develop Azure compute solutions",
-        "hours": 3.7
+        "hours": 5.4
       },
       {
-        "week": 2,
-        "focus": "Connect to and consume Azure services and third-party services",
+        "week": 3,
+        "focus": "Develop Azure compute solutions",
         "hours": 1.7
       },
       {
         "week": 3,
         "focus": "Connect to and consume Azure services and third-party services",
-        "hours": 5.5
+        "hours": 3.7
       },
       {
         "week": 4,
-        "focus": "Develop for Azure storage",
+        "focus": "Connect to and consume Azure services and third-party services",
         "hours": 5.4
       },
       {
         "week": 5,
+        "focus": "Connect to and consume Azure services and third-party services",
+        "hours": 0.9
+      },
+      {
+        "week": 5,
+        "focus": "Develop for Azure storage",
+        "hours": 4.5
+      },
+      {
+        "week": 6,
+        "focus": "Develop for Azure storage",
+        "hours": 3.0
+      },
+      {
+        "week": 6,
+        "focus": "Implement Azure security",
+        "hours": 2.4
+      },
+      {
+        "week": 7,
         "focus": "Implement Azure security",
         "hours": 5.4
       },
       {
-        "week": 6,
+        "week": 8,
         "focus": "Monitor and troubleshoot Azure solutions",
-        "hours": 1.8
+        "hours": 2.2
       }
     ],
     "lpc_output": {
@@ -217,14 +241,14 @@
         "Debugging": 4
       }
     },
-    "current_module_index": 1
+    "current_module_index": 2
   },
   {
     "learner_id": "L-TEST-002",
     "name": "Bob",
     "team_id": "TEAM-PE",
     "role": "DevOps Engineer",
-    "certification": null,
+    "certification": "AZ-400",
     "certifications_held": [
       "AZ-104"
     ],
@@ -232,11 +256,94 @@
       "AZ-104": "2026-10-15"
     },
     "practice_score_avg": null,
-    "hours_studied": 0,
+    "hours_studied": 5.0,
     "exam_outcome": null,
     "days_until_exam": null,
-    "exam_date": null,
-    "skill_module_scores": null
+    "exam_date": "2026-07-21",
+    "skill_module_scores": null,
+    "adjusted_study_hours": 27,
+    "study_plan": [
+      {
+        "week": 1,
+        "focus": "Design and implement build and release pipelines",
+        "hours": 6.0
+      },
+      {
+        "week": 2,
+        "focus": "Design and implement build and release pipelines",
+        "hours": 6.0
+      },
+      {
+        "week": 3,
+        "focus": "Design and implement build and release pipelines",
+        "hours": 3.9
+      },
+      {
+        "week": 3,
+        "focus": "Design and implement processes and communications",
+        "hours": 2.1
+      },
+      {
+        "week": 4,
+        "focus": "Design and implement processes and communications",
+        "hours": 1.1
+      },
+      {
+        "week": 4,
+        "focus": "Design and implement a source control strategy",
+        "hours": 3.2
+      },
+      {
+        "week": 4,
+        "focus": "Develop a security and compliance plan",
+        "hours": 1.7
+      },
+      {
+        "week": 5,
+        "focus": "Develop a security and compliance plan",
+        "hours": 1.5
+      },
+      {
+        "week": 5,
+        "focus": "Implement an instrumentation strategy",
+        "hours": 1.6
+      }
+    ],
+    "lpc_output": {
+      "status": "complete",
+      "recommended_certification": "AZ-400",
+      "study_hours_multiplier": 0.44,
+      "adjusted_study_hours": 27,
+      "learning_resources": [
+        {
+          "title": "Microsoft Certified: DevOps Engineer Expert",
+          "description": "Overview of certification requirements for the AZ-400 exam and DevOps Engineer Expert path.",
+          "source": "devops-engineer-expert.md"
+        },
+        {
+          "title": "AZ-400 Exam Study Guide",
+          "description": "Provides a comprehensive study guide covering all topics required for the AZ-400 certification.",
+          "source": "az-400.md"
+        },
+        {
+          "title": "Azure DevOps documentation",
+          "description": "Official Azure DevOps documentation that covers processes, systems, and tools used in DevOps practices.",
+          "source": "[unverified: azure-devops-documentation.md]"
+        }
+      ],
+      "warnings": [],
+      "background_summary": {
+        "Delivering Microsoft DevOps solutions that provide continuous security, integration, testing, delivery, deployment, monitoring, and feedback": 4,
+        "Designing and implementing flow of work, collaboration, communication, source control, and automation": 5,
+        "Azure administration": 4,
+        "Azure development": 5,
+        "GitHub and Azure DevOps solutions": 4,
+        "CI/CD pipelines": 5,
+        "Infrastructure as code": 4,
+        "Security and compliance in DevOps": 5
+      }
+    },
+    "current_module_index": 0
   },
   {
     "learner_id": "L-TEST-003",
